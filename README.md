@@ -78,9 +78,9 @@ npm run test:e2e
 ./scripts/publish.sh
 ```
 
-Настройте Settings → Pages → Source → GitHub Actions, если API настройки Pages недоступен токену. Репозиторий должен быть отдельным и публичным для бесплатного Pages. В этой сессии подключение GitHub принадлежит `lol5892`, но операция создания репозитория возвращает `403 Resource not accessible by integration`: требуется создать пустой `our-marvel-watchlist` и предоставить подключению доступ. Наличие ожидаемого URL не является доказательством публикации.
+Настройте Settings → Pages → Source → GitHub Actions, если API настройки Pages недоступен токену. Репозиторий должен быть отдельным и публичным для бесплатного Pages. Репозиторий публикации: https://github.com/lol5892/mcu . Начальная история репозитория сохранена, исходный README находится в `docs/repository-initial-README.md`. Если подключению запрещено включать Pages через API, выберите вручную Settings → Pages → Source → GitHub Actions.
 
-Ожидаемый адрес **после успешного развёртывания**: https://lol5892.github.io/our-marvel-watchlist/ . Проверяйте успешный workflow и HTTP 200 перед использованием. Текущий статус — в `docs/TEST-REPORT.md`.
+Ожидаемый адрес **после успешного развёртывания**: https://lol5892.github.io/mcu/ . Проверяйте успешный workflow и HTTP 200 перед использованием. Текущий статус — в `docs/TEST-REPORT.md`.
 
 Для Cloudflare Pages: создайте бесплатный проект Pages и загрузите **содержимое `dist`**, либо подключите этот репозиторий: команда сборки `npm run build`, каталог `dist`, Node 22. Серверные функции и база не нужны. Если интерфейс Cloudflare предлагает только Worker, выберите Workers & Pages → Create application → Pages → Upload assets.
 
