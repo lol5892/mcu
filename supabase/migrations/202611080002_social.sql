@@ -21,7 +21,7 @@ create table public.mv_events (
  author_id uuid not null references public.mv_profiles, starts_at timestamptz not null, timezone text not null,
  season integer, episode integer, location text not null default '' check(length(location)<=300), note text not null default '' check(length(note)<=2000),
  status text not null default 'invited' check(status in('invited','confirmed','proposed','cancelled')),
- proposed_at timestamptz, confirmed_by uuid references public.mv_profiles, version bigint not null default 1,
+ proposed_at timestamptz, proposed_by uuid references public.mv_profiles, confirmed_by uuid references public.mv_profiles, version bigint not null default 1,
  created_at timestamptz not null default now(), updated_at timestamptz not null default now()
 );
 create table public.mv_moments (

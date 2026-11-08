@@ -80,3 +80,41 @@ select public.test_denied('select public.mv_apply(gen_random_uuid(),''entry'',''
 reset role;
 select public.test_assert((select bool_and(rowsecurity) from pg_tables where (schemaname='public' and tablename like 'mv\_%') or schemaname='mv_private'),'RLS enabled on every private-data table');
 select public.test_assert((select not public from storage.buckets where id='marvel-private'),'photo bucket private');
+-- Seams that are easy to miss in UI-only authorization tests.
+set role authenticated;
+select set_config('request.jwt.claim.sub','11111111-1111-4111-8111-111111111111',false);
+select public.test_denied('select public.mv_apply(gen_random_uuid(),''rating'',''iron-man'',''{"score":11}'',1)','scores constrained on server');
+select public.mv_apply('12345678-0000-4000-8000-000000000001','rating','loki','{"season":1,"score":8}',0);
+select public.test_assert((select score=8 from public.mv_ratings where project_id='loki' and season=1),'can rate watched season without other seasons');
+select public.test_assert((select count(*)=0 from public.mv_profiles where id='22222222-2222-4222-8222-222222222222'),'partner notification settings remain private');
+select public.test_denied('insert into storage.objects(bucket_id,name) values(''marvel-private'',''fake.jpg'')','direct unvalidated storage upload denied');
+select public.mv_apply('12345678-0000-4000-8000-000000000002','moment','12345678-0000-4000-8000-000000000003','{"caption":"Our test photo"}',0);
+select public.mv_prepare_media('12345678-0000-4000-8000-000000000004','moment','12345678-0000-4000-8000-000000000003','image/jpeg',123);
+select public.test_denied('select public.mv_prepare_media(gen_random_uuid(),''moment'',''12345678-0000-4000-8000-000000000003'',''application/javascript'',123)','non-image media rejected');
+select public.test_denied('select public.mv_prepare_media(gen_random_uuid(),''moment'',''12345678-0000-4000-8000-000000000003'',''image/jpeg'',4000000)','oversize media rejected');
+select public.mv_apply('12345678-0000-4000-8000-000000000005','event','12345678-0000-4000-8000-000000000006',jsonb_build_object('project_id','iron-man','starts_at',now()+interval '2 days','timezone','Europe/Moscow'),0);
+select public.test_denied('select public.mv_apply(gen_random_uuid(),''event'',''12345678-0000-4000-8000-000000000006'',''{"status":"confirmed"}'',1)','creator cannot accept own invitation');
+select set_config('request.jwt.claim.sub','22222222-2222-4222-8222-222222222222',false);
+select public.mv_apply('12345678-0000-4000-8000-000000000007','event','12345678-0000-4000-8000-000000000006',jsonb_build_object('status','proposed','proposed_at',now()+interval '3 days'),1);
+select public.test_denied('select public.mv_apply(gen_random_uuid(),''event'',''12345678-0000-4000-8000-000000000006'',''{"status":"confirmed"}'',2)','proposer cannot accept own reschedule');
+select set_config('request.jwt.claim.sub','11111111-1111-4111-8111-111111111111',false);
+select public.test_denied('select public.mv_prepare_media(gen_random_uuid(),''letter'',''dddddddd-0000-4000-8000-000000000001'',''image/jpeg'',123)','cannot attach files to partner draft');
+select public.mv_apply('12345678-0000-4000-8000-000000000008','event','12345678-0000-4000-8000-000000000006','{"status":"confirmed"}',2);
+select public.test_assert((select starts_at=proposed_at from public.mv_events where id='12345678-0000-4000-8000-000000000006'),'partner acceptance applies proposed UTC timestamp');
+select public.test_assert((public.mv_export()->>'app')='our-marvel-family','v2 export available through RLS');
+select public.test_assert(not (public.mv_export() ? 'devices'),'backup excludes push credentials');
+select public.test_assert(not (public.mv_export() ? 'access_token'),'backup excludes auth tokens');
+select public.test_denied('select public.mv_delete_my_content(''wrong'')','personal deletion requires explicit confirmation');
+reset role;
+-- Simulate a second family created by a technical administrator to prove UUID
+-- collisions cannot let even a valid family member modify another family.
+insert into public.mv_profiles(id) values('33333333-3333-4333-8333-333333333333');
+insert into public.mv_families(id) values('99999999-0000-4000-8000-000000000001');
+insert into public.mv_members(family_id,user_id,role) values('99999999-0000-4000-8000-000000000001','33333333-3333-4333-8333-333333333333','anton');
+set role authenticated;
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.test_denied('select public.mv_apply(gen_random_uuid(),''message'',''ffffffff-0000-4000-8000-000000000001'',''{"body":"cross-family","scope":"chat"}'',0)','cross-family UUID collision cannot overwrite message');
+select public.test_denied('select public.mv_apply(gen_random_uuid(),''letter'',''dddddddd-0000-4000-8000-000000000001'',''{"title":"cross-family","body":"secret","status":"draft"}'',0)','cross-family UUID collision cannot overwrite letter');
+select public.test_assert((select count(*)=0 from public.mv_letters),'other-family member sees no first-family letters');
+select public.test_assert((select count(*)=0 from public.mv_media),'other-family member sees no first-family photos');
+reset role;

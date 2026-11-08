@@ -13,7 +13,8 @@ begin
  result:=jsonb_build_object('id',p_target,'ok',true);
  if p_kind in('entry','episode','rating') then
  select * into pr from public.mv_projects where id=p_target;
- if not found or pr.section='future' or pr.release_date>current_date then raise exception 'PROJECT_NOT_RELEASED';end if;
+ if not found then raise exception 'PROJECT_NOT_RELEASED';end if;
+ if (pr.section='future' or pr.release_date>current_date) and not(p_kind='rating' and p_payload->>'score' is null and p_payload ? 'favorite') then raise exception 'PROJECT_NOT_RELEASED';end if;
  end if;
  if p_payload ? 'user_id' or p_payload ? 'family_id' or p_payload ? 'author_id' or p_payload ? 'role' then raise exception 'IDENTITY_IS_SERVER_ASSIGNED' using errcode='42501';end if;
  case p_kind
@@ -135,10 +136,10 @@ begin
    st:='event_invite';
   else
    st:=p_payload->>'status';
-   if st='confirmed' and ev.author_id=u and ev.status<>'proposed' then raise exception 'PARTNER_CONFIRMS';end if;
+   if st='confirmed' and ((ev.status='proposed' and ev.proposed_by=u) or (ev.status<>'proposed' and ev.author_id=u)) then raise exception 'PARTNER_CONFIRMS';end if;
    if ev.status='cancelled' then raise exception 'EVENT_CANCELLED';end if;
    if st='proposed' and ((p_payload->>'proposed_at')::timestamptz<=now() or p_payload->>'proposed_at' is null) then raise exception 'EVENT_IN_FUTURE';end if;
-   update public.mv_events set status=st,proposed_at=case when st='proposed' then (p_payload->>'proposed_at')::timestamptz else proposed_at end,starts_at=case when st='confirmed' and ev.status='proposed' then ev.proposed_at else starts_at end,confirmed_by=case when st='confirmed' then u else null end,version=version+1,updated_at=now() where id=rid returning version into v;
+   update public.mv_events set status=st,proposed_by=case when st='proposed' then u else proposed_by end,proposed_at=case when st='proposed' then (p_payload->>'proposed_at')::timestamptz else proposed_at end,starts_at=case when st='confirmed' and ev.status='proposed' then ev.proposed_at else starts_at end,confirmed_by=case when st='confirmed' then u else null end,version=version+1,updated_at=now() where id=rid returning version into v;
    st:=case st when 'confirmed' then 'event_confirm' when 'proposed' then 'event_move' else 'event_cancel' end;
   end if;
   perform mv_private.notify_partner(f,st,'Обновление нашего киновечера','/events/'||rid,'event:'||p_id);
@@ -159,7 +160,9 @@ begin
  select o.result into result from public.mv_operations o where o.user_id=u and o.id=p_id;if found then return result;end if;
  for item in select * from jsonb_each(p_records) loop
  r:=item.value;
- if not exists(select 1 from public.mv_projects where id=item.key and section<>'future' and release_date<=current_date) then continue;end if;
+ if not exists(select 1 from public.mv_projects where id=item.key and section<>'future' and release_date<=current_date) then
+ if exists(select 1 from public.mv_projects where id=item.key) and (r->>'favorite')::boolean then insert into public.mv_ratings(family_id,user_id,project_id,season,favorite) values(f,u,item.key,0,true) on conflict do nothing;end if;
+ continue;end if;
  insert into public.mv_entries(family_id,project_id,watched,watched_date,note,updated_by) values(f,item.key,coalesce((r->>'watched')::boolean,false),nullif(r->>'date','')::date,coalesce(r->>'note',''),u) on conflict do nothing;
  count_entries:=count_entries+1;
  for k in select jsonb_array_elements_text(coalesce(r->'episodes','[]')) loop
