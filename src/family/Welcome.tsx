@@ -282,6 +282,29 @@ export function WelcomeGate({ children }: { children: ReactNode }) {
         }}
       />
     );
+  if (
+    !f.localMode &&
+    f.role === "tanya" &&
+    f.snapshot.profile &&
+    !f.snapshot.profile.welcome_seen_at &&
+    view === "none"
+  )
+    return (
+      <div className="welcome-scene">
+        <div className="welcome-content">
+          <span className="welcome-star">✦</span>
+          <p>{failure || "Готовим твой маленький сюрприз…"}</p>
+          {failure && (
+            <button
+              className="welcome-button"
+              onClick={() => location.reload()}
+            >
+              Повторить
+            </button>
+          )}
+        </div>
+      </div>
+    );
   return (
     <>
       {failure && (

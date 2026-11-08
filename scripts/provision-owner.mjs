@@ -1,0 +1,7 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+const email=process.env.OWNER_EMAIL?.trim().toLowerCase();if(!email||!/^\S+@\S+\.\S+$/.test(email))throw Error('Set OWNER_EMAIL to the actual confirmed owner email; it is not a role chosen in the UI.');
+const file=process.env.WELCOME_FILE;if(!file)throw Error('Provide WELCOME_FILE from a private location. Personal welcome text must not be committed.');
+const welcome=JSON.parse(await readFile(file,'utf8'));if(!Array.isArray(welcome.scenes)||welcome.scenes.length!==3||welcome.scenes.some(s=>typeof s!=='string')||typeof welcome.body!=='string'||!welcome.body.trim())throw Error('Invalid private greeting');
+const q=s=>"'"+s.replaceAll("'","''")+"'";
+const sql=`begin;\ninsert into mv_private.bootstrap(singleton,owner_email,welcome_scenes,welcome_body) values(true,${q(email)},${q(JSON.stringify(welcome.scenes))}::jsonb,${q(welcome.body)}) on conflict(singleton) do update set owner_email=excluded.owner_email,welcome_scenes=excluded.welcome_scenes,welcome_body=excluded.welcome_body;\nupdate public.mv_welcome set scenes=${q(JSON.stringify(welcome.scenes))}::jsonb,body=${q(welcome.body)} where family_id=(select family_id from mv_private.bootstrap where singleton);\ncommit;\n`;
+const dir=process.env.PRIVATE_SETUP_DIR||'/workspace/private-setup';await mkdir(dir,{recursive:true,mode:0o700});await writeFile(dir+'/owner-bootstrap.sql',sql,{mode:0o600});console.log('Private owner/bootstrap SQL prepared outside the public source. Apply only to the selected project through a protected operator connection.');

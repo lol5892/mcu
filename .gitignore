@@ -10,3 +10,4 @@ playwright-report/
 supabase/.temp/
 supabase/.branches/
 private-setup/
+test-results-family/

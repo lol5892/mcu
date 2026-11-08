@@ -23,6 +23,8 @@ export function errorText(error: unknown) {
   const known: Record<string, string> = {
     VERSION_CONFLICT:
       "Изменено на другом устройстве. Сравните версии и повторите действие.",
+    WELCOME_NOT_PROVISIONED:
+      "Сначала нужно приватно настроить приветственное письмо на сервере.",
     OWNER_NOT_ALLOWED:
       "Этот подтверждённый email не разрешён для создания семьи.",
     EMAIL_NOT_CONFIRMED: "Подтвердите email кодом из письма.",

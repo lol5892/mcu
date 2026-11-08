@@ -2,7 +2,7 @@ create function public.test_assert(ok boolean,label text) returns void language 
 create function public.test_denied(statement text,label text) returns void language plpgsql as $$begin begin execute statement;exception when others then raise notice 'PASS denied: % [%]',label,sqlerrm;return;end;raise exception 'FAILED allowed: %',label;end$$;
 grant execute on function public.test_assert(boolean,text),public.test_denied(text,text) to authenticated,anon;
 insert into auth.users values('11111111-1111-4111-8111-111111111111','anton@example.test',now()),('22222222-2222-4222-8222-222222222222','tanya@example.test',now()),('33333333-3333-4333-8333-333333333333','outsider@example.test',now()),('44444444-4444-4444-8444-444444444444','unconfirmed@example.test',null);
-insert into mv_private.bootstrap(owner_email,welcome_scenes,welcome_body) values('anton@example.test','["Test scene"]','Private test greeting');
+insert into mv_private.bootstrap(owner_email,welcome_scenes,welcome_body) values('anton@example.test','["Test scene 1","Test scene 2","Test scene 3"]','Private test greeting');
 set role authenticated;
 select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
 select public.test_denied('select public.mv_create_family()','third user cannot create owner family');

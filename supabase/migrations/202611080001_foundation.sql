@@ -89,6 +89,7 @@ begin
  select * into b from mv_private.bootstrap where singleton for update;
  if not found or lower(u.email)<>b.owner_email then raise exception 'OWNER_NOT_ALLOWED' using errcode='42501'; end if;
  if b.family_id is not null then return b.family_id; end if;
+ if length(b.welcome_body)=0 or jsonb_typeof(b.welcome_scenes)<>'array' or jsonb_array_length(b.welcome_scenes)<>3 then raise exception 'WELCOME_NOT_PROVISIONED';end if;
  insert into public.mv_profiles(id) values(u.id) on conflict do nothing;
  insert into public.mv_families default values returning id into f;
  insert into public.mv_members values(f,u.id,'anton',now());
