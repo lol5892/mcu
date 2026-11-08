@@ -95,7 +95,7 @@ revoke execute on function public.mv_prepare_media(uuid,text,uuid,text,int),publ
 grant execute on function public.mv_prepare_media(uuid,text,uuid,text,int),public.mv_register_device(uuid,text,jsonb),public.mv_disable_device(uuid),public.mv_test_push(),public.mv_push_status(uuid) to authenticated;
 grant execute on function public.mv_tick(),public.mv_claim_push(int),public.mv_ack_push(uuid,int,boolean,boolean,text) to service_role;
 
-insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) values('marvel-private','marvel-private',false,3145728,array['image/jpeg','image/png','image/webp']) on conflict(id) do nothing;
+insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) values('marvel-private','marvel-private',false,3145728,array['image/jpeg','image/png','image/webp']) on conflict(id) do update set public=false,file_size_limit=3145728,allowed_mime_types=excluded.allowed_mime_types;
 create policy mv_storage_read on storage.objects for select to authenticated using(bucket_id='marvel-private' and exists(select 1 from public.mv_media m where m.object_path=name and mv_private.media_visible(m)));
 -- No authenticated INSERT/UPDATE/DELETE policy: only the validating media Edge
 -- Function writes using its server credential. Guessing an object path is useless.

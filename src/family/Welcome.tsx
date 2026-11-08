@@ -192,6 +192,8 @@ export function Onboarding({
                   await enablePush(f.user!.id, f.rpc);
                   await f.rpc("mv_update_profile", {
                     p: {
+                      timezone:
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
                       notification_types: {
                         ...f.snapshot.profile?.notification_types,
                         enabled: true,

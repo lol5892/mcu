@@ -1,0 +1,7 @@
+project_id = "our-marvel-family"
+[functions.push-dispatch]
+verify_jwt = false
+[functions.media-upload]
+verify_jwt = false
+# Both functions validate authorization themselves: an opaque server-only
+# scheduler secret for push-dispatch, auth.getUser() for media-upload.
