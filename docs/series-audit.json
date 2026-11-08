@@ -1,0 +1,718 @@
+{
+  "checkedAt": "2026-11-08",
+  "source": "TVmaze episode API; supplementary to official sources",
+  "results": [
+    {
+      "id": "wandavision",
+      "name": "WandaVision",
+      "source": "https://www.tvmaze.com/shows/41748/wandavision",
+      "imdb": "tt9140560",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 9,
+          "found": 9,
+          "catalogDate": "2021-01-15",
+          "sourceDate": "2021-01-15",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "falcon",
+      "name": "The Falcon and The Winter Soldier",
+      "source": "https://www.tvmaze.com/shows/41749/the-falcon-and-the-winter-soldier",
+      "imdb": "tt9208876",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2021-03-19",
+          "sourceDate": "2021-03-19",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "loki",
+      "name": "Loki",
+      "source": "https://www.tvmaze.com/shows/41007/loki",
+      "imdb": "tt9140554",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2021-06-09",
+          "sourceDate": "2021-06-09",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2023-10-05",
+          "sourceDate": "2023-10-05",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "what-if",
+      "name": "What If...?",
+      "source": "https://www.tvmaze.com/shows/41750/what-if",
+      "imdb": "tt10168312",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 9,
+          "found": 9,
+          "catalogDate": "2021-08-11",
+          "sourceDate": "2021-08-11",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 9,
+          "found": 9,
+          "catalogDate": "2023-12-22",
+          "sourceDate": "2023-12-22",
+          "match": true
+        },
+        {
+          "season": 3,
+          "expected": 8,
+          "found": 8,
+          "catalogDate": "2024-12-22",
+          "sourceDate": "2024-12-22",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "hawkeye",
+      "name": "Hawkeye",
+      "source": "https://www.tvmaze.com/shows/43102/hawkeye",
+      "imdb": "tt10160804",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2021-11-24",
+          "sourceDate": "2021-11-24",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "moon-knight",
+      "name": "Moon Knight",
+      "source": "https://www.tvmaze.com/shows/43518/moon-knight",
+      "imdb": "tt10234724",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2022-03-30",
+          "sourceDate": "2022-03-30",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "ms-marvel",
+      "name": "Ms. Marvel",
+      "source": "https://www.tvmaze.com/shows/43519/ms-marvel",
+      "imdb": "tt10857164",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2022-06-08",
+          "sourceDate": "2022-06-08",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "groot",
+      "name": "I Am Groot",
+      "source": "https://www.tvmaze.com/shows/52351/i-am-groot",
+      "imdb": "tt13623148",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 5,
+          "found": 5,
+          "catalogDate": "2022-08-10",
+          "sourceDate": "2022-08-10",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 5,
+          "found": 5,
+          "catalogDate": "2023-09-06",
+          "sourceDate": "2023-09-06",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "she-hulk",
+      "name": "She-Hulk: Attorney at Law",
+      "source": "https://www.tvmaze.com/shows/43517/she-hulk-attorney-at-law",
+      "imdb": "tt10857160",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 9,
+          "found": 9,
+          "catalogDate": "2022-08-18",
+          "sourceDate": "2022-08-18",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "secret-invasion",
+      "name": "Secret Invasion",
+      "source": "https://www.tvmaze.com/shows/52352/secret-invasion",
+      "imdb": "tt13157618",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2023-06-21",
+          "sourceDate": "2023-06-21",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "echo",
+      "name": "Echo",
+      "source": "https://www.tvmaze.com/shows/58950/echo",
+      "imdb": "tt13966962",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 5,
+          "found": 5,
+          "catalogDate": "2024-01-09",
+          "sourceDate": "2024-01-09",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "agatha",
+      "name": "Agatha All Along",
+      "source": "https://www.tvmaze.com/shows/58948/agatha-all-along",
+      "imdb": "tt15571732",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 9,
+          "found": 9,
+          "catalogDate": "2024-09-18",
+          "sourceDate": "2024-09-18",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "born-again",
+      "name": "Daredevil: Born Again",
+      "source": "https://www.tvmaze.com/shows/63234/daredevil-born-again",
+      "imdb": "tt18923754",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 9,
+          "found": 9,
+          "catalogDate": "2025-03-04",
+          "sourceDate": "2025-03-04",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 8,
+          "found": 8,
+          "catalogDate": "2026-03-24",
+          "sourceDate": "2026-03-24",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "ironheart",
+      "name": "Ironheart",
+      "source": "https://www.tvmaze.com/shows/47859/ironheart",
+      "imdb": "tt13623126",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2025-06-24",
+          "sourceDate": "2025-06-24",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "wakanda-eyes",
+      "name": "Eyes of Wakanda",
+      "source": "https://www.tvmaze.com/shows/73415/eyes-of-wakanda",
+      "imdb": "tt13968252",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 4,
+          "found": 4,
+          "catalogDate": "2025-08-01",
+          "sourceDate": "2025-08-01",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "zombies",
+      "name": "Marvel Zombies",
+      "source": "https://www.tvmaze.com/shows/58949/marvel-zombies",
+      "imdb": "tt16027014",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 4,
+          "found": 4,
+          "catalogDate": "2025-09-24",
+          "sourceDate": "2025-09-24",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "friendly-spider",
+      "name": "Your Friendly Neighborhood Spider-Man",
+      "source": "https://www.tvmaze.com/shows/58952/your-friendly-neighborhood-spider-man",
+      "imdb": "tt16027074",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2025-01-29",
+          "sourceDate": "2025-01-29",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "xmen97",
+      "name": "X-Men '97",
+      "source": "https://www.tvmaze.com/shows/58951/x-men-97",
+      "imdb": "tt16026746",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2024-03-20",
+          "sourceDate": "2024-03-20",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 9,
+          "found": 9,
+          "catalogDate": "2026-07-01",
+          "sourceDate": "2026-07-01",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "wonder-man",
+      "name": "Wonder Man",
+      "source": "https://www.tvmaze.com/shows/62569/wonder-man",
+      "imdb": "tt21066182",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 8,
+          "found": 8,
+          "catalogDate": "2026-01-27",
+          "sourceDate": "2026-01-27",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "visionquest",
+      "name": "VisionQuest",
+      "source": "https://www.tvmaze.com/shows/64950/visionquest",
+      "imdb": "tt23112594",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 8,
+          "found": 8,
+          "catalogDate": "2026-10-13",
+          "sourceDate": "2026-10-13",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "daredevil",
+      "name": "Marvel's Daredevil",
+      "source": "https://www.tvmaze.com/shows/1369/marvels-daredevil",
+      "imdb": "tt3322312",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2015-04-10",
+          "sourceDate": "2015-04-10",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2016-03-18",
+          "sourceDate": "2016-03-18",
+          "match": true
+        },
+        {
+          "season": 3,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2018-10-19",
+          "sourceDate": "2018-10-19",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "jessica",
+      "name": "Marvel's Jessica Jones",
+      "source": "https://www.tvmaze.com/shows/1370/marvels-jessica-jones",
+      "imdb": "tt2357547",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2015-11-20",
+          "sourceDate": "2015-11-20",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2018-03-08",
+          "sourceDate": "2018-03-08",
+          "match": true
+        },
+        {
+          "season": 3,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2019-06-14",
+          "sourceDate": "2019-06-14",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "luke",
+      "name": "Marvel's Luke Cage",
+      "source": "https://www.tvmaze.com/shows/2174/marvels-luke-cage",
+      "imdb": "tt3322314",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2016-09-30",
+          "sourceDate": "2016-09-30",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2018-06-22",
+          "sourceDate": "2018-06-22",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "iron-fist",
+      "name": "Marvel's Iron Fist",
+      "source": "https://www.tvmaze.com/shows/2175/marvels-iron-fist",
+      "imdb": "tt3322310",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2017-03-17",
+          "sourceDate": "2017-03-17",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2018-09-07",
+          "sourceDate": "2018-09-07",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "defenders",
+      "name": "Marvel's The Defenders",
+      "source": "https://www.tvmaze.com/shows/2176/marvels-the-defenders",
+      "imdb": "tt4230076",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 8,
+          "found": 8,
+          "catalogDate": "2017-08-18",
+          "sourceDate": "2017-08-18",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "punisher",
+      "name": "Marvel's The Punisher",
+      "source": "https://www.tvmaze.com/shows/16544/marvels-the-punisher",
+      "imdb": "tt5675620",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2017-11-17",
+          "sourceDate": "2017-11-17",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2019-01-18",
+          "sourceDate": "2019-01-18",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "shield",
+      "name": "Marvel's Agents of S.H.I.E.L.D.",
+      "source": "https://www.tvmaze.com/shows/31/marvels-agents-of-shield",
+      "imdb": "tt2364582",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 22,
+          "found": 22,
+          "catalogDate": "2013-09-24",
+          "sourceDate": "2013-09-24",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 22,
+          "found": 22,
+          "catalogDate": "2014-09-23",
+          "sourceDate": "2014-09-23",
+          "match": true
+        },
+        {
+          "season": 3,
+          "expected": 22,
+          "found": 22,
+          "catalogDate": "2015-09-29",
+          "sourceDate": "2015-09-29",
+          "match": true
+        },
+        {
+          "season": 4,
+          "expected": 22,
+          "found": 22,
+          "catalogDate": "2016-09-20",
+          "sourceDate": "2016-09-20",
+          "match": true
+        },
+        {
+          "season": 5,
+          "expected": 22,
+          "found": 22,
+          "catalogDate": "2017-12-01",
+          "sourceDate": "2017-12-01",
+          "match": true
+        },
+        {
+          "season": 6,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2019-05-10",
+          "sourceDate": "2019-05-10",
+          "match": true
+        },
+        {
+          "season": 7,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2020-05-27",
+          "sourceDate": "2020-05-27",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "carter",
+      "name": "Marvel's Agent Carter",
+      "source": "https://www.tvmaze.com/shows/336/marvels-agent-carter",
+      "imdb": "tt3475734",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 8,
+          "found": 8,
+          "catalogDate": "2015-01-06",
+          "sourceDate": "2015-01-06",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2016-01-19",
+          "sourceDate": "2016-01-19",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "inhumans",
+      "name": "Marvel's Inhumans",
+      "source": "https://www.tvmaze.com/shows/22928/marvels-inhumans",
+      "imdb": "tt4154858",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 8,
+          "found": 8,
+          "catalogDate": "2017-09-29",
+          "sourceDate": "2017-09-29",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "runaways",
+      "name": "Marvel's Runaways",
+      "source": "https://www.tvmaze.com/shows/20172/marvels-runaways",
+      "imdb": "tt1236246",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2017-11-21",
+          "sourceDate": "2017-11-21",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 13,
+          "found": 13,
+          "catalogDate": "2018-12-21",
+          "sourceDate": "2018-12-21",
+          "match": true
+        },
+        {
+          "season": 3,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2019-12-13",
+          "sourceDate": "2019-12-13",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "cloak-dagger",
+      "name": "Marvel's Cloak & Dagger",
+      "source": "https://www.tvmaze.com/shows/15307/marvels-cloak-dagger",
+      "imdb": "tt5614844",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2018-06-07",
+          "sourceDate": "2018-06-07",
+          "match": true
+        },
+        {
+          "season": 2,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2019-04-04",
+          "sourceDate": "2019-04-04",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "slingshot",
+      "name": "Marvel's Agents of S.H.I.E.L.D.: Slingshot",
+      "source": "https://www.tvmaze.com/shows/23460/marvels-agents-of-shield-slingshot",
+      "imdb": "tt6313900",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 6,
+          "found": 6,
+          "catalogDate": "2016-12-13",
+          "sourceDate": "2016-12-13",
+          "match": true
+        }
+      ]
+    },
+    {
+      "id": "helstrom",
+      "name": "Helstrom",
+      "source": "https://www.tvmaze.com/shows/42012/helstrom",
+      "imdb": "tt10266874",
+      "seasons": [
+        {
+          "season": 1,
+          "expected": 10,
+          "found": 10,
+          "catalogDate": "2020-10-16",
+          "sourceDate": "2020-10-16",
+          "match": true
+        }
+      ]
+    }
+  ]
+}

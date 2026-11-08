@@ -1,0 +1,361 @@
+{
+  "checkedAt": "2026-11-08",
+  "source": "https://en.wikipedia.org/wiki/List_of_Marvel_Cinematic_Universe_films",
+  "results": [
+    {
+      "id": "iron-man",
+      "title": "Iron Man",
+      "date": "2008-05-02",
+      "sourceDates": [
+        "2008-05-02",
+        "2010-05-07",
+        "2013-05-03"
+      ],
+      "match": true
+    },
+    {
+      "id": "hulk",
+      "title": "The Incredible Hulk",
+      "date": "2008-06-13",
+      "sourceDates": [
+        "2008-06-13"
+      ],
+      "match": true
+    },
+    {
+      "id": "iron-man-2",
+      "title": "Iron Man 2",
+      "date": "2010-05-07",
+      "sourceDates": [
+        "2010-05-07"
+      ],
+      "match": true
+    },
+    {
+      "id": "thor",
+      "title": "Thor",
+      "date": "2011-05-06",
+      "sourceDates": [
+        "2011-05-06",
+        "2013-11-08",
+        "2017-11-03",
+        "2022-07-08"
+      ],
+      "match": true
+    },
+    {
+      "id": "first-avenger",
+      "title": "Captain America: The First Avenger",
+      "date": "2011-07-22",
+      "sourceDates": [
+        "2011-07-22"
+      ],
+      "match": true
+    },
+    {
+      "id": "avengers",
+      "title": "The Avengers",
+      "date": "2012-05-04",
+      "sourceDates": [
+        "2012-05-04"
+      ],
+      "match": true
+    },
+    {
+      "id": "iron-man-3",
+      "title": "Iron Man 3",
+      "date": "2013-05-03",
+      "sourceDates": [
+        "2013-05-03"
+      ],
+      "match": true
+    },
+    {
+      "id": "thor-dark",
+      "title": "Thor: The Dark World",
+      "date": "2013-11-08",
+      "sourceDates": [
+        "2013-11-08"
+      ],
+      "match": true
+    },
+    {
+      "id": "winter-soldier",
+      "title": "Captain America: The Winter Soldier",
+      "date": "2014-04-04",
+      "sourceDates": [
+        "2014-04-04"
+      ],
+      "match": true
+    },
+    {
+      "id": "guardians",
+      "title": "Guardians of the Galaxy",
+      "date": "2014-08-01",
+      "sourceDates": [
+        "2014-08-01",
+        "2017-05-05",
+        "2023-05-05"
+      ],
+      "match": true
+    },
+    {
+      "id": "ultron",
+      "title": "Avengers: Age of Ultron",
+      "date": "2015-05-01",
+      "sourceDates": [
+        "2015-05-01"
+      ],
+      "match": true
+    },
+    {
+      "id": "ant-man",
+      "title": "Ant-Man",
+      "date": "2015-07-17",
+      "sourceDates": [
+        "2015-07-17",
+        "2018-07-06",
+        "2023-02-17"
+      ],
+      "match": true
+    },
+    {
+      "id": "civil-war",
+      "title": "Captain America: Civil War",
+      "date": "2016-05-06",
+      "sourceDates": [
+        "2016-05-06"
+      ],
+      "match": true
+    },
+    {
+      "id": "strange",
+      "title": "Doctor Strange",
+      "date": "2016-11-04",
+      "sourceDates": [
+        "2016-11-04",
+        "2022-05-06"
+      ],
+      "match": true
+    },
+    {
+      "id": "guardians-2",
+      "title": "Guardians of the Galaxy Vol. 2",
+      "date": "2017-05-05",
+      "sourceDates": [
+        "2017-05-05"
+      ],
+      "match": true
+    },
+    {
+      "id": "spider-home",
+      "title": "Spider-Man: Homecoming",
+      "date": "2017-07-07",
+      "sourceDates": [
+        "2017-07-07"
+      ],
+      "match": true
+    },
+    {
+      "id": "ragnarok",
+      "title": "Thor: Ragnarok",
+      "date": "2017-11-03",
+      "sourceDates": [
+        "2017-11-03"
+      ],
+      "match": true
+    },
+    {
+      "id": "panther",
+      "title": "Black Panther",
+      "date": "2018-02-16",
+      "sourceDates": [
+        "2018-02-16",
+        "2022-11-11",
+        "2028-12-15"
+      ],
+      "match": true
+    },
+    {
+      "id": "infinity-war",
+      "title": "Avengers: Infinity War",
+      "date": "2018-04-27",
+      "sourceDates": [
+        "2018-04-27"
+      ],
+      "match": true
+    },
+    {
+      "id": "ant-wasp",
+      "title": "Ant-Man and the Wasp",
+      "date": "2018-07-06",
+      "sourceDates": [
+        "2018-07-06",
+        "2023-02-17"
+      ],
+      "match": true
+    },
+    {
+      "id": "captain-marvel",
+      "title": "Captain Marvel",
+      "date": "2019-03-08",
+      "sourceDates": [
+        "2019-03-08"
+      ],
+      "match": true
+    },
+    {
+      "id": "endgame",
+      "title": "Avengers: Endgame",
+      "date": "2019-04-26",
+      "sourceDates": [
+        "2019-04-26"
+      ],
+      "match": true
+    },
+    {
+      "id": "spider-far",
+      "title": "Spider-Man: Far From Home",
+      "date": "2019-07-02",
+      "sourceDates": [
+        "2019-07-02"
+      ],
+      "match": true
+    },
+    {
+      "id": "widow",
+      "title": "Black Widow",
+      "date": "2021-07-09",
+      "sourceDates": [
+        "2021-07-09"
+      ],
+      "match": true
+    },
+    {
+      "id": "shang-chi",
+      "title": "Shang-Chi and the Legend of the Ten Rings",
+      "date": "2021-09-03",
+      "sourceDates": [
+        "2021-09-03"
+      ],
+      "match": true
+    },
+    {
+      "id": "eternals",
+      "title": "Eternals",
+      "date": "2021-11-05",
+      "sourceDates": [
+        "2021-11-05"
+      ],
+      "match": true
+    },
+    {
+      "id": "spider-no-way",
+      "title": "Spider-Man: No Way Home",
+      "date": "2021-12-17",
+      "sourceDates": [
+        "2021-12-17"
+      ],
+      "match": true
+    },
+    {
+      "id": "strange-2",
+      "title": "Doctor Strange in the Multiverse of Madness",
+      "date": "2022-05-06",
+      "sourceDates": [
+        "2022-05-06"
+      ],
+      "match": true
+    },
+    {
+      "id": "thor-love",
+      "title": "Thor: Love and Thunder",
+      "date": "2022-07-08",
+      "sourceDates": [
+        "2022-07-08"
+      ],
+      "match": true
+    },
+    {
+      "id": "wakanda",
+      "title": "Black Panther: Wakanda Forever",
+      "date": "2022-11-11",
+      "sourceDates": [
+        "2022-11-11"
+      ],
+      "match": true
+    },
+    {
+      "id": "quantumania",
+      "title": "Ant-Man and the Wasp: Quantumania",
+      "date": "2023-02-17",
+      "sourceDates": [
+        "2023-02-17"
+      ],
+      "match": true
+    },
+    {
+      "id": "guardians-3",
+      "title": "Guardians of the Galaxy Vol. 3",
+      "date": "2023-05-05",
+      "sourceDates": [
+        "2023-05-05"
+      ],
+      "match": true
+    },
+    {
+      "id": "marvels",
+      "title": "The Marvels",
+      "date": "2023-11-10",
+      "sourceDates": [
+        "2023-11-10"
+      ],
+      "match": true
+    },
+    {
+      "id": "deadpool",
+      "title": "Deadpool & Wolverine",
+      "date": "2024-07-26",
+      "sourceDates": [
+        "2024-07-26"
+      ],
+      "match": true
+    },
+    {
+      "id": "brave-world",
+      "title": "Captain America: Brave New World",
+      "date": "2025-02-14",
+      "sourceDates": [
+        "2025-02-14"
+      ],
+      "match": true
+    },
+    {
+      "id": "thunderbolts",
+      "title": "Thunderbolts*",
+      "date": "2025-05-02",
+      "sourceDates": [
+        "2025-05-02"
+      ],
+      "match": true
+    },
+    {
+      "id": "fantastic-four",
+      "title": "The Fantastic Four: First Steps",
+      "date": "2025-07-25",
+      "sourceDates": [
+        "2025-07-25"
+      ],
+      "match": true
+    },
+    {
+      "id": "spider-new",
+      "title": "Spider-Man: Brand New Day",
+      "date": "2026-07-31",
+      "sourceDates": [
+        "2026-07-31"
+      ],
+      "match": true
+    }
+  ]
+}
