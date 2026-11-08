@@ -78,9 +78,11 @@ npm run test:e2e
 ./scripts/publish.sh
 ```
 
-Настройте Settings → Pages → Source → GitHub Actions, если API настройки Pages недоступен токену. Репозиторий должен быть отдельным и публичным для бесплатного Pages. Репозиторий публикации: https://github.com/lol5892/mcu . Начальная история репозитория сохранена, исходный README находится в `docs/repository-initial-README.md`. Если подключению запрещено включать Pages через API, выберите вручную Settings → Pages → Source → GitHub Actions.
+Настройте Settings → Pages → Source → GitHub Actions, если API настройки Pages недоступен токену. Репозиторий должен быть отдельным и публичным для бесплатного Pages. Опубликованное приложение: **https://lol5892.github.io/mcu/** . Репозиторий: https://github.com/lol5892/mcu . Начальная история репозитория сохранена, исходный README находится в `docs/repository-initial-README.md`.
 
-Ожидаемый адрес **после успешного развёртывания**: https://lol5892.github.io/mcu/ . Проверяйте успешный workflow и HTTP 200 перед использованием. Текущий статус — в `docs/TEST-REPORT.md`.
+GitHub Pages включён с источником GitHub Actions. Публикация прошла успешно: https://github.com/lol5892/mcu/actions/runs/42521373046 . Проверен HTTP 200 и работа опубликованного приложения в мобильной эмуляции: обе оценки, заметка, перезапуск без сети, область Service Worker `/mcu/`, отсутствие ошибок JavaScript. Повторить проверку в этой среде: `node scripts/deployed-smoke.mjs`. Личные отметки этого теста живут только во временном браузерном профиле и не меняют данные пользователей.
+
+Подробный отчёт — `docs/TEST-REPORT.md`.
 
 Для Cloudflare Pages: создайте бесплатный проект Pages и загрузите **содержимое `dist`**, либо подключите этот репозиторий: команда сборки `npm run build`, каталог `dist`, Node 22. Серверные функции и база не нужны. Если интерфейс Cloudflare предлагает только Worker, выберите Workers & Pages → Create application → Pages → Upload assets.
 
