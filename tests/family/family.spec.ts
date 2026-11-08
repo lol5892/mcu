@@ -264,3 +264,20 @@ test("notification permission is never requested merely by opening settings", as
   await expect(page.getByRole("status")).toBeVisible();
   expect(await page.evaluate(() => (window as any).permissionRequests)).toBe(1);
 });
+test("own old score can be cleared after partner unmarks the film", async ({
+  page,
+  context,
+}) => {
+  const backend = fixture();
+  backend.tables.mv_entries[0].watched = false;
+  await backend.connect(context);
+  await login(page, "anton@example.test");
+  await page
+    .getByRole("button", { name: "Открыть: Железный человек", exact: true })
+    .click();
+  await expect(page.getByLabel("Оценка Антона", { exact: true })).toBeEnabled();
+  await expect(page.getByLabel("Оценка Тани", { exact: true })).toBeDisabled();
+  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("");
+  await expect.poll(() => backend.tables.mv_ratings[0].score).toBeNull();
+  expect(backend.tables.mv_ratings[1].score).toBe(9);
+});

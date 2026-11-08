@@ -1703,7 +1703,9 @@ function Detail({
           </div>
           {!canRate && (
             <p className="muted">
-              Оценки откроются после полного просмотра проекта.
+              {cloudActive
+                ? "Сначала отметьте просмотр фильма или серии. Свою прежнюю оценку можно сбросить в любой момент."
+                : "Оценки откроются после полного просмотра проекта."}
             </p>
           )}
           <div className="rating-fields">
@@ -1713,7 +1715,11 @@ function Detail({
                 <span>Оценка {i === 0 ? "Антона" : "Тани"}</span>
                 <select
                   aria-label={`Оценка ${i === 0 ? "Антона" : "Тани"}`}
-                  disabled={!canRate || (cloudActive && who !== family.role)}
+                  disabled={
+                    cloudActive
+                      ? who !== family.role || (!canRate && r[who] === null)
+                      : !canRate
+                  }
                   value={r[who] ?? ""}
                   onChange={(e) =>
                     change({
@@ -1724,7 +1730,11 @@ function Detail({
                 >
                   <option value="">—</option>
                   {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                    <option key={n} value={n}>
+                    <option
+                      key={n}
+                      value={n}
+                      disabled={cloudActive && !canRate}
+                    >
                       {n}
                     </option>
                   ))}

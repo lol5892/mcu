@@ -65,7 +65,7 @@ export function SeasonRatings({ projectId }: { projectId: string }) {
               Моя
               <select
                 aria-label={`Моя оценка ${season ? "сезона " + season : "проекта"}`}
-                disabled={!canRate || a.busy}
+                disabled={a.busy || (!canRate && own?.score == null)}
                 value={own?.score ?? ""}
                 onChange={(e) =>
                   void a.run(() =>
@@ -83,7 +83,7 @@ export function SeasonRatings({ projectId }: { projectId: string }) {
               >
                 <option value="">—</option>
                 {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>
+                  <option key={n} value={n} disabled={!canRate}>
                     {n}
                   </option>
                 ))}
