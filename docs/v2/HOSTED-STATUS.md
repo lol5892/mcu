@@ -15,3 +15,9 @@ Cloud-configured frontend build succeeds. GitHub Actions variables API remains u
 Still pending: inbox receipt, live two-account integration tests, real device subscriptions and delivery, final release. Separate preview is being published at /mcu/preview/ while v1 remains at the existing root URL. Production v1 remains unchanged.
 
 Preview browser smoke: 390×844 auth screen, no JavaScript errors, offline shell, existing production cache preserved. Production v1 rebuilt separately: 11 tests pass. Public publishable key and VAPID public key are intentionally browser-visible; private keys remain in Vault.
+
+## Release verification completed
+
+Owner confirmed real SMTP receipt and signed in; real family has one member. Hosted isolated three-account runner: 29 assertions passed (actual Auth/JWT, REST/RLS, Realtime, Storage, letters/tick, episodes, calendar and sessions). Temporary test accounts/family removed: zero remain. Runner disabled with HTTP 410; real Tanya has not joined, original greeting remains unviewed by her. A cold-start Realtime delay was observed; explicit session binding and foreground catch-up added. See TEST-REPORT.md for limitations.
+
+Final local checks: 17 unit, 63 SQL, 7 legacy E2E, 8 family contract E2E, 3 image tests, TypeScript and build. Physical iPhone push remains a manual verification step.

@@ -3,21 +3,30 @@
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.119.0";
 import jpeg from "npm:jpeg-js@0.4.4";
 const url=Deno.env.get('SUPABASE_URL')!, key=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!, anon=Deno.env.get('SUPABASE_ANON_KEY')!;
-const admin=createClient(url,key,{auth:{persistSession:false}});
+const boundedFetch:typeof fetch=(input,init)=>fetch(input,{...init,signal:AbortSignal.timeout(12000)});
+const admin=createClient(url,key,{auth:{persistSession:false},global:{fetch:boundedFetch}});
 Deno.serve(async req=>{
  const {data:settings}=await admin.rpc('mv_delivery_settings');
  const digest=async(s:string)=>new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)));
  const [a,b]=await Promise.all([digest(req.headers.get('Authorization')||''),digest('Bearer '+settings?.mv_cron_secret)]);
  if(req.method!=='POST'||!settings?.mv_cron_secret||a.some((v,i)=>v!==b[i]))return new Response('Unauthorized',{status:401});
+ if(new URL(req.url).searchParams.has('cleanup')){
+   const {data:listed,error}=await admin.auth.admin.listUsers({perPage:1000});if(error)return Response.json({error:error.code},{status:500});
+   const ids=listed.users.filter(u=>/^release-[a-f0-9-]+@example\.invalid$/.test(u.email||'')).map(u=>u.id);
+   const {data:families}=await admin.from('mv_families').select('id').eq('name','Disposable release checks');
+   for(const f of families||[]){const {data:members}=await admin.from('mv_members').select('user_id').eq('family_id',f.id);if(members?.length&&members.every(m=>ids.includes(m.user_id)))await admin.from('mv_families').delete().eq('id',f.id);}
+   for(const id of ids){await admin.from('mv_profiles').delete().eq('id',id);const {error:err}=await admin.auth.admin.deleteUser(id);if(err)return Response.json({error:err.code},{status:500});}
+   return Response.json({removed_test_accounts:ids.length});
+ }
  const passed:string[]=[],users:string[]=[],clients:SupabaseClient<any>[]=[],tokens:string[]=[];let family:string|undefined,mediaPath:string|undefined;const cleanupErrors:string[]=[];
- const check=(ok:unknown,name:string)=>{if(!ok)throw Error(name);passed.push(name)};
+ const check=(ok:unknown,name:string)=>{if(!ok)throw Error(name);passed.push(name);console.log("RELEASE_CHECK",name)};
  const must=async(q:PromiseLike<any>)=>{const r=await q;if(r.error)throw Error(r.error.code+': '+r.error.message);return r.data;};
  const apply=(c:any,kind:string,target:string,payload:any,version=0,id=crypto.randomUUID())=>must(c.rpc('mv_apply',{p_id:id,p_kind:kind,p_target:target,p_payload:payload,p_expected:version}));
  try{
   for(let i=0;i<3;i++){
    const email='release-'+crypto.randomUUID()+'@example.invalid',password=crypto.randomUUID()+'aA1!';
    const u=await must(admin.auth.admin.createUser({email,password,email_confirm:true}));users.push(u.user.id);
-   const c=createClient(url,anon,{auth:{persistSession:false}});const session=await must(c.auth.signInWithPassword({email,password}));clients.push(c);tokens.push(session.session.access_token);
+   const c=createClient(url,anon,{auth:{persistSession:false},global:{fetch:boundedFetch}});const session=await must(c.auth.signInWithPassword({email,password}));clients.push(c);tokens.push(session.session.access_token);
   }
   check(users.length===3,'three isolated real Auth sessions');
   await must(admin.from('mv_profiles').insert(users.map(id=>({id}))));
@@ -50,6 +59,8 @@ Deno.serve(async req=>{
   await y.realtime.setAuth(tokens[1]);
   const channel=y.channel('release-'+family).on('system',{},payload=>console.log('RELEASE_REALTIME_SYSTEM',JSON.stringify(payload))).on('postgres_changes',{event:'INSERT',schema:'public',table:'mv_messages',filter:'family_id=eq.'+family},()=>gotRealtime(true));
   await new Promise<void>((resolve,reject)=>{const t=setTimeout(()=>reject(Error('realtime subscription timeout')),15000);channel.subscribe((s:string)=>{if(s==='SUBSCRIBED'){clearTimeout(t);resolve()}})});
+  // A fresh Free tenant may finish initializing just after the join ACK.
+  await new Promise(resolve=>setTimeout(resolve,1500));
   const msg=crypto.randomUUID();await apply(x,'message',msg,{scope:'chat',body:'Disposable live message'});
   const realtimeDelivered=await Promise.race([changed,new Promise(resolve=>setTimeout(()=>resolve(false),25000))]);await y.removeChannel(channel);
   check((await must(y.from('mv_messages').select('*').eq('id',msg))).length===1,'partner can read chat');

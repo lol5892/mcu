@@ -1,6 +1,6 @@
 # Подключение настоящего семейного backend
 
-Рабочая v1 остаётся по https://lol5892.github.io/mcu/ . Не сливайте ветку 2.0 в main до выполнения этих пунктов и проверки живого сервера. Аккаунты, подписки и личные данные в production не создавались без подключения владельца.
+Инструкция воспроизведения конфигурации 2.0. Фактический статус проекта и проверок находится в HOSTED-STATUS.md и TEST-REPORT.md. Постоянный адрес: https://lol5892.github.io/mcu/ . Не подключайте production к непроверенному backend.
 
 ## 1. Supabase Free
 
@@ -24,7 +24,7 @@ Authentication → URL Configuration: Site URL `https://lol5892.github.io/mcu/`;
 
 Проверьте `marvel-private`: public=false, ограничение 3 МБ, прямые authenticated upload/delete не разрешены. Deploy `media-upload` и `push-dispatch`. Обе функции имеют `verify_jwt=false` лишь потому, что проверяют авторизацию сами: media через auth.getUser(), dispatcher через server CRON_SECRET. Не убирайте эти проверки. Media также проверяет членство/владельца и независимо перекодирует JPEG.
 
-Секреты Edge: SUPABASE_URL, SUPABASE_ANON_KEY и SUPABASE_SERVICE_ROLE_KEY предоставляет проект; добавляются VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT (`mailto:` контакт владельца), CRON_SECRET, APP_ORIGINS=`https://lol5892.github.io`. Секреты не должны иметь префикса VITE_. Генератор `scripts/generate-push-secrets.mjs` сохраняет их вне репозитория, не выводя значения. Не генерируйте ключи повторно после подписки устройств.
+Секреты отправки текущего проекта хранятся в Vault (mv_vapid_public_key, mv_vapid_private_key, mv_vapid_subject, mv_cron_secret) и доступны только сервисному mv_delivery_settings RPC. Также поддерживаются отдельные Edge env overrides. Стандартные переменные Edge: SUPABASE_URL, SUPABASE_ANON_KEY и SUPABASE_SERVICE_ROLE_KEY предоставляет проект; добавляются VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT (`mailto:` контакт владельца), CRON_SECRET, APP_ORIGINS=`https://lol5892.github.io`. Секреты не должны иметь префикса VITE_. Генератор `scripts/generate-push-secrets.mjs` сохраняет их вне репозитория, не выводя значения. Не генерируйте ключи повторно после подписки устройств.
 
 Для CLI используйте официальный Supabase CLI с авторизацией через защищённое окружение; `supabase functions deploy media-upload`, `supabase functions deploy push-dispatch`, `supabase secrets set --env-file <private-file>`. CLI/Management token вводится в настройки среды, а не передаётся в чате. Альтернатива — подключённые инструменты Supabase без передачи ключей в переписке.
 
@@ -34,7 +34,7 @@ Authentication → URL Configuration: Site URL `https://lol5892.github.io/mcu/`;
 
 ## 6. GitHub Actions
 
-Репозиторий mcu → Settings → Secrets and variables → Actions → Variables:
+Текущий workflow загружает публичную конфигурацию из `.github/family-public.env` и валидирует её. Ниже имена разрешённых браузерных значений (server secrets в этом файле запрещены):
 
 - VITE_SUPABASE_URL — публичный URL проекта.
 - VITE_SUPABASE_PUBLISHABLE_KEY — **publishable/anon**, не service_role и не secret key.

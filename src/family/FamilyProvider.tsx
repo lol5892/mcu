@@ -349,12 +349,16 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     void supabase.auth.getSession().then(async ({ data }) => {
       if (cancelled || !data.session) return;
       await supabase!.realtime.setAuth(data.session.access_token);
-      if (!cancelled) channel.subscribe();
+      if (!cancelled) channel.subscribe((status) => {
+        // Refetch after every successful join: replication may have missed
+        // changes made while a free-tier tenant was starting or reconnecting.
+        if (!cancelled && status === "SUBSCRIBED") void refresh();
+      });
     }).catch(() => { /* Foreground polling remains available during reconnect. */ });
     const poll = setInterval(() => {
       if (document.visibilityState === "visible" && navigator.onLine)
         void refresh();
-    }, 45000);
+    }, 5000);
     const visible = () => {
       if (document.visibilityState === "visible") void flush();
     };
