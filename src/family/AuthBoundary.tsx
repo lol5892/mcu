@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Heart, Mail, LockKeyhole, ArrowRight, LogOut } from "lucide-react";
 import { useFamily } from "./FamilyProvider";
 import { supabase, appURL, errorText } from "./client";
@@ -22,7 +22,43 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
     [passwordMode, setPasswordMode] = useState(false),
     [sent, setSent] = useState(false),
     [busy, setBusy] = useState(false),
-    [message, setMessage] = useState("");
+    [message, setMessage] = useState(""),
+    [joinStatus, setJoinStatus] = useState<{
+      can_create: boolean;
+      invitation_id: string | null;
+    } | null>(null),
+    [joinError, setJoinError] = useState("");
+  useEffect(() => {
+    if (
+      !supabase ||
+      !family.user ||
+      !family.ready ||
+      family.familyId ||
+      family.localMode
+    )
+      return;
+    let active = true;
+    setJoinStatus(null);
+    setJoinError("");
+    if (family.offline) {
+      setJoinError("Для принятия приглашения подключитесь к интернету.");
+      return;
+    }
+    void supabase.rpc("mv_join_status").then(({ data, error }) => {
+      if (!active) return;
+      if (error) setJoinError(errorText(error));
+      else setJoinStatus(data);
+    });
+    return () => {
+      active = false;
+    };
+  }, [
+    family.user?.id,
+    family.ready,
+    family.familyId,
+    family.offline,
+    family.localMode,
+  ]);
   if (!supabase || family.localMode) return <>{children}</>;
   const run = async (action: () => Promise<void>) => {
     setBusy(true);
@@ -199,7 +235,7 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
               <Mail size={16} />
               {family.user.email}
             </div>
-            {invitation ? (
+            {invitation || joinStatus?.invitation_id ? (
               <>
                 <p>
                   Вы получили личное приглашение. Оно сработает только для
@@ -210,9 +246,15 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
                   disabled={busy || family.offline}
                   onClick={() =>
                     void run(async () => {
-                      await family.rpc("mv_accept_invite", {
-                        p_token: invitation,
-                      });
+                      if (joinStatus?.invitation_id) {
+                        await family.rpc("mv_accept_email_invite", {
+                          p_id: joinStatus.invitation_id,
+                        });
+                      } else {
+                        await family.rpc("mv_accept_invite", {
+                          p_token: invitation,
+                        });
+                      }
                       sessionStorage.removeItem("mv-invitation");
                       localStorage.removeItem("mv-pending-invitation");
                       await family.refresh();
@@ -222,7 +264,7 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
                   Принять приглашение ❤️
                 </button>
               </>
-            ) : (
+            ) : joinStatus?.can_create ? (
               <>
                 <p>
                   Создать семейное пространство может только заранее разрешённый
@@ -241,6 +283,13 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
                   Создать нашу вселенную
                 </button>
               </>
+            ) : (
+              <p role="status">
+                {joinError ||
+                  (joinStatus
+                    ? "Для этой почты пока нет действующего приглашения. Попросите Антона создать приглашение именно на этот адрес."
+                    : "Ищем ваше приглашение…")}
+              </p>
             )}
             <button
               className="text-button"

@@ -5,7 +5,7 @@ const anton = "11111111-1111-4111-8111-111111111111",
   tanya = "22222222-2222-4222-8222-222222222222",
   family = "99999999-9999-4999-8999-999999999999";
 export const userIds = { anton, tanya };
-export function fixture() {
+export function fixture(recoverInvitation = false) {
   const now = new Date().toISOString();
   const profiles = new Map(
     [anton, tanya].map((id) => [
@@ -157,6 +157,31 @@ export function fixture() {
       if (url.pathname.endsWith("/logout")) return send({});
       if (url.pathname.includes("/rpc/")) {
         const name = url.pathname.split("/").pop();
+        if (name === "mv_join_status")
+          return send({
+            can_create:
+              id === anton && !tables.mv_members.some((m) => m.user_id === id),
+            invitation_id:
+              recoverInvitation &&
+              id === tanya &&
+              !tables.mv_members.some((m) => m.user_id === id)
+                ? "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"
+                : null,
+          });
+        if (
+          name === "mv_accept_email_invite" &&
+          recoverInvitation &&
+          id === tanya &&
+          body.p_id === "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"
+        ) {
+          tables.mv_members.push({
+            family_id: family,
+            user_id: tanya,
+            role: "tanya",
+            joined_at: now,
+          });
+          return send(family);
+        }
         if (name === "mv_update_profile") {
           const p = body.p;
           if (p.welcome_seen) profiles.get(id)!.welcome_seen_at = now;
