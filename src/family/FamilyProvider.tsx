@@ -306,11 +306,9 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       setSessionUser(data.session?.user || null);
     });
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (
-        event === "TOKEN_REFRESHED" &&
-        session &&
-        session.user.id === identity.current?.id
-      ) {
+      if (session && session.user.id === identity.current?.id) {
+        // Refresh/password updates for this same verified identity must not
+        // unmount an open form or discard its success feedback.
         identity.current = session.user;
         setUser(session.user);
         return;
@@ -346,15 +344,21 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     // Explicitly bind the current verified session before joining Postgres
     // Changes. This also avoids subscribing while Auth is restoring storage.
-    void supabase.auth.getSession().then(async ({ data }) => {
-      if (cancelled || !data.session) return;
-      await supabase!.realtime.setAuth(data.session.access_token);
-      if (!cancelled) channel.subscribe((status) => {
-        // Refetch after every successful join: replication may have missed
-        // changes made while a free-tier tenant was starting or reconnecting.
-        if (!cancelled && status === "SUBSCRIBED") void refresh();
+    void supabase.auth
+      .getSession()
+      .then(async ({ data }) => {
+        if (cancelled || !data.session) return;
+        await supabase!.realtime.setAuth(data.session.access_token);
+        if (!cancelled)
+          channel.subscribe((status) => {
+            // Refetch after every successful join: replication may have missed
+            // changes made while a free-tier tenant was starting or reconnecting.
+            if (!cancelled && status === "SUBSCRIBED") void refresh();
+          });
+      })
+      .catch(() => {
+        /* Foreground polling remains available during reconnect. */
       });
-    }).catch(() => { /* Foreground polling remains available during reconnect. */ });
     const poll = setInterval(() => {
       if (document.visibilityState === "visible" && navigator.onLine)
         void refresh();

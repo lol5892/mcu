@@ -11,6 +11,8 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
   const family = useFamily();
   const [email, setEmail] = useState(""),
     [code, setCode] = useState(""),
+    [password, setPassword] = useState(""),
+    [passwordMode, setPasswordMode] = useState(false),
     [sent, setSent] = useState(false),
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState("");
@@ -59,7 +61,14 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
             onSubmit={(e) => {
               e.preventDefault();
               void run(async () => {
-                if (sent) {
+                if (passwordMode) {
+                  const { error } = await supabase!.auth.signInWithPassword({
+                    email,
+                    password,
+                  });
+                  if (error) throw error;
+                  setPassword("");
+                } else if (sent) {
                   const { error } = await supabase!.auth.verifyOtp({
                     email,
                     token: code.trim(),
@@ -95,7 +104,25 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
                 onChange={(e) => setEmail(e.target.value.trim())}
               />
             </label>
-            {sent && (
+            {passwordMode && (
+              <label>
+                Пароль
+                <input
+                  aria-label="Пароль для входа"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  maxLength={128}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <small>
+                  Пароль можно задать после первого входа по письму: «Наши
+                  профили и приглашение» → «Вход с иконки iPhone».
+                </small>
+              </label>
+            )}
+            {sent && !passwordMode && (
               <label>
                 Код из письма
                 <input
@@ -113,12 +140,28 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
             <button className="primary" disabled={busy}>
               {busy
                 ? "Подождите…"
-                : sent
-                  ? "Войти в нашу вселенную"
-                  : "Получить письмо для входа"}
+                : passwordMode
+                  ? "Войти по паролю"
+                  : sent
+                    ? "Войти в нашу вселенную"
+                    : "Получить письмо для входа"}
               <ArrowRight size={17} />
             </button>
-            {sent && (
+            <button
+              type="button"
+              className="text-button"
+              disabled={busy}
+              onClick={() => {
+                setPasswordMode(!passwordMode);
+                setSent(false);
+                setCode("");
+                setPassword("");
+                setMessage("");
+              }}
+            >
+              {passwordMode ? "Войти по письму" : "Войти по паролю"}
+            </button>
+            {sent && !passwordMode && (
               <button
                 type="button"
                 className="text-button"

@@ -21,6 +21,11 @@ export function errorText(error: unknown) {
       ? String(error.message)
       : String(error);
   const known: Record<string, string> = {
+    "Invalid login credentials":
+      "Неверный email или пароль. Для первого входа получите письмо.",
+    "Email not confirmed": "Сначала подтвердите почту через письмо для входа.",
+    "New password should be different":
+      "Новый пароль должен отличаться от текущего.",
     VERSION_CONFLICT:
       "Изменено на другом устройстве. Сравните версии и повторите действие.",
     WELCOME_NOT_PROVISIONED:

@@ -281,3 +281,53 @@ test("own old score can be cleared after partner unmarks the film", async ({
   await expect.poll(() => backend.tables.mv_ratings[0].score).toBeNull();
   expect(backend.tables.mv_ratings[1].score).toBe(9);
 });
+
+test("password entry for installed app persists session and never saves plaintext password", async ({
+  browser,
+}) => {
+  const backend = fixture();
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+  });
+  await backend.connect(context);
+  const page = await context.newPage();
+  await page.goto("/");
+  await page.getByLabel("Email для входа").fill("anton@example.test");
+  await page
+    .getByRole("button", { name: "Войти по паролю", exact: true })
+    .click();
+  const password = "Disposable-private-password-42";
+  await page.getByLabel("Пароль для входа").fill(password);
+  await page
+    .getByRole("button", { name: "Войти по паролю", exact: true })
+    .click();
+  await expect(page.locator(".family-stats")).toBeVisible();
+  await page.reload();
+  await expect(page.locator(".family-stats")).toBeVisible();
+  expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
+    password,
+  );
+  await page.goto("/#/preferences");
+  await page.getByLabel("Новый пароль", { exact: true }).fill(password);
+  await page.getByLabel("Повторите пароль").fill("A-different-password-42");
+  await page
+    .getByRole("button", { name: "Сохранить пароль для входа" })
+    .click();
+  await expect(
+    page.getByText("Пароли не совпадают.", { exact: true }),
+  ).toBeVisible();
+  await page.getByLabel("Повторите пароль").fill(password);
+  await page
+    .getByRole("button", { name: "Сохранить пароль для входа" })
+    .click();
+  await expect(
+    page.getByText("Пароль сохранён.", { exact: false }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Новый пароль", { exact: true })).toHaveValue(
+    "",
+  );
+  expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
+    password,
+  );
+  await context.close();
+});

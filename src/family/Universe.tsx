@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { catalog } from "../model";
 import { useFamily } from "./FamilyProvider";
-import { appURL, cloudConfigured } from "./client";
+import { appURL, cloudConfigured, supabase } from "./client";
 import { Letters } from "./Letters";
 import { Chat } from "./Chat";
 import { Moments } from "./Moments";
@@ -115,7 +115,9 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
   const route = useFamilyRoute();
   const [replay, setReplay] = useState<"letter" | "tour" | null>(null),
     [inviteEmail, setInviteEmail] = useState(""),
-    [inviteLink, setInviteLink] = useState("");
+    [inviteLink, setInviteLink] = useState(""),
+    [newPassword, setNewPassword] = useState(""),
+    [repeatPassword, setRepeatPassword] = useState("");
   if (!cloudConfigured || f.localMode)
     return (
       <section className="panel universe-setup">
@@ -310,6 +312,61 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
         <section className="panel family-form">
           <h1>Только наше</h1>
           <div className="account-email">{f.user?.email}</div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              void a.run(async () => {
+                if (newPassword !== repeatPassword)
+                  throw Error("Пароли не совпадают.");
+                if (newPassword.length < 12)
+                  throw Error("Используйте пароль от 12 символов.");
+                const { error } = await supabase!.auth.updateUser({
+                  password: newPassword,
+                });
+                if (error) throw error;
+                setNewPassword("");
+                setRepeatPassword("");
+                a.setFeedback(
+                  "Пароль сохранён. Теперь с иконки можно выбрать «Войти по паролю».",
+                );
+              });
+            }}
+          >
+            <h2>Вход с иконки iPhone</h2>
+            <p>
+              Задайте пароль для своей подтверждённой почты. Он позволит войти в
+              установленное приложение и на новом устройстве.
+            </p>
+            <label>
+              Новый пароль
+              <input
+                aria-label="Новый пароль"
+                type="password"
+                autoComplete="new-password"
+                minLength={12}
+                maxLength={128}
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </label>
+            <label>
+              Повторите пароль
+              <input
+                aria-label="Повторите пароль"
+                type="password"
+                autoComplete="new-password"
+                minLength={12}
+                maxLength={128}
+                required
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
+              />
+            </label>
+            <button className="wide-button" disabled={a.busy || f.offline}>
+              Сохранить пароль для входа
+            </button>
+          </form>
           <h2>Мой аватар</h2>
           {f.snapshot.media
             .filter(
