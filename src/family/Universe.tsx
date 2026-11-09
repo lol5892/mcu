@@ -274,7 +274,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
                 {catalog.find((p) => p.id === o.target)?.title || o.target}
               </h3>
               <p>{o.state === "queued" ? "Ожидает отправки" : o.error}</p>
-              <SyncDifference op={o} snapshot={f.snapshot} />
+              <SyncDifference op={o} snapshot={f.serverSnapshot} />
               <details>
                 <summary>Подробности изменения</summary>
                 <pre>{JSON.stringify(o.payload, null, 2)}</pre>

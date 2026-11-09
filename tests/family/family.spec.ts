@@ -485,3 +485,38 @@ test("the same already-saved rating clears a duplicate conflict without overwrit
   expect(backend.tables.mv_ratings[0].version).toBe(2);
   expect(backend.tables.mv_ratings[1].score).toBe(9);
 });
+
+test("conflict comparison uses saved server data rather than a later queued local rating", async ({
+  page,
+  context,
+}) => {
+  const backend = fixture();
+  await backend.connect(context);
+  await login(page, "anton@example.test");
+  await page
+    .getByRole("button", { name: "Открыть: Железный человек", exact: true })
+    .click();
+  await context.setOffline(true);
+  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await expect(page.getByLabel("Оценка Антона", { exact: true })).toHaveValue(
+    "10",
+  );
+  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("9");
+  await expect(page.getByLabel("Оценка Антона", { exact: true })).toHaveValue(
+    "9",
+  );
+  backend.tables.mv_ratings[0].score = 6;
+  backend.tables.mv_ratings[0].version = 2;
+  await context.setOffline(false);
+  await page.goto("/#/sync");
+  await expect(
+    page.getByText("На этом телефоне: 10", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("В общем списке: 6", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("В общем списке: 9", { exact: true }),
+  ).toHaveCount(0);
+  expect(backend.tables.mv_ratings[0].score).toBe(6);
+});

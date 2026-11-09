@@ -32,6 +32,7 @@ type FamilyContextValue = {
   role: Role | null;
   familyId: string | null;
   snapshot: Snapshot;
+  serverSnapshot: Snapshot | null;
   records: Records;
   ready: boolean;
   offline: boolean;
@@ -85,6 +86,7 @@ const tables = {
 export function FamilyProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null),
     [snapshot, setSnapshot] = useState<Snapshot>(blankSnapshot),
+    [serverSnapshot, setServerSnapshot] = useState<Snapshot | null>(null),
     [ready, setReady] = useState(!supabase),
     [offline, setOffline] = useState(!navigator.onLine),
     [error, setError] = useState(""),
@@ -220,6 +222,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         );
         for (const duplicate of duplicates) await removeOperation(duplicate.id);
         pending = pending.filter((o) => !duplicates.some((d) => d.id === o.id));
+        const serverNext = next;
         for (const op of pending.filter((o) => o.state === "queued"))
           next = applyOptimistic(next, op);
         // The outbox read is asynchronous too. A local write or server ACK
@@ -230,6 +233,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         )
           return;
         state.current = next;
+        setServerSnapshot(serverNext);
         setSnapshot(next);
         setOperations(pending);
         await cacheSnapshot(who.id, next);
@@ -330,6 +334,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       identity.current = next;
       setUser(next);
       setSnapshot(blankSnapshot());
+      setServerSnapshot(null);
       state.current = blankSnapshot();
       setReady(!next);
       if (next) setTimeout(() => void refresh().then(flush), 0);
@@ -553,6 +558,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut({ scope: "local" });
     await forgetUserCache(id);
     setSnapshot(blankSnapshot());
+    setServerSnapshot(null);
     setOperations([]);
     setLocalMode(false);
   }
@@ -573,6 +579,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         role,
         familyId,
         snapshot,
+        serverSnapshot,
         records: user ? legacyProjection(snapshot, user.id) : {},
         ready,
         offline,

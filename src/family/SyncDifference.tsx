@@ -5,13 +5,13 @@ export function SyncDifference({
   snapshot,
 }: {
   op: Operation;
-  snapshot: Snapshot;
+  snapshot: Snapshot | null;
 }) {
   if (op.state !== "conflict") return null;
   let row: Record<string, unknown> | undefined;
   let fields: [string, string][] = [];
   if (op.kind === "rating") {
-    row = snapshot.ratings.find(
+    row = snapshot?.ratings.find(
       (r) =>
         r.user_id === op.userId &&
         r.family_id === op.familyId &&
@@ -23,7 +23,7 @@ export function SyncDifference({
       ["favorite", "Избранное"],
     ];
   } else if (op.kind === "entry") {
-    row = snapshot.entries.find(
+    row = snapshot?.entries.find(
       (r) => r.family_id === op.familyId && r.project_id === op.target,
     );
     fields = [
@@ -32,7 +32,7 @@ export function SyncDifference({
       ["note", "Заметка"],
     ];
   } else if (op.kind === "episode") {
-    row = snapshot.episodes.find(
+    row = snapshot?.episodes.find(
       (r) =>
         r.family_id === op.familyId &&
         r.project_id === op.target &&
@@ -62,7 +62,12 @@ export function SyncDifference({
           <div key={key} className="sync-difference">
             <strong>{label}</strong>
             <p>На этом телефоне: {format(op.payload[key])}</p>
-            <p>В общем списке: {format(row?.[key])}</p>
+            <p>
+              В общем списке:{" "}
+              {snapshot
+                ? format(row?.[key])
+                : "Подключитесь к интернету для проверки"}
+            </p>
           </div>
         ))}
     </>
