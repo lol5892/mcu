@@ -343,7 +343,14 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
           timer = setTimeout(() => void refresh(), 180);
         },
       );
-    channel.subscribe();
+    let cancelled = false;
+    // Explicitly bind the current verified session before joining Postgres
+    // Changes. This also avoids subscribing while Auth is restoring storage.
+    void supabase.auth.getSession().then(async ({ data }) => {
+      if (cancelled || !data.session) return;
+      await supabase!.realtime.setAuth(data.session.access_token);
+      if (!cancelled) channel.subscribe();
+    }).catch(() => { /* Foreground polling remains available during reconnect. */ });
     const poll = setInterval(() => {
       if (document.visibilityState === "visible" && navigator.onLine)
         void refresh();
@@ -353,6 +360,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     };
     document.addEventListener("visibilitychange", visible);
     return () => {
+      cancelled = true;
       clearTimeout(timer);
       clearInterval(poll);
       document.removeEventListener("visibilitychange", visible);
