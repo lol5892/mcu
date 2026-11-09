@@ -8,8 +8,10 @@ Deployed media-upload and push-dispatch with authentication inside each handler.
 
 Security advisor findings: private deny-all tables intentionally have no policies; authenticated SECURITY DEFINER RPCs intentionally expose guarded atomic operations. These require continued review; the advisor is not a proof of security. https://supabase.com/docs/guides/database/database-linter
 
-Owner reports Auth Site URL and redirect configured for the existing Pages URL. Auth settings endpoint verified: email enabled, confirmation required. Owner configured Yandex custom SMTP; initial SMTP 535 access denial resolved after enabling mail clients in Yandex settings. A fresh real Auth OTP request returned HTTP 200 on 9 November 2026. Inbox receipt and successful authenticated session remain unverified; never request codes in chat.
+Owner reports Auth Site URL and redirect configured for the existing Pages URL. Auth settings endpoint verified: email enabled, confirmation required. Owner configured Yandex custom SMTP; initial SMTP 535 access denial resolved after enabling mail clients in Yandex settings. A fresh real Auth OTP request returned HTTP 200 on 9 November 2026. Owner confirmed inbox receipt. Successful authenticated session remains unverified; never request codes in chat.
 
 Cloud-configured frontend build succeeds. GitHub Actions variables API remains unavailable to the current integration (HTTP 403); release configuration still needs a supported path.
 
-Still pending: inbox receipt, live two-account integration tests, real device subscriptions and delivery, frontend release configuration, final release. Production v1 remains unchanged.
+Still pending: inbox receipt, live two-account integration tests, real device subscriptions and delivery, final release. Separate preview is being published at /mcu/preview/ while v1 remains at the existing root URL. Production v1 remains unchanged.
+
+Preview browser smoke: 390×844 auth screen, no JavaScript errors, offline shell, existing production cache preserved. Production v1 rebuilt separately: 11 tests pass. Public publishable key and VAPID public key are intentionally browser-visible; private keys remain in Vault.
