@@ -28,7 +28,7 @@ jobs:
           ref: 8f62eb6a768956533b7ac62b9535f5cbfd233991
           path: family-preview-source
       - name: Configure isolated family preview
-        run: cat .github/family-preview.env >> "$GITHUB_ENV"
+        run: sed '/^#/d; /^$/d' .github/family-preview.env >> "$GITHUB_ENV"
       - name: Build family preview
         working-directory: family-preview-source
         env:
