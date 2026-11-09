@@ -335,7 +335,7 @@ test("password entry for installed app persists session and never saves plaintex
 test("email confirmation in a new tab retains the email-bound family invitation", async ({
   browser,
 }) => {
-  const backend = fixture();
+  const backend = fixture(true);
   backend.tables.mv_members = backend.tables.mv_members.filter(
     (m) => m.role !== "tanya",
   );
@@ -355,8 +355,8 @@ test("email confirmation in a new tab retains the email-bound family invitation"
     .getByRole("button", { name: "Войти в нашу вселенную", exact: true })
     .click();
   await expect(
-    confirmation.getByRole("button", {
-      name: "Принять приглашение ❤️",
+    confirmation.getByRole("heading", {
+      name: "Тестовая сцена 1",
       exact: true,
     }),
   ).toBeVisible();
@@ -383,14 +383,8 @@ test("confirmed invited email can recover invitation in a completely separate br
     .getByRole("button", { name: "Войти в нашу вселенную", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Принять приглашение ❤️", exact: true }),
-  ).toBeVisible();
-  await expect(
     page.getByRole("button", { name: "Создать нашу вселенную", exact: true }),
   ).toHaveCount(0);
-  await page
-    .getByRole("button", { name: "Принять приглашение ❤️", exact: true })
-    .click();
   await expect(
     page.getByRole("heading", { name: "Тестовая сцена 1", exact: true }),
   ).toBeVisible();

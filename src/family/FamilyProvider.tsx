@@ -95,7 +95,8 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     flushing = useRef<Promise<void> | null>(null),
     batching = useRef(false),
     revision = useRef(0),
-    refreshing = useRef<Promise<void> | null>(null);
+    refreshing = useRef<Promise<void> | null>(null),
+    refreshQueued = useRef(false);
   state.current = snapshot;
   const role =
     snapshot.members.find((m) => m.user_id === user?.id)?.role || null;
@@ -154,8 +155,13 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     [],
   );
   const refresh = useCallback(async () => {
-    if (refreshing.current) return refreshing.current;
-    const task = (async () => {
+    if (refreshing.current) {
+      // A write may have completed after the in-flight snapshot started.
+      // Its caller must wait for a fresh read, rather than reuse stale data.
+      refreshQueued.current = true;
+      return refreshing.current;
+    }
+    const readSnapshot = async () => {
       const who = identity.current;
       if (!supabase || !who) return;
       if (!navigator.onLine) {
@@ -220,6 +226,12 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       } finally {
         setReady(true);
       }
+    };
+    const task = (async () => {
+      do {
+        refreshQueued.current = false;
+        await readSnapshot();
+      } while (refreshQueued.current);
     })();
     refreshing.current = task;
     try {
