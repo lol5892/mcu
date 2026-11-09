@@ -2712,3 +2712,11 @@
     opacity: 1 !important;
   }
 }
+
+.sync-difference {
+  padding: 10px 0;
+  overflow-wrap: anywhere;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.sync-difference p { margin: 6px 0; }
+.pending-operation summary { padding: 12px 0; cursor: pointer; }

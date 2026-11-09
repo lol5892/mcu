@@ -233,6 +233,23 @@ test("a concurrent rating change is shown as a conflict instead of overwriting p
     page.getByText("Автоматического перезаписывания нет.", { exact: false }),
   ).toBeVisible();
   await expect(page.locator(".pending-operation pre")).toContainText("10");
+  await expect(
+    page.getByText("На этом телефоне: 10", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("В общем списке: 6", { exact: true }),
+  ).toBeVisible();
+  await page.reload();
+  await expect(page.locator(".pending-operation pre")).toContainText("10");
+  expect(backend.tables.mv_ratings[0].score).toBe(6);
+  // A saved conflict remains until its complete effect really exists remotely.
+  backend.tables.mv_ratings[0].score = 10;
+  backend.tables.mv_ratings[0].version = 3;
+  await page.reload();
+  await expect(
+    page.getByText("Всё синхронизировано ♡", { exact: true }),
+  ).toBeVisible();
+  expect(backend.tables.mv_ratings[0].version).toBe(3);
 });
 test("notification permission is never requested merely by opening settings", async ({
   page,
@@ -392,4 +409,79 @@ test("confirmed invited email can recover invitation in a completely separate br
     backend.tables.mv_members.filter((m) => m.role === "tanya"),
   ).toHaveLength(1);
   await context.close();
+});
+
+test("a delayed snapshot cannot roll back an acknowledged own rating and cause a false conflict", async ({
+  page,
+  context,
+}) => {
+  const backend = fixture();
+  await backend.connect(context);
+  await login(page, "anton@example.test");
+  await page
+    .getByRole("button", { name: "Открыть: Железный человек", exact: true })
+    .click();
+  await expect(page.getByLabel("Оценка Антона", { exact: true })).toHaveValue(
+    "8",
+  );
+  const stale = backend.pauseNextRead("mv_ratings");
+  const fresh = backend.pauseNextRead("mv_ratings");
+  // Foreground polling starts a snapshot independently of the write queue.
+  await stale.started;
+  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("9");
+  await expect.poll(() => backend.tables.mv_ratings[0].score).toBe(9);
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const db = await new Promise<IDBDatabase>((resolve, reject) => {
+          const r = indexedDB.open("our-marvel-family");
+          r.onsuccess = () => resolve(r.result);
+          r.onerror = () => reject(r.error);
+        });
+        const rows = await new Promise<unknown[]>((resolve, reject) => {
+          const r = db.transaction("outbox").objectStore("outbox").getAll();
+          r.onsuccess = () => resolve(r.result);
+          r.onerror = () => reject(r.error);
+        });
+        db.close();
+        return rows.length;
+      }),
+    )
+    .toBe(0);
+  stale.release();
+  await fresh.started;
+  try {
+    // Hold the catch-up read: the stale response must not flash the old score.
+    await expect(page.getByLabel("Оценка Антона", { exact: true })).toHaveValue(
+      "9",
+    );
+  } finally {
+    fresh.release();
+  }
+  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await expect.poll(() => backend.tables.mv_ratings[0].score).toBe(10);
+  await expect(page.locator(".error-banner")).toHaveCount(0);
+});
+
+test("the same already-saved rating clears a duplicate conflict without overwriting the server", async ({
+  page,
+  context,
+}) => {
+  const backend = fixture();
+  await backend.connect(context);
+  await login(page, "anton@example.test");
+  await page
+    .getByRole("button", { name: "Открыть: Железный человек", exact: true })
+    .click();
+  backend.tables.mv_ratings[0].score = 10;
+  backend.tables.mv_ratings[0].version = 2;
+  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await page.getByRole("button", { name: "Закрыть", exact: true }).click();
+  await page.goto("/#/sync");
+  await expect(
+    page.getByText("Всё синхронизировано ♡", { exact: true }),
+  ).toBeVisible();
+  expect(backend.tables.mv_ratings[0].score).toBe(10);
+  expect(backend.tables.mv_ratings[0].version).toBe(2);
+  expect(backend.tables.mv_ratings[1].score).toBe(9);
 });
