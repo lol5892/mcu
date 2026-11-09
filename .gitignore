@@ -4,3 +4,10 @@ test-results/
 playwright-report/
 *.local
 *.tsbuildinfo
+.env
+.env.*
+!.env.example
+supabase/.temp/
+supabase/.branches/
+private-setup/
+test-results-family/

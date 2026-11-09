@@ -1,0 +1,46 @@
+name: Verify family universe
+on:
+  pull_request:
+  push:
+    branches: [feat/family-universe-2]
+permissions:
+  contents: read
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env:
+          CI: true
+          PLAYWRIGHT_USE_BUNDLED: '1'
+      - run: npx playwright test -c playwright.family.config.ts
+        env:
+          PLAYWRIGHT_USE_BUNDLED: '1'
+  sql-authorization:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: docker run -d --name our-marvel-sql-test -e POSTGRES_PASSWORD=local-integration-only postgres:17-alpine
+      - run: for attempt in {1..30}; do docker exec our-marvel-sql-test pg_isready -U postgres && exit 0; sleep 1; done; exit 1
+      - run: ./scripts/test-sql.sh
+  edge-types:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts
+      - run: deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts

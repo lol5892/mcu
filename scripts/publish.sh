@@ -3,6 +3,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 repo=lol5892/mcu
 gh auth status
+if [ "$(git branch --show-current)" != main ]; then
+  echo 'Publish only from verified main after live backend checks; use the draft PR for v2.' >&2
+  exit 1
+fi
+node scripts/verify-cloud-config.mjs
 npm ci
 npm test
 npm run build
