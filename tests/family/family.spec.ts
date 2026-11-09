@@ -362,3 +362,40 @@ test("email confirmation in a new tab retains the email-bound family invitation"
   ).toBeVisible();
   await context.close();
 });
+
+test("confirmed invited email can recover invitation in a completely separate browser", async ({
+  browser,
+}) => {
+  const backend = fixture(true);
+  backend.tables.mv_members = backend.tables.mv_members.filter(
+    (m) => m.role !== "tanya",
+  );
+  const context = await browser.newContext();
+  await backend.connect(context);
+  const page = await context.newPage();
+  await page.goto("/");
+  await page.getByLabel("Email для входа").fill("tanya@example.test");
+  await page
+    .getByRole("button", { name: "Получить письмо для входа", exact: true })
+    .click();
+  await page.getByLabel("Код подтверждения").fill("123456");
+  await page
+    .getByRole("button", { name: "Войти в нашу вселенную", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Принять приглашение ❤️", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Создать нашу вселенную", exact: true }),
+  ).toHaveCount(0);
+  await page
+    .getByRole("button", { name: "Принять приглашение ❤️", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Тестовая сцена 1", exact: true }),
+  ).toBeVisible();
+  expect(
+    backend.tables.mv_members.filter((m) => m.role === "tanya"),
+  ).toHaveLength(1);
+  await context.close();
+});

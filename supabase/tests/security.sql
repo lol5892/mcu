@@ -122,3 +122,32 @@ reset role;
 select public.test_assert(not has_function_privilege('anon','public.mv_delivery_settings()','execute'),'anonymous cannot read delivery secrets');
 select public.test_assert(not has_function_privilege('authenticated','public.mv_delivery_settings()','execute'),'members cannot read delivery secrets');
 select public.test_assert(has_function_privilege('service_role','public.mv_delivery_settings()','execute'),'delivery worker can read configuration');
+
+-- Recovery works across browsers only after the invited email is confirmed.
+set role authenticated;
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.mv_invite('unconfirmed@example.test') as recovery_token \gset
+reset role;
+select id::text as recovery_id from mv_private.invitations where email='unconfirmed@example.test' and accepted_at is null \gset
+set role authenticated;
+select set_config('request.jwt.claim.sub','44444444-4444-4444-8444-444444444444',false);
+select public.test_assert(public.mv_join_status()->>'invitation_id' is null,'unconfirmed email cannot discover recovery invitation');
+select public.test_denied(format('select public.mv_accept_email_invite(%L::uuid)',:'recovery_id'),'unconfirmed email cannot recover invitation');
+select set_config('request.jwt.claim.sub','11111111-1111-4111-8111-111111111111',false);
+select public.test_assert(public.mv_join_status()->>'invitation_id' is null,'another confirmed account cannot discover recipient invitation');
+select public.test_denied(format('select public.mv_accept_email_invite(%L::uuid)',:'recovery_id'),'knowing invitation UUID does not permit another account to join');
+reset role;
+update auth.users set email_confirmed_at=now() where id='44444444-4444-4444-8444-444444444444';
+set role authenticated;
+select set_config('request.jwt.claim.sub','44444444-4444-4444-8444-444444444444',false);
+select public.test_assert(public.mv_join_status()->>'invitation_id'=:'recovery_id','confirmed recipient discovers pending invitation without local browser state');
+select public.mv_accept_email_invite(:'recovery_id'::uuid);
+select public.test_assert((select role='tanya' from public.mv_members where user_id=auth.uid()),'recovery assigns partner role on server');
+select public.test_assert((select count(*)=2 from public.mv_members),'recovery respects two-member family limit');
+select public.test_denied(format('select public.mv_accept_email_invite(%L::uuid)',:'recovery_id'),'recovery invitation is single use');
+select public.test_denied(format('select public.mv_accept_invite(%L)',:'recovery_token'),'recovery also consumes original token invitation');
+reset role;
+set role anon;
+select public.test_denied('select public.mv_join_status()','anonymous cannot query pending invitations');
+select public.test_denied(format('select public.mv_accept_email_invite(%L::uuid)',:'recovery_id'),'anonymous cannot recover invitations');
+reset role;
