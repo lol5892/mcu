@@ -174,6 +174,8 @@ export function fixture(recoverInvitation = false) {
           id === tanya &&
           body.p_id === "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"
         ) {
+          if (tables.mv_members.some((m) => m.user_id === tanya))
+            return send({ message: "ALREADY_MEMBER" }, 400);
           tables.mv_members.push({
             family_id: family,
             user_id: tanya,

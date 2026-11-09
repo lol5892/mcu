@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Heart, Mail, LockKeyhole, ArrowRight, LogOut } from "lucide-react";
 import { useFamily } from "./FamilyProvider";
 import { supabase, appURL, errorText } from "./client";
@@ -27,7 +27,54 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
       can_create: boolean;
       invitation_id: string | null;
     } | null>(null),
-    [joinError, setJoinError] = useState("");
+    [joinError, setJoinError] = useState(""),
+    [joining, setJoining] = useState(false);
+  const attemptedInvitation = useRef<string | null>(null);
+  useEffect(() => {
+    attemptedInvitation.current = null;
+  }, [family.user?.id]);
+  useEffect(() => {
+    const id = joinStatus?.invitation_id;
+    if (
+      !id ||
+      !family.user ||
+      !family.ready ||
+      family.familyId ||
+      family.offline ||
+      family.localMode
+    )
+      return;
+    if (attemptedInvitation.current === id) return;
+    attemptedInvitation.current = id;
+    setJoining(true);
+    setMessage("");
+    // Opening the private invitation and confirming its recipient identity is
+    // enough: do not ask the partner to create a family or accept it again.
+    void (async () => {
+      try {
+        await family.rpc("mv_accept_email_invite", { p_id: id });
+        sessionStorage.removeItem("mv-invitation");
+        localStorage.removeItem("mv-pending-invitation");
+        await family.refresh();
+      } catch (error) {
+        // A second tab may already have consumed this single-use invitation.
+        // Refresh membership before presenting a retry; do not duplicate it.
+        await family.refresh();
+        setMessage(errorText(error));
+      } finally {
+        setJoining(false);
+      }
+    })();
+  }, [
+    joinStatus?.invitation_id,
+    family.user?.id,
+    family.ready,
+    family.familyId,
+    family.offline,
+    family.localMode,
+    family.rpc,
+    family.refresh,
+  ]);
   useEffect(() => {
     if (
       !supabase ||
@@ -47,7 +94,11 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
     void supabase.rpc("mv_join_status").then(({ data, error }) => {
       if (!active) return;
       if (error) setJoinError(errorText(error));
-      else setJoinStatus(data);
+      else {
+        setJoinStatus(data);
+        // Another tab may have joined after our initial snapshot was read.
+        if (!data?.invitation_id && !data?.can_create) void family.refresh();
+      }
     });
     return () => {
       active = false;
@@ -79,6 +130,13 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
       </div>
     );
   if (family.user && family.familyId) return <>{children}</>;
+  if (family.user && (joining || (joinStatus?.invitation_id && !message)))
+    return (
+      <div className="universe-loading">
+        <span className="little-heart">♡</span>
+        <p>Открываем нашу вселенную…</p>
+      </div>
+    );
   let invitation = sessionStorage.getItem("mv-invitation");
   if (!invitation) {
     try {
@@ -261,7 +319,7 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
                     })
                   }
                 >
-                  Принять приглашение ❤️
+                  Повторить вход ❤️
                 </button>
               </>
             ) : joinStatus?.can_create ? (
