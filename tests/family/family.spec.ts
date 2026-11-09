@@ -331,3 +331,34 @@ test("password entry for installed app persists session and never saves plaintex
   );
   await context.close();
 });
+
+test("email confirmation in a new tab retains the email-bound family invitation", async ({
+  browser,
+}) => {
+  const backend = fixture();
+  backend.tables.mv_members = backend.tables.mv_members.filter(
+    (m) => m.role !== "tanya",
+  );
+  const context = await browser.newContext();
+  await backend.connect(context);
+  const original = await context.newPage();
+  await original.goto("/#invite=" + "a".repeat(64));
+  await expect(original.getByLabel("Email для входа")).toBeVisible();
+  const confirmation = await context.newPage();
+  await confirmation.goto("/");
+  await confirmation.getByLabel("Email для входа").fill("tanya@example.test");
+  await confirmation
+    .getByRole("button", { name: "Получить письмо для входа", exact: true })
+    .click();
+  await confirmation.getByLabel("Код подтверждения").fill("123456");
+  await confirmation
+    .getByRole("button", { name: "Войти в нашу вселенную", exact: true })
+    .click();
+  await expect(
+    confirmation.getByRole("button", {
+      name: "Принять приглашение ❤️",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await context.close();
+});

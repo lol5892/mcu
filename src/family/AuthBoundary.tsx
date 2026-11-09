@@ -4,7 +4,14 @@ import { useFamily } from "./FamilyProvider";
 import { supabase, appURL, errorText } from "./client";
 const fragment = new URLSearchParams(location.hash.slice(1));
 if (fragment.has("invite")) {
-  sessionStorage.setItem("mv-invitation", fragment.get("invite")!);
+  const token = fragment.get("invite")!;
+  sessionStorage.setItem("mv-invitation", token);
+  // The email confirmation can open another Safari tab. Keep the same
+  // email-bound, one-use invitation available there for at most seven days.
+  localStorage.setItem(
+    "mv-pending-invitation",
+    JSON.stringify({ token, expires: Date.now() + 7 * 86400000 }),
+  );
   history.replaceState(null, "", location.pathname + location.search);
 }
 export function AuthBoundary({ children }: { children: ReactNode }) {
@@ -36,7 +43,19 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
       </div>
     );
   if (family.user && family.familyId) return <>{children}</>;
-  const invitation = sessionStorage.getItem("mv-invitation");
+  let invitation = sessionStorage.getItem("mv-invitation");
+  if (!invitation) {
+    try {
+      const pending = JSON.parse(
+        localStorage.getItem("mv-pending-invitation") || "null",
+      );
+      if (pending?.expires > Date.now() && /^[a-f0-9]{64}$/.test(pending.token))
+        invitation = pending.token;
+      else localStorage.removeItem("mv-pending-invitation");
+    } catch {
+      localStorage.removeItem("mv-pending-invitation");
+    }
+  }
   return (
     <main className="auth-page">
       <div className="auth-stars" aria-hidden="true" />
@@ -195,6 +214,7 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
                         p_token: invitation,
                       });
                       sessionStorage.removeItem("mv-invitation");
+                      localStorage.removeItem("mv-pending-invitation");
                       await family.refresh();
                     })
                   }
