@@ -18,7 +18,9 @@ async function sameSecret(a: string, b: string) {
 Deno.serve(async (req) => {
   if (req.method !== "POST")
     return new Response("Method not allowed", { status: 405 });
-  const expected = Deno.env.get("CRON_SECRET");
+  const { data: settings, error: settingsError } = await db.rpc("mv_delivery_settings");
+  if (settingsError) return new Response("Configuration unavailable", { status: 503 });
+  const expected = Deno.env.get("CRON_SECRET") || settings?.mv_cron_secret;
   if (
     !expected ||
     !(await sameSecret(
@@ -32,9 +34,9 @@ Deno.serve(async (req) => {
     console.error("scheduler failed", tick.error.code);
     return new Response("Scheduler failed", { status: 500 });
   }
-  const publicKey = Deno.env.get("VAPID_PUBLIC_KEY"),
-    privateKey = Deno.env.get("VAPID_PRIVATE_KEY"),
-    subject = Deno.env.get("VAPID_SUBJECT");
+  const publicKey = Deno.env.get("VAPID_PUBLIC_KEY") || settings?.mv_vapid_public_key,
+    privateKey = Deno.env.get("VAPID_PRIVATE_KEY") || settings?.mv_vapid_private_key,
+    subject = Deno.env.get("VAPID_SUBJECT") || settings?.mv_vapid_subject;
   if (!publicKey || !privateKey || !subject)
     return Response.json(
       { scheduled: true, push: "not configured" },

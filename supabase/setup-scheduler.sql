@@ -1,5 +1,6 @@
 -- Run only on the selected Supabase project after provisioning mv_app_url and
--- mv_cron_secret in Vault and CRON_SECRET in the Edge Function's secrets.
+-- mv_cron_secret in Vault. The service-only mv_delivery_settings RPC also
+-- supplies VAPID configuration to the Edge Function from Vault.
 -- No secret value is embedded in this SQL or in the stored cron command.
 create extension if not exists pg_cron;
 create extension if not exists pg_net with schema extensions;

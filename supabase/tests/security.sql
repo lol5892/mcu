@@ -118,3 +118,7 @@ select public.test_denied('select public.mv_apply(gen_random_uuid(),''letter'','
 select public.test_assert((select count(*)=0 from public.mv_letters),'other-family member sees no first-family letters');
 select public.test_assert((select count(*)=0 from public.mv_media),'other-family member sees no first-family photos');
 reset role;
+
+select public.test_assert(not has_function_privilege('anon','public.mv_delivery_settings()','execute'),'anonymous cannot read delivery secrets');
+select public.test_assert(not has_function_privilege('authenticated','public.mv_delivery_settings()','execute'),'members cannot read delivery secrets');
+select public.test_assert(has_function_privilege('service_role','public.mv_delivery_settings()','execute'),'delivery worker can read configuration');

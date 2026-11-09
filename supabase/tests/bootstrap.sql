@@ -13,3 +13,7 @@ create table storage.objects(id uuid primary key default gen_random_uuid(),bucke
 alter table storage.objects enable row level security;
 grant usage on schema storage to authenticated;
 grant select on storage.objects to authenticated;
+
+-- Local Vault contract: integration tests never contain real delivery keys.
+create schema vault;
+create table vault.decrypted_secrets(name text primary key,decrypted_secret text);

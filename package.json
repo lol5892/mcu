@@ -15,7 +15,7 @@
     "test:edge": "deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts && deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.119.0",
+    "@supabase/supabase-js": "2.119.0",
     "idb": "^8.0.3",
     "lucide-react": "^0.468.0",
     "react": "^19.1.0",
