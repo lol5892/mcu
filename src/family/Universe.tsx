@@ -31,6 +31,7 @@ import { WelcomeLetter, Onboarding } from "./Welcome";
 import { FamilyBackupPanel } from "./Backup";
 import { PhotoUpload, PrivatePhoto } from "./media";
 import { useAction, Feedback, Person, displayDate } from "./ui";
+import { SyncDifference, actionName } from "./SyncDifference";
 import { downloadJSON } from "./MigrationWizard";
 type Route = { page: string; id?: string };
 const parseRoute = (): Route => {
@@ -269,11 +270,15 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
           {f.operations.map((o) => (
             <article className="pending-operation" key={o.id}>
               <h3>
-                {o.kind} ·{" "}
+                {actionName(o.kind)} ·{" "}
                 {catalog.find((p) => p.id === o.target)?.title || o.target}
               </h3>
               <p>{o.state === "queued" ? "Ожидает отправки" : o.error}</p>
-              <pre>{JSON.stringify(o.payload, null, 2)}</pre>
+              <SyncDifference op={o} snapshot={f.serverSnapshot} />
+              <details>
+                <summary>Подробности изменения</summary>
+                <pre>{JSON.stringify(o.payload, null, 2)}</pre>
+              </details>
               {o.state !== "queued" && (
                 <>
                   <p className="muted">

@@ -120,6 +120,22 @@ export function fixture(recoverInvitation = false) {
     created_at: now,
     updated_at: now,
   });
+  const readGates: {
+    table: string;
+    entered: () => void;
+    wait: Promise<void>;
+  }[] = [];
+  function pauseNextRead(table: string) {
+    let entered!: () => void, release!: () => void;
+    const started = new Promise<void>((resolve) => {
+      entered = resolve;
+    });
+    const wait = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    readGates.push({ table, entered, wait });
+    return { started, release };
+  }
   async function connect(context: BrowserContext) {
     await context.route("http://127.0.0.1:54321/**", async (route) => {
       const request = route.request(),
@@ -382,8 +398,16 @@ export function fixture(recoverInvitation = false) {
         );
       if (table === "mv_letter_favorites")
         rows = rows.filter((r) => r.user_id === id);
+      const index = readGates.findIndex((g) => g.table === table);
+      if (index >= 0) {
+        const captured = structuredClone(rows);
+        const [gate] = readGates.splice(index, 1);
+        gate.entered();
+        await gate.wait;
+        return send(captured);
+      }
       return send(rows);
     });
   }
-  return { connect, tables, profiles, anton, tanya };
+  return { connect, tables, profiles, anton, tanya, pauseNextRead };
 }

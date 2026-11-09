@@ -23,6 +23,7 @@ import {
   removeOperation,
   forgetUserCache,
 } from "./cache";
+import { operationSatisfied } from "./reconcile";
 import { applyOptimistic, legacyProjection } from "./projection";
 import { emptyEntry, type Entry, type Records } from "../model";
 type FamilyContextValue = {
@@ -31,6 +32,7 @@ type FamilyContextValue = {
   role: Role | null;
   familyId: string | null;
   snapshot: Snapshot;
+  serverSnapshot: Snapshot | null;
   records: Records;
   ready: boolean;
   offline: boolean;
@@ -84,6 +86,7 @@ const tables = {
 export function FamilyProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null),
     [snapshot, setSnapshot] = useState<Snapshot>(blankSnapshot),
+    [serverSnapshot, setServerSnapshot] = useState<Snapshot | null>(null),
     [ready, setReady] = useState(!supabase),
     [offline, setOffline] = useState(!navigator.onLine),
     [error, setError] = useState(""),
@@ -208,10 +211,29 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
           ...Object.fromEntries(values),
           cachedAt: new Date().toISOString(),
         } as Snapshot;
-        const pending = await listOperations(who.id);
+        let pending = await listOperations(who.id);
+        if (
+          identity.current?.id !== who.id ||
+          currentRevision !== revision.current
+        )
+          return;
+        const duplicates = pending.filter(
+          (o) => o.state === "conflict" && operationSatisfied(next, o),
+        );
+        for (const duplicate of duplicates) await removeOperation(duplicate.id);
+        pending = pending.filter((o) => !duplicates.some((d) => d.id === o.id));
+        const serverNext = next;
         for (const op of pending.filter((o) => o.state === "queued"))
           next = applyOptimistic(next, op);
+        // The outbox read is asynchronous too. A local write or server ACK
+        // during it invalidates the captured server snapshot.
+        if (
+          identity.current?.id !== who.id ||
+          currentRevision !== revision.current
+        )
+          return;
         state.current = next;
+        setServerSnapshot(serverNext);
         setSnapshot(next);
         setOperations(pending);
         await cacheSnapshot(who.id, next);
@@ -259,6 +281,9 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
             p_payload: op.payload,
             p_expected: op.expected,
           });
+          // Invalidate reads captured before this response, even if the ACK
+          // removes the operation before those reads inspect the local outbox.
+          revision.current++;
           if (error) {
             if (
               error.code === "40001" ||
@@ -309,6 +334,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       identity.current = next;
       setUser(next);
       setSnapshot(blankSnapshot());
+      setServerSnapshot(null);
       state.current = blankSnapshot();
       setReady(!next);
       if (next) setTimeout(() => void refresh().then(flush), 0);
@@ -405,8 +431,15 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         !(kind === "letter" && payload.status === "draft")
       )
         throw Error("Для этого действия нужен интернет.");
-      if ((await listOperations(who.id)).some((o) => o.state !== "queued"))
-        throw Error("Сначала разрешите конфликт в разделе синхронизации.");
+      const blocked = (await listOperations(who.id)).find(
+        (o) => o.state !== "queued",
+      );
+      if (blocked)
+        throw Error(
+          blocked.state === "conflict"
+            ? "В очереди есть конфликт изменений. Откройте раздел синхронизации."
+            : `В очереди есть несохранённое действие: ${blocked.error || "сервер не подтвердил его"} Откройте раздел синхронизации.`,
+        );
       const op: Operation = {
         id: crypto.randomUUID(),
         userId: who.id,
@@ -419,6 +452,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         state: "queued",
       };
       await putOperation(op);
+      revision.current++;
       const next = applyOptimistic(state.current, op);
       state.current = next;
       setSnapshot(next);
@@ -524,6 +558,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut({ scope: "local" });
     await forgetUserCache(id);
     setSnapshot(blankSnapshot());
+    setServerSnapshot(null);
     setOperations([]);
     setLocalMode(false);
   }
@@ -544,6 +579,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         role,
         familyId,
         snapshot,
+        serverSnapshot,
         records: user ? legacyProjection(snapshot, user.id) : {},
         ready,
         offline,
