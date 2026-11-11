@@ -105,6 +105,9 @@ test("two phones start, join, chat, react, exchange a photo, finish and rate the
     t.getByText("Наш тестовый вечер — сообщение Антона", { exact: true }),
   ).toHaveCount(0);
   held.release();
+  await expect(a.getByLabel("Текст сообщения")).toHaveValue("");
+  const doneTyping = a.getByRole("button", { name:"Готово", exact:true });
+  if (await doneTyping.isVisible()) await doneTyping.click();
   await expect(
     t.getByText("Наш тестовый вечер — сообщение Антона", { exact: true }),
   ).toBeVisible({ timeout: 12_000 });
