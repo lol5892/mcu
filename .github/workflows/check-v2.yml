@@ -22,6 +22,9 @@ jobs:
         env:
           CI: true
           PLAYWRIGHT_USE_BUNDLED: '1'
+      - run: npm run test:pwa
+        env:
+          PLAYWRIGHT_USE_BUNDLED: '1'
       - run: npx playwright test -c playwright.family.config.ts
         env:
           PLAYWRIGHT_USE_BUNDLED: '1'

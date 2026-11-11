@@ -1,3 +1,4 @@
+import { APP_VERSION } from "./pwa/version";
 import { useEffect, useRef, useState } from "react";
 import {
   Home,
@@ -59,8 +60,9 @@ import {
   backup,
 } from "./db";
 import { useFamily } from "./family/FamilyProvider";
+import { WatchControls, WatchInbox } from "./family/WatchConfirmation";
 import { Universe, FamilyHomeCards, useFamilyRoute } from "./family/Universe";
-import { ProjectFamilyTools } from "./family/Sessions";
+import { ProjectFamilyTools, StartTogether, ActiveSessionCard } from "./family/Sessions";
 import { Sparkles } from "lucide-react";
 type Tab = "home" | "catalog" | "saved" | "stats" | "settings" | "universe";
 const nav = [
@@ -178,6 +180,7 @@ export default function App() {
   function change(id: string, next: Entry) {
     if (!loaded) return;
     if (cloudActive) {
+      setSaveError(false);
       setSaveStatus(
         family.offline
           ? "Сохранено в очереди на устройстве"
@@ -419,6 +422,13 @@ export default function App() {
             <button onClick={exportData}>Экспорт копии</button>
           </div>
         )}
+        <WatchInbox
+          hidden={Boolean(selected)}
+          onProject={(id) =>
+            setSelected(catalog.find((p) => p.id === id) || null)
+          }
+          onNotice={setNotice}
+        />
         <main>
           {tab === "universe" && (
             <Universe
@@ -450,6 +460,7 @@ export default function App() {
                 </div>
               </section>
               <FamilyHomeCards />
+              {cloudActive && <ActiveSessionCard />}
               <section
                 className="family-stats"
                 aria-label="Семейная статистика"
@@ -974,6 +985,7 @@ export default function App() {
               </div>
             </>
           )}
+          {tab === "settings" && <p className="muted" aria-label="Версия приложения">Наш Marvel {APP_VERSION} · обновляется автоматически, когда вы не заняты</p>}
           {tab === "settings" && cloudActive && (
             <section className="panel">
               <h1>Наше пространство</h1>
@@ -1329,6 +1341,12 @@ function Card({
   change: (r: Entry) => void;
   chronology?: boolean;
 }) {
+  const family = useFamily();
+  const confirmWatch = Boolean(
+    family.familyId &&
+    !family.localMode &&
+    family.snapshot.family?.watch_confirmation,
+  );
   const done = watched(p, r),
     pr = progress(p, r),
     rating = average(r);
@@ -1412,30 +1430,34 @@ function Card({
             <Bar value={(pr.done / pr.total) * 100} />
           </div>
         )}
-        <button
-          className={"watch-button " + (done ? "done" : "")}
-          disabled={p.section === "future"}
-          onClick={() =>
-            p.type === "series"
-              ? open()
-              : change(markAll(p, r || emptyEntry(), !done))
-          }
-        >
-          {done ? (
-            <Check size={14} />
-          ) : p.type === "series" ? (
-            <Play size={13} />
-          ) : (
-            <Plus size={14} />
-          )}{" "}
-          {p.section === "future"
-            ? "Скоро"
-            : done
-              ? "Посмотрели"
-              : p.type === "series"
-                ? "Отметить серии"
-                : "Посмотрели"}
-        </button>
+        {confirmWatch && p.type !== "series" ? (
+          <WatchControls project={p} done={done} />
+        ) : (
+          <button
+            className={"watch-button " + (done ? "done" : "")}
+            disabled={p.section === "future"}
+            onClick={() =>
+              p.type === "series"
+                ? open()
+                : change(markAll(p, r || emptyEntry(), !done))
+            }
+          >
+            {done ? (
+              <Check size={14} />
+            ) : p.type === "series" ? (
+              <Play size={13} />
+            ) : (
+              <Plus size={14} />
+            )}{" "}
+            {p.section === "future"
+              ? "Скоро"
+              : done
+                ? "Посмотрели"
+                : p.type === "series"
+                  ? "Отметить серии"
+                  : "Посмотрели"}
+          </button>
+        )}
       </div>
     </article>
   );
@@ -1557,26 +1579,33 @@ function Detail({
         </div>
       </div>
       <div className="detail-body">
+        {cloudActive && <StartTogether projectId={p.id} />}
         <p className="synopsis">{p.description}</p>
         <div className="detail-premiere">
           <CalendarDays size={16} />
           Премьера в США: {dateLabel(p.date)}
         </div>
         <div className="detail-actions">
-          <button
-            className={"primary " + (done ? "completed" : "")}
-            disabled={p.section === "future"}
-            onClick={() => change(markAll(p, r, !done))}
-          >
-            {done ? <CheckCheck size={18} /> : <Check size={18} />}{" "}
-            {p.section === "future"
-              ? "Ожидаем премьеру"
-              : done
-                ? "Посмотрели · отменить"
-                : p.type === "series"
-                  ? "Отметить все вышедшие серии"
-                  : "Посмотрели"}
-          </button>
+          {cloudActive &&
+          family.snapshot.family?.watch_confirmation &&
+          p.type !== "series" ? (
+            <WatchControls project={p} done={done} className="primary" />
+          ) : (
+            <button
+              className={"primary " + (done ? "completed" : "")}
+              disabled={p.section === "future"}
+              onClick={() => change(markAll(p, r, !done))}
+            >
+              {done ? <CheckCheck size={18} /> : <Check size={18} />}{" "}
+              {p.section === "future"
+                ? "Ожидаем премьеру"
+                : done
+                  ? "Посмотрели · отменить"
+                  : p.type === "series"
+                    ? "Отметить все вышедшие серии"
+                    : "Посмотрели"}
+            </button>
+          )}
           <button
             className={"heart-action " + (r.favorite ? "gold" : "")}
             onClick={() => change({ ...r, favorite: !r.favorite })}
@@ -1660,16 +1689,62 @@ function Detail({
                         const key = episodeKey(s.number, e),
                           checked = r.episodes.includes(key),
                           enabled = available(p, s, e);
+                        const pending = family.snapshot.watchRequests.find(
+                          (w) =>
+                            w.project_id === p.id &&
+                            w.season === s.number &&
+                            w.episode === e &&
+                            w.status === "pending",
+                        );
                         return (
                           <button
                             key={e}
-                            className={checked ? "checked" : ""}
+                            className={
+                              checked
+                                ? "checked"
+                                : pending
+                                  ? "pending-episode"
+                                  : ""
+                            }
                             disabled={!enabled}
                             aria-pressed={checked}
                             aria-label={`Сезон ${s.number}, серия ${e}${!enabled ? ", ещё не вышла" : ""}`}
-                            onClick={() => change(toggleEpisode(p, r, key))}
+                            onClick={() => {
+                              if (
+                                cloudActive &&
+                                family.snapshot.family?.watch_confirmation &&
+                                pending?.requested_by === family.user?.id
+                              ) {
+                                const row = family.snapshot.episodes.find(
+                                  (w) =>
+                                    w.project_id === p.id &&
+                                    w.season === s.number &&
+                                    w.episode === e,
+                                );
+                                void family
+                                  .mutate(
+                                    "episode",
+                                    p.id,
+                                    {
+                                      season: s.number,
+                                      episode: e,
+                                      watched: false,
+                                    },
+                                    row?.version || 0,
+                                  )
+                                  .catch((e) =>
+                                    family.setError(String(e.message || e)),
+                                  );
+                              } else change(toggleEpisode(p, r, key));
+                            }}
                           >
-                            {checked ? <Check size={14} /> : e}
+                            {checked ? (
+                              <Check size={14} />
+                            ) : pending ? (
+                              `${e} ◷`
+                            ) : (
+                              e
+                            )}
                             {!enabled && (
                               <small>
                                 {s.episodeDates?.[e - 1]
@@ -1693,6 +1768,7 @@ function Detail({
             </p>
           </section>
         )}
+        {p.type === "series" && <WatchInbox projectId={p.id} />}
         <section className="ratings-section">
           <div className="detail-section-heading">
             <h3>Как нам понравилось?</h3>

@@ -33,6 +33,42 @@ export function applyOptimistic(s: Snapshot, op: Operation): Snapshot {
   const p = op.payload;
   const f = op.familyId;
   const u = op.userId;
+  const confirmation = Boolean(s.family?.watch_confirmation);
+  if (
+    confirmation &&
+    (op.kind === "entry" || op.kind === "episode") &&
+    typeof p.watched === "boolean"
+  ) {
+    const season = Number(p.season || 0),
+      episode = Number(p.episode || 0);
+    const old = n.watchRequests.find(
+      (r) =>
+        r.project_id === op.target &&
+        r.season === season &&
+        r.episode === episode,
+    );
+    if (p.watched) {
+      if (!old || old.status !== "pending")
+        n.watchRequests = [
+          ...n.watchRequests.filter((r) => r !== old),
+          {
+            id: op.id,
+            family_id: f,
+            project_id: op.target,
+            season,
+            episode,
+            requested_by: u,
+            confirmed_by: null,
+            status: "pending",
+            proposed_date: String(p.watched_date || "") || null,
+            requested_at: op.createdAt,
+            responded_at: null,
+            base_version: op.expected,
+            version: 0,
+          },
+        ];
+    } else if (old) old.status = "cancelled";
+  }
   if (op.kind === "entry") {
     const i = n.entries.findIndex((e) => e.project_id === op.target);
     const row =
@@ -48,7 +84,13 @@ export function applyOptimistic(s: Snapshot, op: Operation): Snapshot {
             updated_at: "",
           }
         : n.entries[i];
-    Object.assign(row, p, {
+    const patch = { ...p };
+    delete patch.intent_at;
+    if (confirmation && p.watched === true) {
+      delete patch.watched;
+      delete patch.watched_date;
+    }
+    Object.assign(row, patch, {
       version: op.expected + 1,
       updated_by: u,
       updated_at: op.createdAt,
@@ -67,7 +109,10 @@ export function applyOptimistic(s: Snapshot, op: Operation): Snapshot {
       project_id: op.target,
       season: Number(p.season),
       episode: Number(p.episode),
-      watched: Boolean(p.watched),
+      watched:
+        confirmation && p.watched === true
+          ? Boolean(i >= 0 && n.episodes[i].watched)
+          : Boolean(p.watched),
       version: op.expected + 1,
       updated_by: u,
     };

@@ -9,6 +9,9 @@ select public.test_denied('select public.mv_create_family()','third user cannot 
 select public.test_assert((select count(*)=0 from public.mv_members),'third user sees no membership');
 select set_config('request.jwt.claim.sub','11111111-1111-4111-8111-111111111111',false);
 select public.mv_create_family();
+reset role;
+update public.mv_families set watch_confirmation=false;
+set role authenticated;
 select public.test_assert((select count(*)=1 from public.mv_members),'owner created family');
 select public.test_denied('insert into public.mv_members select family_id,''33333333-3333-4333-8333-333333333333'',''tanya'',now() from public.mv_members limit 1','direct role assignment denied');
 select public.mv_invite('tanya@example.test') as token \gset
@@ -109,7 +112,7 @@ reset role;
 -- Simulate a second family created by a technical administrator to prove UUID
 -- collisions cannot let even a valid family member modify another family.
 insert into public.mv_profiles(id) values('33333333-3333-4333-8333-333333333333');
-insert into public.mv_families(id) values('99999999-0000-4000-8000-000000000001');
+insert into public.mv_families(id,watch_confirmation) values('99999999-0000-4000-8000-000000000001',false);
 insert into public.mv_members(family_id,user_id,role) values('99999999-0000-4000-8000-000000000001','33333333-3333-4333-8333-333333333333','anton');
 set role authenticated;
 select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
@@ -150,4 +153,70 @@ reset role;
 set role anon;
 select public.test_denied('select public.mv_join_status()','anonymous cannot query pending invitations');
 select public.test_denied(format('select public.mv_accept_email_invite(%L::uuid)',:'recovery_id'),'anonymous cannot recover invitations');
+reset role;
+
+-- Joint confirmation mode: the same two verified identities, independent family.
+update public.mv_families set watch_confirmation=true where id='99999999-0000-4000-8000-000000000001';
+set role authenticated;
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.mv_apply('90000000-0000-4000-8000-000000000001','entry','iron-man','{"watched":true}',0);
+select public.test_assert((select not watched from public.mv_entries where project_id='iron-man'),'first mark waits for partner instead of counting watched');
+select id::text as watch_id,version as watch_version from public.mv_watch_requests where project_id='iron-man' and season=0 \gset
+select public.test_assert((select status='pending' and requested_by=auth.uid() from public.mv_watch_requests where id=:'watch_id'::uuid),'requester identity assigned by server');
+select public.mv_apply('90000000-0000-4000-8000-000000000001','entry','iron-man','{"watched":true}',0);
+select public.test_assert((select count(*)=1 from public.mv_watch_requests where project_id='iron-man'),'retry does not duplicate watch request');
+select public.test_denied(format('select public.mv_apply(gen_random_uuid(),''watch_confirm'',%L,''{}'',%s)',:'watch_id',:'watch_version'),'requester cannot confirm their own watch');
+select public.test_denied('select mv_private.apply_core(gen_random_uuid(),''entry'',''iron-man'',''{"watched":true}'',1)','authenticated client cannot bypass confirmation through legacy core');
+select public.test_denied('insert into public.mv_watch_requests(family_id,project_id,requested_by,status) values(''99999999-0000-4000-8000-000000000001'',''iron-man'',auth.uid(),''confirmed'')','direct watch confirmation writes denied');
+select set_config('request.jwt.claim.sub','11111111-1111-4111-8111-111111111111',false);
+select public.test_assert((select count(*)=0 from public.mv_watch_requests),'another family cannot read requests');
+select public.test_denied(format('select public.mv_apply(gen_random_uuid(),''watch_confirm'',%L,''{}'',%s)',:'watch_id',:'watch_version'),'another family cannot confirm request UUID');
+select set_config('request.jwt.claim.sub','44444444-4444-4444-8444-444444444444',false);
+select public.test_assert((select count(*)=1 from public.mv_notifications where type='watch_request'),'partner receives one real queued notification record');
+select public.mv_apply(gen_random_uuid(),'watch_confirm',:'watch_id','{}',:'watch_version');
+select public.test_assert((select watched from public.mv_entries where project_id='iron-man'),'partner confirmation marks shared film watched');
+select public.test_assert((select status='confirmed' and confirmed_by=auth.uid() from public.mv_watch_requests where id=:'watch_id'::uuid),'confirmation binds responding identity');
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.test_assert((select count(*)=1 from public.mv_notifications where type='watch_confirmed'),'requester gets confirmation response');
+select public.mv_apply(gen_random_uuid(),'entry','iron-man','{"watched":false}',0);
+select public.test_assert((select watched from public.mv_entries where project_id='iron-man'),'stale unmark cannot undo newly confirmed watch');
+select version as entry_version from public.mv_entries where project_id='iron-man' \gset
+select public.mv_apply(gen_random_uuid(),'entry','iron-man','{"watched":false}',:'entry_version');
+select public.test_assert((select not watched from public.mv_entries where project_id='iron-man'),'current unmark updates common status');
+select public.mv_apply(gen_random_uuid(),'entry','iron-man','{"watched":true}',0);
+select public.test_assert((select not watched from public.mv_entries where project_id='iron-man'),'old queued mark cannot resurrect corrected accidental viewing');
+select version as entry_version from public.mv_entries where project_id='iron-man' \gset
+select public.mv_apply(gen_random_uuid(),'entry','iron-man','{"watched":true}',:'entry_version');
+select version as watch_version from public.mv_watch_requests where id=:'watch_id'::uuid \gset
+select set_config('request.jwt.claim.sub','44444444-4444-4444-8444-444444444444',false);
+select public.mv_apply(gen_random_uuid(),'watch_reject',:'watch_id','{}',:'watch_version');
+select public.test_assert((select not watched from public.mv_entries where project_id='iron-man'),'partner can say still watching');
+select public.mv_apply(gen_random_uuid(),'watch_confirm',:'watch_id','{}',:'watch_version');
+select public.test_assert((select not watched from public.mv_entries where project_id='iron-man'),'stale confirmation cannot revive rejected request');
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.mv_apply(gen_random_uuid(),'episode','loki','{"season":1,"episode":1,"watched":true}',0);
+select id::text as episode_request,version as episode_request_version from public.mv_watch_requests where project_id='loki' and season=1 and episode=1 \gset
+select public.test_assert((select not watched from public.mv_episodes where project_id='loki' and season=1 and episode=1),'episode progress waits for confirmation');
+select public.test_denied('select public.mv_apply(gen_random_uuid(),''episode'',''loki'',''{"season":0,"episode":0,"watched":true}'',0)','episode zero cannot bypass episode validation');
+select set_config('request.jwt.claim.sub','44444444-4444-4444-8444-444444444444',false);
+select public.mv_apply(gen_random_uuid(),'watch_confirm',:'episode_request','{}',:'episode_request_version');
+select public.test_assert((select watched from public.mv_episodes where project_id='loki' and season=1 and episode=1),'confirmed episode visible in shared progress');
+select public.test_assert(jsonb_array_length(public.mv_export()->'watchRequests')=2,'export includes only current family watch confirmations');
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.mv_apply(gen_random_uuid(),'entry','loki','{"watched":true}',0);
+select public.test_assert((select count(*)=0 from public.mv_watch_requests where project_id='loki' and season=0),'series completion cannot bypass per-episode confirmation');
+reset role;
+set role authenticated;
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.mv_apply(gen_random_uuid(),'entry','hulk','{"watched":true}',0);
+select set_config('request.jwt.claim.sub','44444444-4444-4444-8444-444444444444',false);
+select public.mv_apply(gen_random_uuid(),'entry','hulk','{"watched":true}',0);
+select public.test_assert((select watched from public.mv_entries where project_id='hulk'),'two matching marks confirm jointly instead of entering a version conflict');
+reset role;
+
+-- A fresh offline intent after a correction is not mistaken for an old retry.
+set role authenticated;
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.mv_apply(gen_random_uuid(),'entry','iron-man',jsonb_build_object('watched',true,'intent_at',now()+interval '1 second'),0);
+select public.test_assert((select status='pending' from public.mv_watch_requests where project_id='iron-man' and season=0),'fresh offline intent can request again after an earlier cancellation');
 reset role;

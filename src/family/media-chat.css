@@ -1,0 +1,13 @@
+.chat-room{display:flex;flex-direction:column;min-height:350px;max-height:calc(var(--chat-viewport-height,100dvh) - 170px)}
+.chat-room .messages{overflow-y:auto;overscroll-behavior:contain;flex:1;min-height:120px}
+.chat-composer{position:sticky;bottom:0;background:#101521;padding:12px 8px max(12px,env(safe-area-inset-bottom));display:flex;gap:8px;align-items:flex-end}
+.chat-composer textarea{font-size:16px;min-height:48px;flex:1;min-width:0}
+.chat-composer button,.camera-button,.photo-source-menu button{min-width:44px;min-height:44px}
+.photo-source-menu{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:#171e2b;border-radius:14px}
+.selected-photos,.moment-photos{display:flex;gap:10px;overflow-x:auto;padding:10px 0}
+.selected-photo{position:relative;flex:0 0 130px}.selected-photo img{width:130px;height:130px;object-fit:cover;border-radius:14px}.selected-photo span{display:block;font-size:12px;overflow:hidden}.selected-photo button{position:absolute;right:0;top:0;min-width:44px;min-height:44px}
+.private-photo img{max-width:100%;border-radius:14px}.message time{font-size:12px}.message-tools button{min-height:44px;min-width:44px}
+.chat-room input,.chat-room select,.family-form input,.family-form textarea,.family-form select{font-size:16px}
+@media(max-width:600px){.family-form small,.muted{font-size:13px}.person{font-size:13px}.family-form button{min-height:44px}}
+.chat-room .message-list{overflow-y:auto;overscroll-behavior:contain;flex:1;min-height:120px;padding:8px}
+.chat-compose{flex:none;background:#101521;padding:10px 8px max(10px,env(safe-area-inset-bottom))}.compose-row{display:flex;gap:8px;align-items:flex-end}.compose-row textarea{font-size:16px;flex:1;min-width:0;min-height:48px;max-height:110px}.compose-row button{min-height:44px;min-width:44px}.chat-keyboard-active{position:fixed!important;inset:auto 0!important;top:var(--chat-viewport-top,0px)!important;height:var(--chat-viewport-height,100dvh)!important;max-height:var(--chat-viewport-height,100dvh)!important;z-index:100;background:#090d16;padding:8px;box-sizing:border-box}.compose-footer{display:flex;justify-content:space-between;gap:8px;font-size:12px}.message-photos img{max-width:100%;max-height:300px;object-fit:contain}.message-photos{max-width:100%}

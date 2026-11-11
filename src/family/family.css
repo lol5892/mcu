@@ -2720,3 +2720,15 @@
 }
 .sync-difference p { margin: 6px 0; }
 .pending-operation summary { padding: 12px 0; cursor: pointer; }
+
+.watch-inbox { margin: 18px 24px; padding: 18px; border: 1px solid rgba(218,181,115,.3); border-radius: 18px; background: linear-gradient(120deg,rgba(163,123,57,.12),rgba(73,38,58,.17)); }
+.detail-body .watch-inbox { margin: 12px 0; }
+.watch-invitation { display: grid; gap: 12px; padding: 10px 0; }
+.watch-confirm-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.watch-pending { display: grid; gap: 8px; font-size: 12px; }
+.watch-pending > span { display: flex; align-items: center; gap: 6px; color: #dbbd8a; }
+.watch-pending button,.watch-control > button { min-height: 44px; }
+.watch-project-title { display:block; font-size: 17px; text-align: left; padding: 8px 0; color: #f4e7ce; }
+.watch-push-hint { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; color: #b6b9c4; font-size: 13px; }
+.pending-episode { border-color: #ad8e57 !important; color: #e4c58b !important; }
+@media(max-width: 480px) { .watch-inbox { margin: 14px 16px; padding: 14px; } }

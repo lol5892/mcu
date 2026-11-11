@@ -5,7 +5,7 @@ const anton = "11111111-1111-4111-8111-111111111111",
   tanya = "22222222-2222-4222-8222-222222222222",
   family = "99999999-9999-4999-8999-999999999999";
 export const userIds = { anton, tanya };
-export function fixture(recoverInvitation = false) {
+export function fixture(recoverInvitation = false, watchConfirmation = false) {
   const now = new Date().toISOString();
   const profiles = new Map(
     [anton, tanya].map((id) => [
@@ -27,6 +27,8 @@ export function fixture(recoverInvitation = false) {
     ]),
   );
   const tables: Record<string, any[]> = {
+    mv_families: [{ id: family, watch_confirmation: watchConfirmation }],
+    mv_watch_requests: [],
     mv_members: [
       { family_id: family, user_id: anton, role: "anton", joined_at: now },
       { family_id: family, user_id: tanya, role: "tanya", joined_at: now },
@@ -82,6 +84,7 @@ export function fixture(recoverInvitation = false) {
     mv_sessions: [],
     mv_moments: [],
     mv_media: [],
+    mv_media_links: [],
     mv_reactions: [],
     mv_notifications: [],
     mv_devices: [],
@@ -90,6 +93,29 @@ export function fixture(recoverInvitation = false) {
     mv_rating_history: [],
   };
   const receipts = new Map();
+  let uploadFailures = 0,
+    uploadAttempts = 0;
+  const png = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=",
+    "base64",
+  );
+  const applyGates: {
+    kind: string;
+    entered: () => void;
+    wait: Promise<void>;
+  }[] = [];
+  function pauseNextApply(kind: string) {
+    let entered!: () => void, release!: () => void;
+    const started = new Promise<void>((resolve) => {
+      entered = resolve;
+    });
+    const wait = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    applyGates.push({ kind, entered, wait });
+    return { started, release };
+  }
+
   const jwt = (id: string) =>
     [
       Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString(
@@ -149,7 +175,9 @@ export function fixture(recoverInvitation = false) {
       const send = (data: unknown, status = 200) =>
         route.fulfill({ status, headers, body: JSON.stringify(data) });
       if (request.method() === "OPTIONS") return send({});
-      const body = request.postDataJSON() || {};
+      let body: Record<string, any> = {};
+      if (request.headers()["content-type"]?.includes("application/json"))
+        body = request.postDataJSON() || {};
       const bearer = request.headers().authorization?.split(" ")[1];
       let id = anton;
       try {
@@ -171,6 +199,38 @@ export function fixture(recoverInvitation = false) {
       }
       if (url.pathname.endsWith("/user")) return send(user(id));
       if (url.pathname.endsWith("/logout")) return send({});
+      if (url.pathname.includes("/storage/v1/object/"))
+        return route.fulfill({
+          status: 200,
+          headers: { ...headers, "Content-Type": "image/png" },
+          body: png,
+        });
+      if (url.pathname.endsWith("/functions/v1/media-upload")) {
+        if (body.action === "delete") {
+          tables.mv_media = tables.mv_media.filter((m) => m.id !== body.id);
+          tables.mv_media_links = tables.mv_media_links.filter(
+            (m) => m.media_id !== body.id,
+          );
+          return send({ ok: true });
+        }
+        uploadAttempts++;
+        if (uploadFailures > 0) {
+          uploadFailures--;
+          return send(
+            { error: "Тест: загрузка прервана. Попробуйте ещё раз." },
+            500,
+          );
+        }
+        const mediaId = request
+          .postData()
+          ?.match(/name="id"\r?\n\r?\n([^\r\n]+)/)?.[1];
+        const media = tables.mv_media.find(
+          (m) => m.id === mediaId && m.author_id === id,
+        );
+        if (!media) return send({ error: "MEDIA_NOT_FOUND" }, 400);
+        media.ready = true;
+        return send({ ok: true, id: media.id });
+      }
       if (url.pathname.includes("/rpc/")) {
         const name = url.pathname.split("/").pop();
         if (name === "mv_join_status")
@@ -225,11 +285,203 @@ export function fixture(recoverInvitation = false) {
             ratings: tables.mv_ratings,
             messages: tables.mv_messages,
           });
+        if (name === "mv_prepare_media") {
+          const existing = tables.mv_media.find((m) => m.id === body.p_id);
+          if (existing) return send(existing.object_path);
+          const object_path = family + "/" + body.p_id + ".jpg";
+          tables.mv_media.push({
+            id: body.p_id,
+            family_id: family,
+            author_id: id,
+            kind: body.p_kind,
+            target_id: body.p_target,
+            object_path,
+            content_type: body.p_type,
+            byte_size: body.p_size,
+            ready: false,
+            created_at: new Date().toISOString(),
+          });
+          return send(object_path);
+        }
         if (name === "mv_apply") {
           if (receipts.has(body.p_id)) return send(receipts.get(body.p_id));
+          const gateIndex = applyGates.findIndex((g) => g.kind === body.p_kind);
+          if (gateIndex >= 0) {
+            const [gate] = applyGates.splice(gateIndex, 1);
+            gate.entered();
+            await gate.wait;
+          }
           const kind = body.p_kind,
             p = body.p_payload,
             target = body.p_target;
+          if (
+            watchConfirmation &&
+            ((kind === "entry" && typeof p.watched === "boolean") ||
+              kind === "episode" ||
+              kind.startsWith("watch_"))
+          ) {
+            let request = kind.startsWith("watch_")
+              ? tables.mv_watch_requests.find((r) => r.id === target)
+              : tables.mv_watch_requests.find(
+                  (r) =>
+                    r.project_id === target &&
+                    r.season === (p.season || 0) &&
+                    r.episode === (p.episode || 0),
+                );
+            if (kind.startsWith("watch_") && !request)
+              return send({ message: "FORBIDDEN" }, 403);
+            const project = request?.project_id || target;
+            const season = request?.season || p.season || 0,
+              episode = request?.episode || p.episode || 0;
+            const rows = season ? tables.mv_episodes : tables.mv_entries;
+            let row = rows.find(
+              (r) =>
+                r.project_id === project &&
+                (!season || (r.season === season && r.episode === episode)),
+            );
+            const base = row?.version || 0;
+            if (!row) {
+              row = {
+                family_id: family,
+                project_id: project,
+                season,
+                episode,
+                watched: false,
+                watched_date: null,
+                note: "",
+                version: 1,
+                updated_by: id,
+                updated_at: now,
+              };
+              rows.push(row);
+            }
+            const notify = (recipient: string, type: string) =>
+              tables.mv_notifications.push({
+                id: crypto.randomUUID(),
+                family_id: family,
+                recipient_id: recipient,
+                type,
+                title:
+                  type === "watch_request"
+                    ? "Подтвердим, что посмотрели вместе?"
+                    : "Просмотр подтверждён ❤️",
+                route: "/project/" + project,
+                dedupe_key: crypto.randomUUID(),
+                read_at: null,
+                created_at: now,
+              });
+            let status = "pending";
+            if (kind.startsWith("watch_")) {
+              if (kind === "watch_confirm" && request.requested_by === id)
+                return send({ message: "PARTNER_CONFIRMS" }, 403);
+              if (
+                request.status !== "pending" ||
+                request.version !== body.p_expected
+              )
+                status = "obsolete";
+              else if (kind === "watch_confirm") {
+                row.watched = true;
+                row.watched_date = request.proposed_date;
+                row.version++;
+                request.status = "confirmed";
+                request.confirmed_by = id;
+                request.version++;
+                notify(request.requested_by, "watch_confirmed");
+                status = "confirmed";
+              } else {
+                row.watched = false;
+                row.version++;
+                request.status =
+                  kind === "watch_cancel" ? "cancelled" : "rejected";
+                request.base_version = row.version;
+                request.version++;
+                status = request.status;
+              }
+            } else if (!p.watched) {
+              row.watched = false;
+              row.watched_date = null;
+              row.version++;
+              if (request) {
+                request.status = "cancelled";
+                request.base_version = row.version;
+                request.version++;
+              }
+              status = "cancelled";
+            } else if (row.watched) status = "already_confirmed";
+            else if (request?.status === "pending") status = "pending";
+            else {
+              request = {
+                id: crypto.randomUUID(),
+                family_id: family,
+                project_id: project,
+                season,
+                episode,
+                requested_by: id,
+                confirmed_by: null,
+                status: "pending",
+                version: (request?.version || 0) + 1,
+                base_version: base,
+                requested_at: now,
+                responded_at: null,
+                proposed_date: p.watched_date || now.slice(0, 10),
+              };
+              tables.mv_watch_requests = tables.mv_watch_requests.filter(
+                (r) =>
+                  !(
+                    r.project_id === project &&
+                    r.season === season &&
+                    r.episode === episode
+                  ),
+              );
+              tables.mv_watch_requests.push(request);
+              notify(id === anton ? tanya : anton, "watch_request");
+            }
+            const result = {
+              ok: true,
+              id: target,
+              version: row.version,
+              watch_status: status,
+              request_id: request?.id,
+            };
+            receipts.set(body.p_id, result);
+            return send(result);
+          }
+          // Contract semantics only; hosted SQL tests verify authorization and atomicity.
+          if (
+            ["message", "moment", "moment_attach"].includes(kind) &&
+            p.media_ids?.length
+          ) {
+            const files = p.media_ids.map((mid: string) =>
+              tables.mv_media.find((m) => m.id === mid && m.ready),
+            );
+            if (files.some((m: any) => !m))
+              return send({ message: "MEDIA_NOT_READY" }, 400);
+          }
+          if (kind === "session") {
+            let current = tables.mv_sessions.find((s) => s.id === target);
+            if (
+              !current &&
+              tables.mv_sessions.some((s) => s.status === "active")
+            )
+              current = tables.mv_sessions.find((s) => s.status === "active");
+            if (current) {
+              if (!current.participants.includes(id))
+                current.participants.push(id);
+              if (p.status) current.status = p.status;
+              if (p.status === "finished")
+                current.finished_at = new Date().toISOString();
+              if (p.film_minute != null) current.film_minute = p.film_minute;
+              current.version++;
+              const result = {
+                ok: true,
+                id: current.id,
+                version: current.version,
+                existing: true,
+              };
+              receipts.set(body.p_id, result);
+              return send(result);
+            }
+          }
           let table = "",
             key = (r: any) => r.id === target;
           let newRow: any = {
@@ -262,6 +514,9 @@ export function fixture(recoverInvitation = false) {
               status: p.status || "active",
               participants: [id],
               film_minute: 0,
+              season: p.season ?? null,
+              episode: p.episode ?? null,
+              finished_at: null,
             };
           }
           if (kind === "moment") table = "mv_moments";
@@ -317,6 +572,30 @@ export function fixture(recoverInvitation = false) {
             version = (old?.version || 0) + 1;
             if (i < 0) tables[table].push(newRow);
             else tables[table][i] = { ...old, ...p, version };
+          }
+          if (
+            ["message", "moment", "moment_attach"].includes(kind) &&
+            p.media_ids?.length
+          ) {
+            for (const media_id of p.media_ids) {
+              const linkKind = kind === "message" ? "message" : "moment";
+              if (
+                !tables.mv_media_links.some(
+                  (l) =>
+                    l.media_id === media_id &&
+                    l.kind === linkKind &&
+                    l.target_id === target,
+                )
+              )
+                tables.mv_media_links.push({
+                  media_id,
+                  kind: linkKind,
+                  target_id: target,
+                  family_id: family,
+                  author_id: id,
+                  created_at: new Date().toISOString(),
+                });
+            }
           }
           if (kind === "letter_read") {
             const l = tables.mv_letters.find((l) => l.id === target);
@@ -396,6 +675,15 @@ export function fixture(recoverInvitation = false) {
             l.author_id === id ||
             (l.recipient_id === id && l.status === "delivered"),
         );
+      if (table === "mv_media")
+        rows = rows.filter(
+          (m) =>
+            m.author_id === id ||
+            m.kind !== "staged" ||
+            tables.mv_media_links.some((l) => l.media_id === m.id),
+        );
+      if (table === "mv_notifications")
+        rows = rows.filter((n) => n.recipient_id === id);
       if (table === "mv_letter_favorites")
         rows = rows.filter((r) => r.user_id === id);
       const index = readGates.findIndex((g) => g.table === table);
@@ -409,5 +697,17 @@ export function fixture(recoverInvitation = false) {
       return send(rows);
     });
   }
-  return { connect, tables, profiles, anton, tanya, pauseNextRead };
+  return {
+    connect,
+    tables,
+    profiles,
+    anton,
+    tanya,
+    pauseNextRead,
+    pauseNextApply,
+    failNextUploads: (count = 1) => {
+      uploadFailures = count;
+    },
+    uploadAttempts: () => uploadAttempts,
+  };
 }

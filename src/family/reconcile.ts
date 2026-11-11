@@ -46,3 +46,32 @@ export function operationSatisfied(s: Snapshot, op: Operation): boolean {
     keys.every((k) => allowed.includes(k) && Object.is(row![k], p[k])),
   );
 }
+
+// A server-side cancellation is an explicit correction of older accidental
+// marks. Drop only the obsolete watch/date intent, never an unsaved note.
+export function supersededWatch(s: Snapshot, op: Operation): boolean {
+  if (
+    !s.family?.watch_confirmation ||
+    !["entry", "episode"].includes(op.kind) ||
+    op.payload.watched !== true
+  )
+    return false;
+  const allowed =
+    op.kind === "entry"
+      ? ["watched", "watched_date", "intent_at"]
+      : ["season", "episode", "watched", "intent_at"];
+  if (Object.keys(op.payload).some((k) => !allowed.includes(k))) return false;
+  return (s.watchRequests || []).some(
+    (r) =>
+      r.family_id === op.familyId &&
+      r.project_id === op.target &&
+      r.season === (op.payload.season ?? 0) &&
+      r.episode === (op.payload.episode ?? 0) &&
+      op.expected < r.base_version &&
+      !(
+        typeof op.payload.intent_at === "string" &&
+        Date.parse(op.payload.intent_at) >
+          Date.parse(r.responded_at || r.requested_at)
+      ),
+  );
+}

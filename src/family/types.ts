@@ -81,6 +81,8 @@ export type ViewingSession = Versioned & {
   author_id: string;
   status: "active" | "finished";
   film_minute: number;
+  season?: number | null;
+  episode?: number | null;
   participants: string[];
   created_at: string;
   finished_at: string | null;
@@ -116,12 +118,20 @@ export type Media = {
   id: string;
   family_id: string;
   author_id: string;
-  kind: "letter" | "moment" | "session" | "avatar";
+  kind: "letter" | "moment" | "session" | "avatar" | "staged";
   target_id: string | null;
   object_path: string;
   content_type: string;
   byte_size: number;
   ready: boolean;
+};
+export type MediaLink = {
+  family_id: string;
+  media_id: string;
+  kind: "message" | "moment";
+  target_id: string;
+  author_id: string;
+  created_at: string;
 };
 export type Reaction = {
   family_id: string;
@@ -159,7 +169,24 @@ export type RatingHistory = {
   new_score: number | null;
   changed_at: string;
 };
+export type WatchRequest = {
+  id: string;
+  family_id: string;
+  project_id: string;
+  season: number;
+  episode: number;
+  requested_by: string;
+  confirmed_by: string | null;
+  status: "pending" | "confirmed" | "rejected" | "cancelled";
+  proposed_date: string | null;
+  requested_at: string;
+  responded_at: string | null;
+  base_version: number;
+  version: number;
+};
 export type Snapshot = {
+  family: { id: string; watch_confirmation: boolean } | null;
+  watchRequests: WatchRequest[];
   members: Member[];
   profile: Profile | null;
   entries: SharedEntry[];
@@ -171,6 +198,7 @@ export type Snapshot = {
   events: Evening[];
   moments: Moment[];
   media: Media[];
+  mediaLinks: MediaLink[];
   reactions: Reaction[];
   notifications: NotificationRow[];
   devices: Device[];
@@ -193,6 +221,8 @@ export type Operation = {
   error?: string;
 };
 export const blankSnapshot = (): Snapshot => ({
+  family: null,
+  watchRequests: [],
   members: [],
   profile: null,
   entries: [],
@@ -204,6 +234,7 @@ export const blankSnapshot = (): Snapshot => ({
   events: [],
   moments: [],
   media: [],
+  mediaLinks: [],
   reactions: [],
   notifications: [],
   devices: [],

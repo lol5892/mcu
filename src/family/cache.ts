@@ -1,5 +1,5 @@
 import { openDB } from "idb";
-import type { Snapshot, Operation } from "./types";
+import { blankSnapshot, type Snapshot, type Operation } from "./types";
 // A separate database: no upgrade or deletion of the original our-marvel store.
 const db = openDB("our-marvel-family", 1, {
   upgrade(d) {
@@ -13,7 +13,8 @@ export async function cacheSnapshot(user: string, data: Snapshot) {
 export async function cachedSnapshot(
   user: string,
 ): Promise<Snapshot | undefined> {
-  return (await db).get("snapshots", user);
+  const value = await (await db).get("snapshots", user);
+  return value ? { ...blankSnapshot(), ...value } : undefined;
 }
 export async function putOperation(op: Operation) {
   await (await db).put("outbox", op);

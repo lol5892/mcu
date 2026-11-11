@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
       .eq("id", id)
       .eq("author_id", user.id)
       .single();
-    if (error || !media || media.ready)
+    if (error || !media)
       return json(req, { error: "FORBIDDEN" }, 403);
     // The app always re-encodes to JPEG. Disallow other formats here rather than
     // accepting MIME declarations or unstripped PNG/WebP metadata from a client.
@@ -83,10 +83,22 @@ Deno.serve(async (req) => {
       media.content_type !== "image/jpeg" ||
       bytes[0] !== 255 ||
       bytes[1] !== 216 ||
-      media.byte_size !== file.size
+      (!media.ready && media.byte_size !== file.size)
     )
       return json(req, { error: "INVALID_IMAGE" }, 400);
     const clean = sanitizeJPEG(bytes);
+    const hash = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)))
+      .map((n) => n.toString(16).padStart(2, "0")).join("");
+    if (media.ready) {
+      // Response-loss retry: same caller, same ID, same bytes. Do not upload twice.
+      if (media.source_sha256 !== hash)
+        return json(req, { error: "MEDIA_ID_REUSED" }, 409);
+      return json(req, { ok: true, alreadyUploaded: true });
+    }
+    const { error: bind } = await admin.rpc("mv_bind_media_upload", {
+      p_id: id, p_hash: hash,
+    });
+    if (bind) return json(req, { error: "MEDIA_ID_REUSED" }, 409);
     const { error: upload } = await admin.storage
       .from("marvel-private")
       .upload(media.object_path, clean, {
@@ -94,15 +106,24 @@ Deno.serve(async (req) => {
         upsert: false,
         cacheControl: "0",
       });
-    if (upload) throw upload;
+    if (upload && !["409", "400"].includes(String(upload.statusCode))) throw upload;
+    if (upload) {
+      // A concurrent identical attempt may have already written this reserved
+      // path. Verify that the object exists before finalizing; never overwrite.
+      const { data: stored, error: readError } = await admin.storage
+        .from("marvel-private").download(media.object_path);
+      if (readError || !stored || stored.size !== clean.size) throw upload;
+      const storedHash = await crypto.subtle.digest("SHA-256", await stored.arrayBuffer());
+      const cleanHash = await crypto.subtle.digest("SHA-256", await clean.arrayBuffer());
+      if (new Uint8Array(storedHash).some((b, i) => b !== new Uint8Array(cleanHash)[i])) throw upload;
+    }
     const { error: finalize } = await admin.rpc("mv_finalize_media", {
       p_id: id,
       p_size: clean.size,
     });
-    if (finalize) {
-      await admin.storage.from("marvel-private").remove([media.object_path]);
-      throw finalize;
-    }
+    // Preserve the reserved object on a transient DB error so retry can finish
+    // safely. It is still invisible to the partner until ready + publication.
+    if (finalize) throw finalize;
     return json(req, { ok: true });
   } catch (error) {
     console.error(

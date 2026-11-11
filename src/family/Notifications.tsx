@@ -7,6 +7,8 @@ export const notificationKinds = [
   ["message", "Личные сообщения"],
   ["comment", "Комментарии"],
   ["rating", "Оценки"],
+  ["watch_request", "Запросы подтверждения просмотра"],
+  ["watch_confirmed", "Подтверждения просмотра"],
   ["photo", "Фотографии"],
   ["letter", "Письма ❤️"],
   ["event_invite", "Приглашения"],
