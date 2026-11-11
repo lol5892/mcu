@@ -52,3 +52,7 @@ Full test totals and deployment status are recorded after final CI completion.
 Local checks completed: 29 unit, 109 SQL assertions, 3 image tests, 7 legacy
 E2E and 9 old-to-new worker lifecycle scenarios. 18 existing family UI scenarios
 passed before final new-flow checks; final CI status remains authoritative.
+
+Final local mobile contracts: all six new 2.1 scenarios passed, including
+photo-first retry with both authors, inline photos in project/common/session
+chats, reduced viewport keyboard simulation and mobile section overflow audit.

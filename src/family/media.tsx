@@ -168,9 +168,9 @@ export function PhotoUpload({ kind, target, onDone }: { kind: Media["kind"]; tar
     });
   }
   return <div className="photo-upload">
-    <PhotoPicker disabled={a.busy || selection.photos.length >= 8} label="Добавить фотографии" onFiles={selection.add} />
+    <PhotoPicker disabled={a.busy || selection.photos.length >= 8} label="Добавить фото" onFiles={selection.add} />
     <PhotoPreviews photos={selection.photos} remove={selection.remove} busy={a.busy} />
-    {selection.photos.length > 0 && <button type="button" className="primary" disabled={a.busy || f.offline} onClick={() => void upload()}>{a.busy ? "Сжимаем и отправляем…" : "Отправить фотографии"}</button>}
+    {selection.photos.length > 0 && <button type="button" className="primary" disabled={a.busy || f.offline} onClick={() => void upload()}>{a.busy ? "Сжимаем и отправляем…" : "Добавить фотографии"}</button>}
     <small>До 8 фото за раз. Сжимаем снимки и удаляем геометки перед отправкой.</small>
     <Feedback text={a.feedback} />
   </div>;
