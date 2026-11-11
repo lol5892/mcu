@@ -1,0 +1,62 @@
+.start-together { display: grid; gap: 8px; }
+.start-together-button { width: 100%; min-height: 52px; justify-content: center; font-size: 15px; box-shadow: 0 8px 24px #e6314b20; }
+.start-together > small { color: var(--muted, #a3a7b7); }
+.session-episode-picker { display: grid; gap: 18px; padding: 6px 0 20px; }
+.session-episode-picker label { display: grid; gap: 8px; color: #b3b7c7; }
+.session-episode-picker select { min-height: 48px; width: 100%; }
+.active-viewing-card { margin: 20px 0; position: relative; overflow: hidden; display: grid; grid-template-columns: 90px minmax(0,1fr); gap: 16px; align-items: center; padding: 20px; border-radius: 20px; border: 1px solid #dfb77a44; background: radial-gradient(ellipse at 0 100%,#d08a4417,transparent 70%),linear-gradient(120deg,#171d2c,#11151f); box-shadow: 0 12px 35px #0002; }
+.active-viewing-card > img { width: 90px; height: 134px; object-fit: cover; border-radius: 10px; }
+.active-viewing-card h2 { margin: 8px 0; font-size: clamp(19px,4.8vw,26px); line-height: 1.15; }
+.active-viewing-card p { margin: 8px 0; font-size: 13px; line-height: 1.5; color: #b3b7c7; }
+.active-viewing-card .eyebrow { letter-spacing: 1.8px; color: #e2bf8e; font-size: 10px; }
+.active-viewing-card .primary { margin-top: 12px; min-height: 44px; font-size: 13px; width: 100%; justify-content: center; }
+.active-viewing-card .person { font-size: 12px; }
+.active-viewing-card .avatar { width: 25px; height: 25px; }
+.choose-session-film { width: 100%; min-height: 62px; justify-content: center; font-size: 18px; margin: 6px 0 24px; }
+.session-search { display: flex; align-items: center; gap: 10px; background: #101621; padding: 0 14px; border: 1px solid #ffffff16; border-radius: 14px; }
+.session-search input { width: 100%; min-height: 50px; padding: 12px 0; border: 0; background: transparent; color: #f4f5f9; font-size: 16px; }
+.session-search-results { display: grid; gap: 14px; margin-top: 20px; max-height: 70vh; overflow-y: auto; overscroll-behavior: contain; }
+.session-search-choice { display: grid; grid-template-columns: 62px minmax(0,1fr); gap: 14px; padding: 14px; border-radius: 16px; background: #121824; border: 1px solid #ffffff0d; }
+.session-search-choice > img { width: 62px; height: 92px; object-fit: cover; border-radius: 8px; }
+.session-search-choice h3 { font-size: 16px; margin: 0 0 5px; }
+.session-search-choice small { display: block; color: #a2a8b8; font-size: 12px; margin-bottom: 12px; }
+.session-search-choice .start-together-button { min-height: 44px; padding: 10px; font-size: 12px; }
+.session-history { margin-top: 28px; }
+.session-history h2 { font-size: 21px; }
+.session-history .session-tile { width: 100%; text-align: left; }
+.session-history .session-tile > div { flex: 1; }
+.session-history-empty { padding: 24px; color: #b5a9ba; }
+.session-v21 .session-topline { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin: 0 0 12px; }
+.session-v21 .session-topline button { min-height: 44px; font-size: 12px; padding: 8px 2px; }
+.session-v21 .session-finish { color: #e4bd85; }
+.session-v21 .session-hero-compact { display: grid; grid-template-columns: 64px minmax(0,1fr); align-items: center; gap: 14px; padding: 16px; border-radius: 18px; margin-bottom: 12px; background: #101722; }
+.session-v21 .session-hero-compact > img { width: 64px; height: 96px; border-radius: 9px; object-fit: cover; }
+.session-v21 .session-hero-compact h1 { font-size: clamp(20px,5vw,28px); line-height: 1.16; margin: 6px 0; letter-spacing: -.5px; }
+.session-v21 .session-hero-compact .eyebrow { font-size: 10px; letter-spacing: 1.5px; }
+.session-v21 .session-hero-compact p { color: #b1b5c5; margin: 5px 0; font-size: 12px; }
+.session-v21 .session-people { gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.session-v21 .session-people .person { font-size: 12px; }
+.session-v21 .session-people .avatar { width: 25px; height: 25px; }
+.session-v21 .session-hero-compact .primary { margin-top: 10px; min-height: 44px; font-size: 13px; }
+.session-live-tools { display: flex; align-items: center; gap: 8px; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; }
+.session-live-tools .quick-reactions { gap: 5px; margin: 0; }
+.session-live-tools .quick-reactions button { min-width: 44px; min-height: 44px; padding: 8px; }
+.session-minute { font-size: 12px; color: #b4bacb; }
+.session-minute summary { min-height: 44px; display: flex; align-items: center; gap: 7px; cursor: pointer; list-style: none; }
+.session-minute form { display: flex; gap: 8px; width: 100%; padding-bottom: 8px; }
+.session-minute input { width: 100px; min-height: 44px; font-size: 16px; }
+.session-minute .primary { min-height: 44px; font-size: 12px; }
+.session-summary { margin: 18px 0; padding: 24px 18px; }
+.session-summary-heart { color: #e5b2b7; text-align: center; font-size: 62px; line-height: 1; text-shadow: 0 0 35px #ff8dab55; }
+.session-summary > h2 { text-align: center; font-size: 26px; letter-spacing: -.7px; line-height: 1.25; }
+.session-summary > p { text-align: center; font-size: 14px; color: #b1b5c5; }
+.session-summary-step { display: grid; grid-template-columns: 25px minmax(0,1fr); gap: 12px; border-top: 1px solid #ffffff0e; padding: 24px 0 0; margin-top: 24px; }
+.session-summary-step > span { font-size: 11px; color: #ddb98a; letter-spacing: 1px; padding-top: 4px; }
+.session-summary-step h3 { margin: 0 0 12px; font-size: 17px; }
+.session-summary-step small { color: #a1a7b9; font-size: 12px; line-height: 1.6; display: block; margin-top: 10px; }
+.session-summary-step .season-ratings { padding: 0; margin: 0; background: none; border: 0; }
+.session-summary-step .season-rating-row { flex-wrap: wrap; gap: 14px; }
+.session-summary-step .season-rating-row select { min-height: 44px; font-size: 16px; }
+.session-summary .session-photo-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin: 16px 0; }
+.session-episode-watch .primary { min-height: 48px; font-size: 13px; }
+@media (max-width: 370px) { .active-viewing-card { grid-template-columns: 65px minmax(0,1fr); gap: 12px; padding: 14px; }.active-viewing-card > img { width: 65px; height: 98px; }.session-v21 .session-topline button { font-size: 11px; }.session-live-tools .quick-reactions button { min-width: 44px; } }

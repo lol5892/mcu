@@ -23,7 +23,8 @@ import {
   removeOperation,
   forgetUserCache,
 } from "./cache";
-import { operationSatisfied } from "./reconcile";
+import { outboxLane, nextSendable } from "./outbox";
+import { operationSatisfied, supersededWatch } from "./reconcile";
 import { applyOptimistic, legacyProjection } from "./projection";
 import { emptyEntry, type Entry, type Records } from "../model";
 type FamilyContextValue = {
@@ -64,6 +65,8 @@ export const useFamily = () => {
   return value;
 };
 const tables = {
+  family: "mv_families",
+  watchRequests: "mv_watch_requests",
   members: "mv_members",
   profile: "mv_profiles",
   entries: "mv_entries",
@@ -75,6 +78,7 @@ const tables = {
   events: "mv_events",
   moments: "mv_moments",
   media: "mv_media",
+  mediaLinks: "mv_media_links",
   reactions: "mv_reactions",
   notifications: "mv_notifications",
   devices: "mv_devices",
@@ -152,6 +156,8 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     ): Promise<T> => {
       if (!supabase) throw Error("Supabase ещё не настроен.");
       const { data, error } = await supabase.rpc(name, args);
+      // RPC writes may finish while a snapshot GET is still in flight.
+      revision.current++;
       if (error) throw error;
       return data as T;
     },
@@ -195,7 +201,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
             if (error) throw error;
             return [
               key,
-              key === "profile" || key === "welcome"
+              key === "profile" || key === "welcome" || key === "family"
                 ? data?.[0] || null
                 : data || [],
             ] as const;
@@ -218,7 +224,9 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         )
           return;
         const duplicates = pending.filter(
-          (o) => o.state === "conflict" && operationSatisfied(next, o),
+          (o) =>
+            (o.state === "conflict" && operationSatisfied(next, o)) ||
+            supersededWatch(next, o),
         );
         for (const duplicate of duplicates) await removeOperation(duplicate.id);
         pending = pending.filter((o) => !duplicates.some((d) => d.id === o.id));
@@ -240,7 +248,9 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         setError("");
       } catch (e) {
         const old = await cachedSnapshot(who.id);
-        if (old && identity.current?.id === who.id) {
+        if (identity.current?.id !== who.id || currentRevision !== revision.current)
+          return;
+        if (old && !state.current.cachedAt) {
           state.current = old;
           setSnapshot(old);
         }
@@ -272,8 +282,8 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     const task = (async () => {
       try {
         while (navigator.onLine && identity.current?.id === who.id) {
-          const op = (await listOperations(who.id))[0];
-          if (!op || op.state !== "queued") break;
+          const op = nextSendable(await listOperations(who.id));
+          if (!op) break;
           const { error } = await supabase!.rpc("mv_apply", {
             p_id: op.id,
             p_kind: op.kind,
@@ -309,7 +319,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
                 error: errorText(error),
               });
             setError(errorText(error));
-            break;
+            continue;
           }
           await removeOperation(op.id);
         }
@@ -431,8 +441,18 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         !(kind === "letter" && payload.status === "draft")
       )
         throw Error("Для этого действия нужен интернет.");
+      const createdAt = new Date().toISOString();
+      if (
+        state.current.family?.watch_confirmation &&
+        ["entry", "episode"].includes(kind) &&
+        typeof payload.watched === "boolean"
+      )
+        payload = { ...payload, intent_at: createdAt };
       const blocked = (await listOperations(who.id)).find(
-        (o) => o.state !== "queued",
+        (o) =>
+          o.state !== "queued" &&
+          outboxLane(o) ===
+            outboxLane({ familyId: f, userId: who.id, kind, target, payload }),
       );
       if (blocked)
         throw Error(
@@ -448,7 +468,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         target,
         payload,
         expected,
-        createdAt: new Date().toISOString(),
+        createdAt,
         state: "queued",
       };
       await putOperation(op);
@@ -485,6 +505,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     async (id: string, next: Entry) => {
       const who = identity.current;
       if (!who) return;
+      const before = new Set((await listOperations(who.id)).map((o) => o.id));
       const previous =
         legacyProjection(state.current, who.id)[id] || emptyEntry();
       const r = state.current.members.find((m) => m.user_id === who.id)?.role;
@@ -541,7 +562,11 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         )
           await flush();
       }
-      if ((await listOperations(who.id)).some((o) => o.state !== "queued"))
+      if (
+        (await listOperations(who.id)).some(
+          (o) => !before.has(o.id) && o.state !== "queued",
+        )
+      )
         throw Error(
           "Не удалось применить изменение. Откройте очередь синхронизации.",
         );

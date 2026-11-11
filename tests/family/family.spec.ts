@@ -176,15 +176,16 @@ test("calendar invitation and viewing session use shared server operations", asy
     .getByRole("button", { name: "Открыть: Железный человек", exact: true })
     .click();
   await page
-    .getByRole("button", { name: "Начать совместный просмотр" })
+    .getByRole("button", { name: "Начать просмотр вместе", exact:true })
     .click();
   await expect(page.locator(".viewing-session")).toBeVisible();
+  await page.locator(".session-minute summary").click();
   await page.getByLabel("Минута фильма").fill("42");
   await page.getByRole("button", { name: "Отметить", exact: true }).click();
-  await expect(page.getByText("Сейчас на 42-й минуте")).toBeVisible();
-  await page.getByRole("button", { name: "Завершить наш просмотр" }).click();
+  await expect(page.getByText("42-я минута")).toBeVisible();
+  await page.getByRole("button", { name: "Завершить просмотр" }).click();
   await expect(
-    page.getByRole("heading", { name: "Сохраним послевкусие" }),
+    page.getByRole("heading", { name: "Ещё один вечер в нашей вселенной ❤️" }),
   ).toBeVisible();
 });
 test("offline chat queues once and flushes after reconnection; no fake delivery status", async ({
@@ -200,7 +201,7 @@ test("offline chat queues once and flushes after reconnection; no fake delivery 
   await page.getByLabel("Текст сообщения").fill("Сообщение без сети");
   await page.getByRole("button", { name: "Отправить сообщение" }).click();
   await expect(
-    page.getByText("В очереди на отправку", { exact: true }),
+    page.getByText("Ожидает подключения", { exact: true }),
   ).toBeVisible();
   expect(backend.tables.mv_messages).toHaveLength(0);
   await context.setOffline(false);
@@ -518,5 +519,219 @@ test("conflict comparison uses saved server data rather than a later queued loca
   await expect(
     page.getByText("В общем списке: 9", { exact: true }),
   ).toHaveCount(0);
+  expect(backend.tables.mv_ratings[0].score).toBe(6);
+});
+
+test("watch request appears automatically on partner phone and is counted only after confirmation", async ({
+  browser,
+}) => {
+  const backend = fixture(false, true);
+  backend.profiles.get(backend.tanya)!.welcome_seen_at =
+    new Date().toISOString();
+  backend.profiles.get(backend.tanya)!.onboarding_seen_at =
+    new Date().toISOString();
+  const ca = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+    }),
+    cb = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  await backend.connect(ca);
+  await backend.connect(cb);
+  const a = await ca.newPage(),
+    b = await cb.newPage();
+  await login(a, "anton@example.test");
+  await login(b, "tanya@example.test");
+  await a
+    .getByRole("button", { name: "Открыть: Железный человек 2", exact: true })
+    .click();
+  await a
+    .locator(".detail")
+    .getByRole("button", { name: "Посмотрели", exact: true })
+    .click();
+  await expect(
+    a.locator(".detail").getByText("Ждём: Таня", { exact: true }),
+  ).toBeVisible();
+  expect(
+    backend.tables.mv_entries.find((r) => r.project_id === "iron-man-2")
+      .watched,
+  ).toBe(false);
+  await expect(
+    b
+      .locator(".watch-inbox")
+      .getByRole("button", { name: "Да, посмотрели", exact: true }),
+  ).toBeVisible({ timeout: 12000 });
+  expect(
+    backend.tables.mv_notifications.some(
+      (n) => n.type === "watch_request" && n.recipient_id === backend.tanya,
+    ),
+  ).toBe(true);
+  await b
+    .locator(".watch-inbox")
+    .getByRole("button", { name: "Да, посмотрели", exact: true })
+    .click();
+  await expect
+    .poll(
+      () =>
+        backend.tables.mv_entries.find((r) => r.project_id === "iron-man-2")
+          .watched,
+    )
+    .toBe(true);
+  await expect(
+    a
+      .locator(".detail")
+      .getByRole("button", { name: "Просмотрено · отменить", exact: true }),
+  ).toBeVisible({ timeout: 12000 });
+  expect(
+    backend.tables.mv_notifications.some(
+      (n) => n.type === "watch_confirmed" && n.recipient_id === backend.anton,
+    ),
+  ).toBe(true);
+  await ca.close();
+  await cb.close();
+});
+
+test("partner can reject a watch request and both phones keep the movie unwatched", async ({
+  browser,
+}) => {
+  const backend = fixture(false, true);
+  backend.profiles.get(backend.tanya)!.welcome_seen_at =
+    new Date().toISOString();
+  backend.profiles.get(backend.tanya)!.onboarding_seen_at =
+    new Date().toISOString();
+  const ca = await browser.newContext(),
+    cb = await browser.newContext();
+  await backend.connect(ca);
+  await backend.connect(cb);
+  const a = await ca.newPage(),
+    b = await cb.newPage();
+  await login(a, "anton@example.test");
+  await login(b, "tanya@example.test");
+  await a
+    .getByRole("button", { name: "Открыть: Железный человек 2", exact: true })
+    .click();
+  await a
+    .locator(".detail")
+    .getByRole("button", { name: "Посмотрели", exact: true })
+    .click();
+  await expect(
+    b
+      .locator(".watch-inbox")
+      .getByRole("button", { name: "Ещё смотрим", exact: true }),
+  ).toBeVisible({ timeout: 12000 });
+  await b
+    .locator(".watch-inbox")
+    .getByRole("button", { name: "Ещё смотрим", exact: true })
+    .click();
+  await expect(
+    a
+      .locator(".detail")
+      .getByRole("button", { name: "Посмотрели", exact: true }),
+  ).toBeVisible({ timeout: 12000 });
+  expect(
+    backend.tables.mv_entries.find((r) => r.project_id === "iron-man-2")
+      .watched,
+  ).toBe(false);
+  await ca.close();
+  await cb.close();
+});
+
+test("an obsolete accidental local Iron Man 2 mark is removed after an explicit correction without resending", async ({
+  page,
+  context,
+}) => {
+  const backend = fixture(false, true);
+  backend.tables.mv_entries.push({
+    family_id: backend.tables.mv_members[0].family_id,
+    project_id: "iron-man-2",
+    watched: false,
+    watched_date: null,
+    note: "",
+    version: 1,
+    updated_by: backend.anton,
+    updated_at: "",
+  });
+  backend.tables.mv_watch_requests.push({
+    id: "corrected",
+    family_id: backend.tables.mv_members[0].family_id,
+    project_id: "iron-man-2",
+    season: 0,
+    episode: 0,
+    requested_by: backend.anton,
+    confirmed_by: null,
+    status: "cancelled",
+    base_version: 1,
+    version: 1,
+    requested_at: "",
+    responded_at: "",
+    proposed_date: null,
+  });
+  await backend.connect(context);
+  await login(page, "anton@example.test");
+  await page.evaluate(
+    async (data) => {
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        const r = indexedDB.open("our-marvel-family");
+        r.onsuccess = () => resolve(r.result);
+        r.onerror = () => reject(r.error);
+      });
+      await new Promise<void>((resolve, reject) => {
+        const tx = db.transaction("outbox", "readwrite");
+        tx.objectStore("outbox").put(data);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+      db.close();
+    },
+    {
+      id: "accidental-old-mark",
+      userId: backend.anton,
+      familyId: backend.tables.mv_members[0].family_id,
+      kind: "entry",
+      target: "iron-man-2",
+      payload: { watched: true, watched_date: "2026-11-09" },
+      expected: 0,
+      createdAt: "2026-11-09T00:00:00Z",
+      state: "conflict",
+    },
+  );
+  await page.goto("/#/sync");
+  await expect(
+    page.getByText("Всё синхронизировано ♡", { exact: true }),
+  ).toBeVisible();
+  expect(
+    backend.tables.mv_entries.find((r) => r.project_id === "iron-man-2")
+      .watched,
+  ).toBe(false);
+  expect(backend.tables.mv_watch_requests[0].status).toBe("cancelled");
+  expect(backend.tables.mv_notifications).toHaveLength(0);
+});
+
+test("one conflicted rating does not block saving another movie", async ({
+  page,
+  context,
+}) => {
+  const backend = fixture();
+  await backend.connect(context);
+  await login(page, "anton@example.test");
+  await page
+    .getByRole("button", { name: "Открыть: Железный человек", exact: true })
+    .click();
+  backend.tables.mv_ratings[0].score = 6;
+  backend.tables.mv_ratings[0].version = 2;
+  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await expect(page.locator(".error-banner")).toBeVisible();
+  await page.getByRole("button", { name: "Закрыть", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Открыть: Невероятный Халк", exact: true })
+    .click();
+  await page
+    .locator(".detail")
+    .getByRole("button", { name: "Посмотрели", exact: true })
+    .click();
+  await expect
+    .poll(
+      () =>
+        backend.tables.mv_entries.find((r) => r.project_id === "hulk")?.watched,
+    )
+    .toBe(true);
   expect(backend.tables.mv_ratings[0].score).toBe(6);
 });

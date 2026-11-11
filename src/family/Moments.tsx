@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { Camera, Plus, Trash2, MessageCircle } from "lucide-react";
+import { useRef, useState } from "react";
+import { Camera, Trash2, MessageCircle } from "lucide-react";
 import { catalog } from "../model";
 import { useFamily } from "./FamilyProvider";
 import { useAction, Feedback, Person, Reactions } from "./ui";
-import { PhotoUpload, PrivatePhoto } from "./media";
+import { PhotoUpload, PrivatePhoto, PhotoPicker, PhotoPreviews, usePhotoSelection, uploadSelection, mediaForTarget } from "./media";
 import { Chat } from "./Chat";
 export function Moments() {
   const f = useFamily(),
-    a = useAction();
+    a = useAction(), selection = usePhotoSelection();
+  const publishId = useRef(crypto.randomUUID());
   const [create, setCreate] = useState(false),
     [caption, setCaption] = useState(""),
     [project, setProject] = useState(""),
@@ -30,13 +31,7 @@ export function Moments() {
           <h1>Наши моменты</h1>
           <p>Фильм закончится. А это останется с нами.</p>
         </div>
-        <button
-          className="round-add"
-          aria-label="Добавить момент"
-          onClick={() => setCreate(!create)}
-        >
-          <Plus />
-        </button>
+        {!create && <PhotoPicker onFiles={(files) => { selection.add(files); setCreate(true); }} disabled={a.busy} label="Добавить фото" />}
       </div>
       {create && (
         <form
@@ -44,17 +39,23 @@ export function Moments() {
           onSubmit={(e) => {
             e.preventDefault();
             void a.run(async () => {
-              await f.mutate("moment", crypto.randomUUID(), {
+              const media_ids = await uploadSelection(selection.photos, f.rpc);
+              await f.mutate("moment", publishId.current, {
+                media_ids,
                 caption,
                 project_id: project || null,
                 moment_date: day,
               });
+              publishId.current = crypto.randomUUID();
+              selection.clear();
               setCreate(false);
               setCaption("");
             });
           }}
         >
           <h2>Ещё одно наше воспоминание</h2>
+          <PhotoPicker onFiles={selection.add} disabled={a.busy} />
+          <PhotoPreviews photos={selection.photos} remove={selection.remove} busy={a.busy} />
           <label>
             Подпись
             <textarea
@@ -92,10 +93,10 @@ export function Moments() {
             />
           </label>
           <p className="muted">
-            Создайте момент, затем добавьте фотографии из галереи или камеры.
+            Выберите фотографии и добавьте подпись. Всё появится в ленте вместе.
           </p>
-          <button className="primary" disabled={a.busy || f.offline}>
-            Сохранить момент
+          <button className="primary" disabled={a.busy || f.offline || !selection.photos.length}>
+            Опубликовать
           </button>
         </form>
       )}
@@ -128,18 +129,12 @@ export function Moments() {
                 )}
               </header>
               <div className="moment-photos">
-                {f.snapshot.media
-                  .filter(
-                    (p) =>
-                      p.ready && p.kind === "moment" && p.target_id === m.id,
-                  )
+                {mediaForTarget(f.snapshot, "moment", m.id)
                   .map((media) => (
                     <PrivatePhoto key={media.id} media={media} />
                   ))}
               </div>
-              {m.author_id === f.user?.id && (
-                <PhotoUpload kind="moment" target={m.id} />
-              )}
+              <PhotoUpload kind="moment" target={m.id} />
               <div className="moment-copy">
                 {m.project_id && (
                   <small className="gold">
@@ -164,7 +159,7 @@ export function Moments() {
           <Camera />
           <h2>У каждого вечера своя обложка</h2>
           <p>Сохраните первый кадр нашей маленькой вселенной.</p>
-          <button onClick={() => setCreate(true)}>Добавить воспоминание</button>
+          <p>Нажмите «Добавить фото» вверху.</p>
         </div>
       )}
     </div>
