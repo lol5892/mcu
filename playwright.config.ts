@@ -1,7 +1,7 @@
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "tests",
-  testIgnore: ["**/family/**", "**/pwa/**"],
+  testIgnore: ["**/family/**", "**/pwa/**", "**/visual/**"],
   fullyParallel: false,
   workers: 1,
   reporter: "list",

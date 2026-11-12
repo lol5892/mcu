@@ -167,7 +167,7 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
       const request = route.request(),
         url = new URL(request.url());
       const headers = {
-        "Access-Control-Allow-Origin": "http://127.0.0.1:4175",
+        "Access-Control-Allow-Origin": request.headers().origin || "http://127.0.0.1:4175",
         "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Methods": "GET,POST,DELETE,OPTIONS",
         "Content-Type": "application/json",
