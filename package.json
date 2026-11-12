@@ -1,7 +1,7 @@
 {
   "name": "our-marvel-watchlist",
   "private": true,
-  "version": "2.1.0",
+  "version": "2.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -13,7 +13,8 @@
     "test:sql": "bash scripts/test-sql.sh",
     "test:family": "playwright test -c playwright.family.config.ts",
     "test:edge": "deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts && deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts",
-    "test:pwa": "playwright test -c playwright.pwa.config.ts"
+    "test:pwa": "playwright test -c playwright.pwa.config.ts",
+    "test:visual": "playwright test -c playwright.visual.config.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.119.0",

@@ -11,3 +11,5 @@ supabase/.temp/
 supabase/.branches/
 private-setup/
 test-results-family/
+
+test-results-visual/

@@ -1,0 +1,21 @@
+[
+  {
+    "button": {
+      "x": 163,
+      "y": 125.328125,
+      "width": 30,
+      "height": 30
+    },
+    "svg": {
+      "x": 170,
+      "y": 131.828125,
+      "width": 17,
+      "height": 17
+    },
+    "dx": 0.5,
+    "dy": 0,
+    "padding": "1px 6px",
+    "display": "grid",
+    "viewBox": "0 0 24 24"
+  }
+]
