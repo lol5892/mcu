@@ -24,14 +24,12 @@ export function SeasonRatings({ projectId }: { projectId: string }) {
       const own = rows.find((r) => r.user_id === f.user?.id);
       const score = (role: string) => rows.find((r) => f.snapshot.members.find((m) => m.user_id === r.user_id)?.role === role)?.score;
       const anton = score("anton"), tanya = score("tanya");
-      const finishedOwnSession = f.snapshot.sessions.some((s) => s.project_id === projectId && s.status === "finished" && s.participants.includes(f.user?.id || "") && (season === 0 || s.season === season));
-      const canRate = finishedOwnSession || (project.type === "series" ? f.snapshot.episodes.some((e) => e.project_id === projectId && e.watched && (season === 0 || e.season === season)) : f.records[projectId]?.watched);
       return <div key={season} className="season-rating-row">
         <div><strong>{season ? `Сезон ${season}` : project.type === "series" ? "Сериал целиком" : "Фильм"}</strong><small>Антон: {anton ?? "—"} · Таня: {tanya ?? "—"} · Вместе: {anton != null && tanya != null ? ((anton + tanya) / 2).toFixed(1) : "—"}</small></div>
-        <label>Моя оценка<select aria-label={`Моя оценка ${season ? "сезона " + season : "проекта"}`} disabled={a.busy || (!canRate && own?.score == null)} value={own?.score ?? ""} onChange={(e) => { const value = e.target.value; void a.run(() => f.mutate("rating", projectId, { season, score: value ? Number(value) : null }, own?.version || 0)); }}><option value="">—</option>{Array.from({ length: 10 }, (_, i) => i + 1).map((n) => <option key={n} value={n} disabled={!canRate}>{n} / 10</option>)}</select></label>
+        <label>Моя оценка<select aria-label={`Моя оценка ${season ? "сезона " + season : "проекта"}`} disabled={a.busy} value={own?.score ?? ""} onChange={(e) => { const value = e.target.value; void a.run(() => f.mutate("rating", projectId, { season, score: value ? Number(value) : null }, own?.version || 0)); }}><option value="">—</option>{Array.from({ length: 10 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} / 10</option>)}</select></label>
       </div>;
     })}
-    <p className="muted">Каждый меняет только свою оценку. Её можно поставить после завершения совместного сеанса или отметки просмотренной серии.</p><Feedback text={a.feedback} />
+    <p className="muted">Каждый меняет только свою оценку. Её можно поставить в любое время, независимо от просмотра.</p><Feedback text={a.feedback} />
   </section>;
 }
 

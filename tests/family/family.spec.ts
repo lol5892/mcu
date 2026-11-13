@@ -735,3 +735,15 @@ test("one conflicted rating does not block saving another movie", async ({
     .toBe(true);
   expect(backend.tables.mv_ratings[0].score).toBe(6);
 });
+
+test('independent personal score survives pending and rejected watching',async({page,context})=>{
+ const backend=fixture(false,true);await backend.connect(context);await login(page,'anton@example.test');
+ await page.getByRole('button',{name:'Открыть: Железный человек 2',exact:true}).click();
+ await page.getByLabel('Оценка Антона',{exact:true}).selectOption('9');
+ await expect.poll(()=>backend.tables.mv_ratings.find(r=>r.project_id==='iron-man-2'&&r.user_id===backend.anton)?.score).toBe(9);
+ await expect(page.getByLabel('Оценка Тани',{exact:true})).toBeDisabled();
+ await page.locator('.detail').getByRole('button',{name:'Посмотрели',exact:true}).click();
+ await expect(page.getByLabel('Оценка Антона',{exact:true})).toHaveValue('9');
+ await page.getByLabel('Оценка Антона',{exact:true}).selectOption('8');
+ await expect.poll(()=>backend.tables.mv_ratings.find(r=>r.project_id==='iron-man-2'&&r.user_id===backend.anton)?.score).toBe(8);
+});

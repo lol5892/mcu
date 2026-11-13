@@ -233,6 +233,7 @@ export default function App() {
       cloudActive &&
       [
         "universe",
+        "legend",
         "letters",
         "chat",
         "project",
@@ -1549,10 +1550,6 @@ function Detail({
   const cloudActive = Boolean(
     family.user && family.familyId && !family.localMode,
   );
-  const canRate =
-    cloudActive && p.type === "series"
-      ? progress(p, r).done > 0
-      : watched(p, r);
   const done = watched(p, r),
     pr = progress(p, r),
     rating = average(r);
@@ -1777,13 +1774,6 @@ function Detail({
               {rating !== null ? rating.toFixed(1) : "—"} <small>/ 10</small>
             </span>
           </div>
-          {!canRate && (
-            <p className="muted">
-              {cloudActive
-                ? "Сначала отметьте просмотр фильма или серии. Свою прежнюю оценку можно сбросить в любой момент."
-                : "Оценки откроются после полного просмотра проекта."}
-            </p>
-          )}
           <div className="rating-fields">
             {(["anton", "tanya"] as const).map((who, i) => (
               <label key={who}>
@@ -1793,8 +1783,8 @@ function Detail({
                   aria-label={`Оценка ${i === 0 ? "Антона" : "Тани"}`}
                   disabled={
                     cloudActive
-                      ? who !== family.role || (!canRate && r[who] === null)
-                      : !canRate
+                      ? who !== family.role
+                      : false
                   }
                   value={r[who] ?? ""}
                   onChange={(e) =>
@@ -1809,7 +1799,7 @@ function Detail({
                     <option
                       key={n}
                       value={n}
-                      disabled={cloudActive && !canRate}
+
                     >
                       {n}
                     </option>

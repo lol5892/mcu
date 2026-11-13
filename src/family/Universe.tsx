@@ -1,3 +1,4 @@
+import {Legend} from "../legend/Legend";
 import { useEffect, useState } from "react";
 import {
   Mail,
@@ -162,6 +163,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
       Наша вселенная
     </button>
   );
+  if (route.page === "legend") return <>{back}<Legend onProject={onProject}/></>;
   if (route.page === "letters")
     return (
       <>
@@ -519,6 +521,9 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
       route: "/events",
       icon: CalendarHeart,
       cls: "rose",
+    },
+    {
+      title: "Наша легенда", text: "Каждый фильм — новая глава нашей истории", route: "/legend", icon: Star, cls: "gold",
     },
     {
       title: "Смотрим вместе",

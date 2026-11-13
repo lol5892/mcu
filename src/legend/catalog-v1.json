@@ -1,0 +1,2179 @@
+[
+  {
+    "id": "iron-man",
+    "title": "Железный человек",
+    "original": "Iron Man",
+    "date": "2008-05-02",
+    "year": 2008,
+    "phase": 1,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Тони Старк создаёт бронекостюм и решает изменить наследие своей компании.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 5,
+    "poster": "covers/iron-man.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "hulk",
+    "title": "Невероятный Халк",
+    "original": "The Incredible Hulk",
+    "date": "2008-06-13",
+    "year": 2008,
+    "phase": 1,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Брюс Бэннер ищет способ обуздать силу, которую пробуждает его гнев.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 7,
+    "poster": "covers/hulk.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "iron-man-2",
+    "title": "Железный человек 2",
+    "original": "Iron Man 2",
+    "date": "2010-05-07",
+    "year": 2010,
+    "phase": 1,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Старк сталкивается с последствиями публичного раскрытия своей личности.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 6,
+    "poster": "covers/iron-man-2.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "thor",
+    "title": "Тор",
+    "original": "Thor",
+    "date": "2011-05-06",
+    "year": 2011,
+    "phase": 1,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Изгнанный наследник Асгарда учится ответственности на Земле.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 9,
+    "poster": "covers/thor.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "first-avenger",
+    "title": "Первый мститель",
+    "original": "Captain America: The First Avenger",
+    "date": "2011-07-22",
+    "year": 2011,
+    "phase": 1,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Стив Роджерс становится суперсолдатом во время Второй мировой войны.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 2,
+    "poster": "covers/first-avenger.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "avengers",
+    "title": "Мстители",
+    "original": "The Avengers",
+    "date": "2012-05-04",
+    "year": 2012,
+    "phase": 1,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Ник Фьюри объединяет героев перед угрозой вторжения в Нью-Йорк.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 11,
+    "poster": "covers/avengers.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "iron-man-3",
+    "title": "Железный человек 3",
+    "original": "Iron Man 3",
+    "date": "2013-05-03",
+    "year": 2013,
+    "phase": 2,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "После битвы за Нью-Йорк Тони предстоит заново найти опору в себе.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 14,
+    "poster": "covers/iron-man-3.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "thor-dark",
+    "title": "Тор 2: Царство тьмы",
+    "original": "Thor: The Dark World",
+    "date": "2013-11-08",
+    "year": 2013,
+    "phase": 2,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Тор и Локи вынуждены объединиться против древней угрозы Девяти мирам.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 13,
+    "poster": "covers/thor-dark.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "winter-soldier",
+    "title": "Первый мститель: Другая война",
+    "original": "Captain America: The Winter Soldier",
+    "date": "2014-04-04",
+    "year": 2014,
+    "phase": 2,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Стив и Наташа распутывают заговор внутри Щ.И.Т.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 16,
+    "poster": "covers/winter-soldier.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "guardians",
+    "title": "Стражи Галактики",
+    "original": "Guardians of the Galaxy",
+    "date": "2014-08-01",
+    "year": 2014,
+    "phase": 2,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Пять космических изгоев неожиданно становятся командой.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 17,
+    "poster": "covers/guardians.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "ultron",
+    "title": "Мстители: Эра Альтрона",
+    "original": "Avengers: Age of Ultron",
+    "date": "2015-05-01",
+    "year": 2015,
+    "phase": 2,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Искусственный интеллект Старка выбирает опасный путь к миру на Земле.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 20,
+    "poster": "covers/ultron.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "ant-man",
+    "title": "Человек-муравей",
+    "original": "Ant-Man",
+    "date": "2015-07-17",
+    "year": 2015,
+    "phase": 2,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Скотт Лэнг получает костюм, позволяющий уменьшаться до размеров насекомого.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 21,
+    "poster": "covers/ant-man.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "civil-war",
+    "title": "Первый мститель: Противостояние",
+    "original": "Captain America: Civil War",
+    "date": "2016-05-06",
+    "year": 2016,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Спор о контроле над супергероями раскалывает Мстителей.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 22,
+    "poster": "covers/civil-war.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "strange",
+    "title": "Доктор Стрэндж",
+    "original": "Doctor Strange",
+    "date": "2016-11-04",
+    "year": 2016,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Хирург ищет исцеление и открывает мир мистических искусств.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 26,
+    "poster": "covers/strange.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "guardians-2",
+    "title": "Стражи Галактики. Часть 2",
+    "original": "Guardians of the Galaxy Vol. 2",
+    "date": "2017-05-05",
+    "year": 2017,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Питер Квилл узнаёт о своём происхождении, а команда — о значении семьи.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 18,
+    "poster": "covers/guardians-2.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "spider-home",
+    "title": "Человек-паук: Возвращение домой",
+    "original": "Spider-Man: Homecoming",
+    "date": "2017-07-07",
+    "year": 2017,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Питер Паркер пытается совместить школу с жизнью молодого героя.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 25,
+    "poster": "covers/spider-home.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "ragnarok",
+    "title": "Тор: Рагнарёк",
+    "original": "Thor: Ragnarok",
+    "date": "2017-11-03",
+    "year": 2017,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Вдали от Асгарда Тор собирает союзников, чтобы остановить Хелу.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 27,
+    "poster": "covers/ragnarok.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "panther",
+    "title": "Чёрная пантера",
+    "original": "Black Panther",
+    "date": "2018-02-16",
+    "year": 2018,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Т’Чалла принимает трон Ваканды и ответственность за её будущее.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 24,
+    "poster": "covers/panther.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "infinity-war",
+    "title": "Мстители: Война бесконечности",
+    "original": "Avengers: Infinity War",
+    "date": "2018-04-27",
+    "year": 2018,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Герои Земли и космоса противостоят поискам Камней бесконечности Таносом.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 29,
+    "poster": "covers/infinity-war.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "ant-wasp",
+    "title": "Человек-муравей и Оса",
+    "original": "Ant-Man and the Wasp",
+    "date": "2018-07-06",
+    "year": 2018,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Скотт и Хоуп отправляются на спасательную миссию в квантовый мир.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 28,
+    "poster": "covers/ant-wasp.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "captain-marvel",
+    "title": "Капитан Марвел",
+    "original": "Captain Marvel",
+    "date": "2019-03-08",
+    "year": 2019,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Кэрол Дэнверс возвращается на Землю 1990-х и ищет утраченное прошлое.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 4,
+    "poster": "covers/captain-marvel.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "endgame",
+    "title": "Мстители: Финал",
+    "original": "Avengers: Endgame",
+    "date": "2019-04-26",
+    "year": 2019,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Оставшиеся Мстители ищут шанс исправить последствия щелчка.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 30,
+    "poster": "covers/endgame.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "spider-far",
+    "title": "Человек-паук: Вдали от дома",
+    "original": "Spider-Man: Far From Home",
+    "date": "2019-07-02",
+    "year": 2019,
+    "phase": 3,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Европейские каникулы Питера прерываются появлением нового героя.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 35,
+    "poster": "covers/spider-far.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "widow",
+    "title": "Чёрная вдова",
+    "original": "Black Widow",
+    "date": "2021-07-09",
+    "year": 2021,
+    "phase": 4,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Наташа возвращается к своей первой семье и тайнам Красной комнаты.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 23,
+    "poster": "covers/widow.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "shang-chi",
+    "title": "Шан-Чи и легенда десяти колец",
+    "original": "Shang-Chi and the Legend of the Ten Rings",
+    "date": "2021-09-03",
+    "year": 2021,
+    "phase": 4,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Мастер боевых искусств встречается с отцом и наследием Десяти колец.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 34,
+    "poster": "covers/shang-chi.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "eternals",
+    "title": "Вечные",
+    "original": "Eternals",
+    "date": "2021-11-05",
+    "year": 2021,
+    "phase": 4,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Древние защитники Земли собираются после тысячелетий разлуки.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 36,
+    "poster": "covers/eternals.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "spider-no-way",
+    "title": "Человек-паук: Нет пути домой",
+    "original": "Spider-Man: No Way Home",
+    "date": "2021-12-17",
+    "year": 2021,
+    "phase": 4,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Попытка Питера вернуть анонимность открывает границы мультивселенной.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 37,
+    "poster": "covers/spider-no-way.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "strange-2",
+    "title": "Доктор Стрэндж: В мультивселенной безумия",
+    "original": "Doctor Strange in the Multiverse of Madness",
+    "date": "2022-05-06",
+    "year": 2022,
+    "phase": 4,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Стрэндж защищает девушку, способную перемещаться между вселенными.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 38,
+    "poster": "covers/strange-2.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "thor-love",
+    "title": "Тор: Любовь и гром",
+    "original": "Thor: Love and Thunder",
+    "date": "2022-07-08",
+    "year": 2022,
+    "phase": 4,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Тор вновь встречает Джейн Фостер на пути к сражению с Горром.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 45,
+    "poster": "covers/thor-love.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "wakanda",
+    "title": "Чёрная пантера: Ваканда навеки",
+    "original": "Black Panther: Wakanda Forever",
+    "date": "2022-11-11",
+    "year": 2022,
+    "phase": 4,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Ваканда переживает утрату короля и столкновение с подводным народом.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 41,
+    "poster": "covers/wakanda.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "quantumania",
+    "title": "Человек-муравей и Оса: Квантомания",
+    "original": "Ant-Man and the Wasp: Quantumania",
+    "date": "2023-02-17",
+    "year": 2023,
+    "phase": 5,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Семья Лэнгов оказывается в квантовой вселенной под властью Канга.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 48,
+    "poster": "covers/quantumania.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "guardians-3",
+    "title": "Стражи Галактики. Часть 3",
+    "original": "Guardians of the Galaxy Vol. 3",
+    "date": "2023-05-05",
+    "year": 2023,
+    "phase": 5,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Прошлое Ракеты заставляет Стражей рискнуть всем ради друга.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 49,
+    "poster": "covers/guardians-3.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "marvels",
+    "title": "Капитан Марвел 2",
+    "original": "The Marvels",
+    "date": "2023-11-10",
+    "year": 2023,
+    "phase": 5,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Кэрол, Моника и Камала обнаруживают неожиданную связь своих способностей.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 51,
+    "poster": "covers/marvels.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "deadpool",
+    "title": "Дэдпул и Росомаха",
+    "original": "Deadpool & Wolverine",
+    "date": "2024-07-26",
+    "year": 2024,
+    "phase": 5,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Дэдпул втягивает Росомаху в путешествие по мультивселенной MCU.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": null,
+    "poster": "covers/deadpool.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "brave-world",
+    "title": "Капитан Америка: Новый мир",
+    "original": "Captain America: Brave New World",
+    "date": "2025-02-14",
+    "year": 2025,
+    "phase": 5,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Сэм Уилсон с щитом Капитана Америки оказывается в центре политического кризиса.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 55,
+    "poster": "covers/brave-world.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "thunderbolts",
+    "title": "Громовержцы*",
+    "original": "Thunderbolts*",
+    "date": "2025-05-02",
+    "year": 2025,
+    "phase": 5,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Группа неоднозначных героев пытается выбраться из смертельной ловушки.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": 56,
+    "poster": "covers/thunderbolts.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "fantastic-four",
+    "title": "Фантастическая четвёрка: Первые шаги",
+    "original": "The Fantastic Four: First Steps",
+    "date": "2025-07-25",
+    "year": 2025,
+    "phase": 6,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Первая семья Marvel защищает свою ретрофутуристическую Землю от Галактуса.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": null,
+    "poster": "covers/fantastic-four.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "spider-new",
+    "title": "Человек-паук: Совершенно новый день",
+    "original": "Spider-Man: Brand New Day",
+    "date": "2026-07-31",
+    "year": 2026,
+    "phase": 6,
+    "type": "film",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Четвёртый фильм с Томом Холландом продолжает самостоятельный путь Питера Паркера.",
+    "sources": [
+      "https://www.sony.com/en/SonyInfo/blog/2026/08/04/",
+      "https://www.amctheatres.com/movies/spider-man-brand-new-day-78598"
+    ],
+    "chronology": 57,
+    "poster": "covers/spider-new.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "wandavision",
+    "title": "Ванда/Вижн",
+    "original": "WandaVision",
+    "date": "2021-01-15",
+    "year": 2021,
+    "phase": 4,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2021-01-15",
+        "episodes": 9,
+        "phase": 4
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Ванда и Вижн живут в мире ситкома, за которым скрывается загадка.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/41748/wandavision",
+      "https://www.imdb.com/title/tt9140560/episodes/"
+    ],
+    "chronology": 32,
+    "poster": "covers/wandavision.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "falcon",
+    "title": "Сокол и Зимний солдат",
+    "original": "The Falcon and the Winter Soldier",
+    "date": "2021-03-19",
+    "year": 2021,
+    "phase": 4,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2021-03-19",
+        "episodes": 6,
+        "phase": 4
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Сэм и Баки ищут своё место в мире после возвращения исчезнувших.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/41749/the-falcon-and-the-winter-soldier",
+      "https://www.imdb.com/title/tt9208876/episodes/"
+    ],
+    "chronology": 33,
+    "poster": "covers/falcon.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "loki",
+    "title": "Локи",
+    "original": "Loki",
+    "date": "2021-06-09",
+    "year": 2021,
+    "phase": 4,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2021-06-09",
+        "episodes": 6,
+        "phase": 4
+      },
+      {
+        "number": 2,
+        "date": "2023-10-05",
+        "episodes": 6,
+        "phase": 5
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Бог обмана знакомится с организацией, контролирующей течение времени.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/41007/loki",
+      "https://www.imdb.com/title/tt9140554/episodes/"
+    ],
+    "chronology": 31,
+    "poster": "covers/loki.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "what-if",
+    "title": "Что, если…?",
+    "original": "What If...?",
+    "date": "2021-08-11",
+    "year": 2021,
+    "phase": 4,
+    "type": "series",
+    "section": "animation",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2021-08-11",
+        "episodes": 9,
+        "phase": 4
+      },
+      {
+        "number": 2,
+        "date": "2023-12-22",
+        "episodes": 9,
+        "phase": 5
+      },
+      {
+        "number": 3,
+        "date": "2024-12-22",
+        "episodes": 8,
+        "phase": 5
+      }
+    ],
+    "seasonCount": 3,
+    "description": "Наблюдатель показывает альтернативные варианты ключевых событий MCU.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/41750/what-if",
+      "https://www.imdb.com/title/tt10168312/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/what-if.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "hawkeye",
+    "title": "Соколиный глаз",
+    "original": "Hawkeye",
+    "date": "2021-11-24",
+    "year": 2021,
+    "phase": 4,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2021-11-24",
+        "episodes": 6,
+        "phase": 4
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Клинт Бартон и Кейт Бишоп встречают опасности рождественского Нью-Йорка.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/43102/hawkeye",
+      "https://www.imdb.com/title/tt10160804/episodes/"
+    ],
+    "chronology": 39,
+    "poster": "covers/hawkeye.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "moon-knight",
+    "title": "Лунный рыцарь",
+    "original": "Moon Knight",
+    "date": "2022-03-30",
+    "year": 2022,
+    "phase": 4,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2022-03-30",
+        "episodes": 6,
+        "phase": 4
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Жизнь Стивена Гранта оказывается связана с египетскими богами и Марком Спектором.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/43518/moon-knight",
+      "https://www.imdb.com/title/tt10234724/episodes/"
+    ],
+    "chronology": 40,
+    "poster": "covers/moon-knight.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "ms-marvel",
+    "title": "Мисс Марвел",
+    "original": "Ms. Marvel",
+    "date": "2022-06-08",
+    "year": 2022,
+    "phase": 4,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2022-06-08",
+        "episodes": 6,
+        "phase": 4
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Камала Хан из Джерси-Сити открывает собственные сверхспособности.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/43519/ms-marvel",
+      "https://www.imdb.com/title/tt10857164/episodes/"
+    ],
+    "chronology": 44,
+    "poster": "covers/ms-marvel.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "groot",
+    "title": "Я есть Грут",
+    "original": "I Am Groot",
+    "date": "2022-08-10",
+    "year": 2022,
+    "phase": 4,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2022-08-10",
+        "episodes": 5,
+        "phase": 4
+      },
+      {
+        "number": 2,
+        "date": "2023-09-06",
+        "episodes": 5,
+        "phase": 5
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Короткие приключения малыша Грута между космическими странствиями.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/52351/i-am-groot",
+      "https://www.imdb.com/title/tt13623148/episodes/"
+    ],
+    "chronology": 19,
+    "poster": "covers/groot.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "she-hulk",
+    "title": "Женщина-Халк: Адвокат",
+    "original": "She-Hulk: Attorney at Law",
+    "date": "2022-08-18",
+    "year": 2022,
+    "phase": 4,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2022-08-18",
+        "episodes": 9,
+        "phase": 4
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Адвокат Дженнифер Уолтерс учится жить с силой Халка.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/43517/she-hulk-attorney-at-law",
+      "https://www.imdb.com/title/tt10857160/episodes/"
+    ],
+    "chronology": 43,
+    "poster": "covers/she-hulk.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "secret-invasion",
+    "title": "Секретное вторжение",
+    "original": "Secret Invasion",
+    "date": "2023-06-21",
+    "year": 2023,
+    "phase": 5,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2023-06-21",
+        "episodes": 6,
+        "phase": 5
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Ник Фьюри возвращается на Землю, где скруллы скрываются среди людей.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/52352/secret-invasion",
+      "https://www.imdb.com/title/tt13157618/episodes/"
+    ],
+    "chronology": 50,
+    "poster": "covers/secret-invasion.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "echo",
+    "title": "Эхо",
+    "original": "Echo",
+    "date": "2024-01-09",
+    "year": 2024,
+    "phase": 5,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2024-01-09",
+        "episodes": 5,
+        "phase": 5
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Майя Лопес возвращается к своим корням и последствиям жизни с Фиском.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/58950/echo",
+      "https://www.imdb.com/title/tt13966962/episodes/"
+    ],
+    "chronology": 42,
+    "poster": "covers/echo.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "agatha",
+    "title": "Это всё Агата",
+    "original": "Agatha All Along",
+    "date": "2024-09-18",
+    "year": 2024,
+    "phase": 5,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2024-09-18",
+        "episodes": 9,
+        "phase": 5
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Агата Харкнесс собирает ковен для путешествия по Дороге ведьм.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/58948/agatha-all-along",
+      "https://www.imdb.com/title/tt15571732/episodes/"
+    ],
+    "chronology": 52,
+    "poster": "covers/agatha.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "born-again",
+    "title": "Сорвиголова: Рождённый заново",
+    "original": "Daredevil: Born Again",
+    "date": "2025-03-04",
+    "year": 2025,
+    "phase": 5,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2025-03-04",
+        "episodes": 9,
+        "phase": 5
+      },
+      {
+        "number": 2,
+        "date": "2026-03-24",
+        "episodes": 8,
+        "phase": 6
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Мэтт Мёрдок и Уилсон Фиск вновь борются за будущее Нью-Йорка.",
+    "sources": [
+      "https://www.disneyplus.com/whats-on/series/daredevil-born-again-season-two",
+      "https://press.disney.co.uk/news/marvel-television-reveals-trailer-%26-key-art-for-the-highly-anticipated-second-season-of-daredevil-born-again",
+      "https://www.tvmaze.com/shows/63234/daredevil-born-again",
+      "https://www.imdb.com/title/tt18923754/episodes/"
+    ],
+    "chronology": 54,
+    "poster": "covers/born-again.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "ironheart",
+    "title": "Железное сердце",
+    "original": "Ironheart",
+    "date": "2025-06-24",
+    "year": 2025,
+    "phase": 5,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2025-06-24",
+        "episodes": 6,
+        "phase": 5
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Изобретательница Рири Уильямс возвращается в Чикаго, где технологии встречают магию.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/47859/ironheart",
+      "https://www.imdb.com/title/tt13623126/episodes/"
+    ],
+    "chronology": 53,
+    "poster": "covers/ironheart.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "wakanda-eyes",
+    "title": "Очи Ваканды",
+    "original": "Eyes of Wakanda",
+    "date": "2025-08-01",
+    "year": 2025,
+    "phase": 6,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2025-08-01",
+        "episodes": 4,
+        "phase": 6
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Воины Ваканды возвращают похищенные вибраниумные артефакты в разные эпохи.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/73415/eyes-of-wakanda",
+      "https://www.imdb.com/title/tt13968252/episodes/"
+    ],
+    "chronology": 1,
+    "poster": "covers/wakanda-eyes.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "zombies",
+    "title": "Зомби Marvel",
+    "original": "Marvel Zombies",
+    "date": "2025-09-24",
+    "year": 2025,
+    "phase": 6,
+    "type": "series",
+    "section": "animation",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2025-09-24",
+        "episodes": 4,
+        "phase": 6
+      }
+    ],
+    "seasonCount": 1,
+    "description": "В альтернативной ветви MCU выжившие противостоят заражённым супергероям.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/58949/marvel-zombies",
+      "https://www.imdb.com/title/tt16027014/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/zombies.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "friendly-spider",
+    "title": "Ваш дружелюбный сосед Человек-паук",
+    "original": "Your Friendly Neighborhood Spider-Man",
+    "date": "2025-01-29",
+    "year": 2025,
+    "phase": 5,
+    "type": "series",
+    "section": "animation",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2025-01-29",
+        "episodes": 10,
+        "phase": 5
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Альтернативная история взросления Питера Паркера, отдельная от основной линии MCU.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/58952/your-friendly-neighborhood-spider-man",
+      "https://www.imdb.com/title/tt16027074/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/friendly-spider.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "xmen97",
+    "title": "Люди Икс ’97",
+    "original": "X-Men '97",
+    "date": "2024-03-20",
+    "year": 2024,
+    "phase": null,
+    "type": "series",
+    "section": "animation",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2024-03-20",
+        "episodes": 10,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2026-07-01",
+        "episodes": 9,
+        "phase": null
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Продолжение мультсериала о мутантах 1990-х. Отдельная анимационная вселенная.",
+    "sources": [
+      "https://press.disney.co.uk/news/marvel-animations-x-men-97-season-2-now-streaming-exclusively-on-disney",
+      "https://www.tvmaze.com/shows/58951/x-men-97",
+      "https://www.imdb.com/title/tt16026746/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/xmen97.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "wonder-man",
+    "title": "Чудо-человек",
+    "original": "Wonder Man",
+    "date": "2026-01-27",
+    "year": 2026,
+    "phase": 6,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2026-01-27",
+        "episodes": 8,
+        "phase": 6
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Актёр Саймон Уильямс ищет большую роль в Голливуде вместе с Тревором Слэттери.",
+    "sources": [
+      "https://thewaltdisneycompany.com/news/marvel-television-wonder-man/",
+      "https://www.imdb.com/title/tt21066182/episodes/",
+      "https://www.tvmaze.com/shows/62569/wonder-man"
+    ],
+    "chronology": null,
+    "poster": "covers/wonder-man.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "visionquest",
+    "title": "ВижнКвест",
+    "original": "VisionQuest",
+    "date": "2026-10-13",
+    "year": 2026,
+    "phase": 6,
+    "type": "series",
+    "section": "main",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2026-10-13",
+        "episodes": 8,
+        "phase": 6,
+        "episodeDates": [
+          "2026-10-13",
+          "2026-10-13",
+          "2026-10-20",
+          "2026-10-20",
+          "2026-10-27",
+          "2026-10-27",
+          "2026-11-03",
+          "2026-11-10"
+        ]
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Белый Вижн пытается понять своё прошлое, память и собственную личность.",
+    "sources": [
+      "https://thewaltdisneycompany.com/news/marvel-television-visionquest-disney-plus/",
+      "https://www.imdb.com/title/tt23112594/episodes/",
+      "https://www.tvmaze.com/shows/64950/visionquest/episodeguide",
+      "https://www.tvmaze.com/shows/64950/visionquest"
+    ],
+    "chronology": null,
+    "poster": "covers/visionquest.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "daredevil",
+    "title": "Сорвиголова",
+    "original": "Daredevil",
+    "date": "2015-04-10",
+    "year": 2015,
+    "phase": null,
+    "type": "series",
+    "section": "defenders",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2015-04-10",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2016-03-18",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 3,
+        "date": "2018-10-19",
+        "episodes": 13,
+        "phase": null
+      }
+    ],
+    "seasonCount": 3,
+    "description": "Незрячий адвокат Мэтт Мёрдок защищает Адскую кухню днём и ночью.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/1369/marvels-daredevil",
+      "https://www.imdb.com/title/tt3322312/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/daredevil.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "jessica",
+    "title": "Джессика Джонс",
+    "original": "Jessica Jones",
+    "date": "2015-11-20",
+    "year": 2015,
+    "phase": null,
+    "type": "series",
+    "section": "defenders",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2015-11-20",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2018-03-08",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 3,
+        "date": "2019-06-14",
+        "episodes": 13,
+        "phase": null
+      }
+    ],
+    "seasonCount": 3,
+    "description": "Частный детектив со сверхсилой разбирается с делами и травмами прошлого.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/1370/marvels-jessica-jones",
+      "https://www.imdb.com/title/tt2357547/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/jessica.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "luke",
+    "title": "Люк Кейдж",
+    "original": "Luke Cage",
+    "date": "2016-09-30",
+    "year": 2016,
+    "phase": null,
+    "type": "series",
+    "section": "defenders",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2016-09-30",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2018-06-22",
+        "episodes": 13,
+        "phase": null
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Неуязвимый герой становится защитником Гарлема.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/2174/marvels-luke-cage",
+      "https://www.imdb.com/title/tt3322314/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/luke.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "iron-fist",
+    "title": "Железный кулак",
+    "original": "Iron Fist",
+    "date": "2017-03-17",
+    "year": 2017,
+    "phase": null,
+    "type": "series",
+    "section": "defenders",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2017-03-17",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2018-09-07",
+        "episodes": 10,
+        "phase": null
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Дэнни Рэнд возвращается в Нью-Йорк после обучения в К’унь-Луне.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/2175/marvels-iron-fist",
+      "https://www.imdb.com/title/tt3322310/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/iron-fist.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "defenders",
+    "title": "Защитники",
+    "original": "The Defenders",
+    "date": "2017-08-18",
+    "year": 2017,
+    "phase": null,
+    "type": "series",
+    "section": "defenders",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2017-08-18",
+        "episodes": 8,
+        "phase": null
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Четверо уличных героев объединяются против организации Рука.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/2176/marvels-the-defenders",
+      "https://www.imdb.com/title/tt4230076/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/defenders.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "punisher",
+    "title": "Каратель",
+    "original": "The Punisher",
+    "date": "2017-11-17",
+    "year": 2017,
+    "phase": null,
+    "type": "series",
+    "section": "defenders",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2017-11-17",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2019-01-18",
+        "episodes": 13,
+        "phase": null
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Фрэнк Касл раскрывает заговор, связанный с гибелью его семьи.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/16544/marvels-the-punisher",
+      "https://www.imdb.com/title/tt5675620/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/punisher.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "shield",
+    "title": "Агенты Щ.И.Т.",
+    "original": "Agents of S.H.I.E.L.D.",
+    "date": "2013-09-24",
+    "year": 2013,
+    "phase": null,
+    "type": "series",
+    "section": "related",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2013-09-24",
+        "episodes": 22,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2014-09-23",
+        "episodes": 22,
+        "phase": null
+      },
+      {
+        "number": 3,
+        "date": "2015-09-29",
+        "episodes": 22,
+        "phase": null
+      },
+      {
+        "number": 4,
+        "date": "2016-09-20",
+        "episodes": 22,
+        "phase": null
+      },
+      {
+        "number": 5,
+        "date": "2017-12-01",
+        "episodes": 22,
+        "phase": null
+      },
+      {
+        "number": 6,
+        "date": "2019-05-10",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 7,
+        "date": "2020-05-27",
+        "episodes": 13,
+        "phase": null
+      }
+    ],
+    "seasonCount": 7,
+    "description": "Команда Фила Колсона расследует сверхъестественные угрозы. Поздние сезоны расходятся с основной линией MCU.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/31/marvels-agents-of-shield",
+      "https://www.imdb.com/title/tt2364582/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/shield.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "carter",
+    "title": "Агент Картер",
+    "original": "Agent Carter",
+    "date": "2015-01-06",
+    "year": 2015,
+    "phase": null,
+    "type": "series",
+    "section": "related",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2015-01-06",
+        "episodes": 8,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2016-01-19",
+        "episodes": 10,
+        "phase": null
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Послевоенные приключения Пегги Картер. Сериал вынесен отдельно: статус всей истории в актуальном каноне не закреплён однозначно.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/336/marvels-agent-carter",
+      "https://www.imdb.com/title/tt3475734/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/carter.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "inhumans",
+    "title": "Сверхлюди",
+    "original": "Inhumans",
+    "date": "2017-09-29",
+    "year": 2017,
+    "phase": null,
+    "type": "series",
+    "section": "related",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2017-09-29",
+        "episodes": 8,
+        "phase": null
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Королевская семья Аттилана оказывается на Земле. Канонический статус неоднозначен; дата телевизионной премьеры.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/22928/marvels-inhumans",
+      "https://www.imdb.com/title/tt4154858/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/inhumans.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "runaways",
+    "title": "Беглецы",
+    "original": "Runaways",
+    "date": "2017-11-21",
+    "year": 2017,
+    "phase": null,
+    "type": "series",
+    "section": "related",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2017-11-21",
+        "episodes": 10,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2018-12-21",
+        "episodes": 13,
+        "phase": null
+      },
+      {
+        "number": 3,
+        "date": "2019-12-13",
+        "episodes": 10,
+        "phase": null
+      }
+    ],
+    "seasonCount": 3,
+    "description": "Подростки обнаруживают, что их родители скрывают опасную тайну. Канонический статус неоднозначен.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/20172/marvels-runaways",
+      "https://www.imdb.com/title/tt1236246/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/runaways.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "cloak-dagger",
+    "title": "Плащ и Кинжал",
+    "original": "Cloak & Dagger",
+    "date": "2018-06-07",
+    "year": 2018,
+    "phase": null,
+    "type": "series",
+    "section": "related",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2018-06-07",
+        "episodes": 10,
+        "phase": null
+      },
+      {
+        "number": 2,
+        "date": "2019-04-04",
+        "episodes": 10,
+        "phase": null
+      }
+    ],
+    "seasonCount": 2,
+    "description": "Тайрон и Тэнди открывают взаимосвязанные способности. Канонический статус неоднозначен.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/15307/marvels-cloak-dagger",
+      "https://www.imdb.com/title/tt5614844/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/cloak-dagger.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "slingshot",
+    "title": "Агенты Щ.И.Т.: Йо-Йо",
+    "original": "Agents of S.H.I.E.L.D.: Slingshot",
+    "date": "2016-12-13",
+    "year": 2016,
+    "phase": null,
+    "type": "series",
+    "section": "related",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2016-12-13",
+        "episodes": 6,
+        "phase": null
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Короткий веб-сериал об Елене Родригес; дополнение к Агентам Щ.И.Т.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/23460/marvels-agents-of-shield-slingshot",
+      "https://www.imdb.com/title/tt6313900/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/slingshot.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "helstrom",
+    "title": "Хелстром",
+    "original": "Helstrom",
+    "date": "2020-10-16",
+    "year": 2020,
+    "phase": null,
+    "type": "series",
+    "section": "related",
+    "seasons": [
+      {
+        "number": 1,
+        "date": "2020-10-16",
+        "episodes": 10,
+        "phase": null
+      }
+    ],
+    "seasonCount": 1,
+    "description": "Брат и сестра расследуют демонические явления. Проект Marvel Television вне подтверждённого основного канона MCU.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://www.tvmaze.com/shows/42012/helstrom",
+      "https://www.imdb.com/title/tt10266874/episodes/"
+    ],
+    "chronology": null,
+    "poster": "covers/helstrom.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "werewolf",
+    "title": "Ночной оборотень",
+    "original": "Werewolf by Night",
+    "date": "2022-10-07",
+    "year": 2022,
+    "phase": 4,
+    "type": "special",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Охотники на монстров собираются в поместье Бладстоунов.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/"
+    ],
+    "chronology": 46,
+    "poster": "covers/werewolf.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "holiday",
+    "title": "Стражи Галактики: Праздничный спецвыпуск",
+    "original": "The Guardians of the Galaxy Holiday Special",
+    "date": "2022-11-25",
+    "year": 2022,
+    "phase": 4,
+    "type": "special",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Мантис и Дракс ищут на Земле идеальный рождественский подарок для Питера.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/"
+    ],
+    "chronology": 47,
+    "poster": "covers/holiday.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "punisher-special",
+    "title": "Каратель: Последнее убийство",
+    "original": "The Punisher: One Last Kill",
+    "date": "2026-05-12",
+    "year": 2026,
+    "phase": 6,
+    "type": "special",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Фрэнк Касл вновь сталкивается с насилием в отдельном сюжетном спецвыпуске.",
+    "sources": [
+      "https://thewaltdisneycompany.com/news/the-punisher-one-last-kill/",
+      "https://d23.com/the-punisher-one-last-kill-behind-the-scenes-of-marvel-televisions-dark-action-packed-special-presentation-on-disney/"
+    ],
+    "chronology": null,
+    "poster": "covers/punisher-special.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "consultant",
+    "title": "Консультант",
+    "original": "The Consultant",
+    "date": "2011-09-13",
+    "year": 2011,
+    "phase": 1,
+    "type": "special",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Короткая история о том, как агенты Щ.И.Т. решают проблему с инициативой Мстители.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/"
+    ],
+    "chronology": 10,
+    "poster": "covers/consultant.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "thor-hammer",
+    "title": "Забавный случай по дороге к молоту Тора",
+    "original": "A Funny Thing Happened on the Way to Thor’s Hammer",
+    "date": "2011-10-25",
+    "year": 2011,
+    "phase": 1,
+    "type": "special",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Фил Колсон делает остановку на заправке по пути в Нью-Мексико.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/"
+    ],
+    "chronology": 8,
+    "poster": "covers/thor-hammer.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "item47",
+    "title": "Образец 47",
+    "original": "Item 47",
+    "date": "2012-09-25",
+    "year": 2012,
+    "phase": 1,
+    "type": "special",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Обычная пара находит оружие читаури после битвы за Нью-Йорк.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/"
+    ],
+    "chronology": 12,
+    "poster": "covers/item47.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "carter-short",
+    "title": "Агент Картер: короткометражка",
+    "original": "Agent Carter",
+    "date": "2013-09-03",
+    "year": 2013,
+    "phase": 2,
+    "type": "special",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Пегги Картер берётся за самостоятельную послевоенную миссию.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/"
+    ],
+    "chronology": 3,
+    "poster": "covers/carter-short.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "king",
+    "title": "Да здравствует король",
+    "original": "All Hail the King",
+    "date": "2014-02-04",
+    "year": 2014,
+    "phase": 2,
+    "type": "special",
+    "section": "main",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Тревор Слэттери принимает необычного посетителя в тюрьме.",
+    "sources": [
+      "https://www.marvel.com/tv-shows",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/"
+    ],
+    "chronology": 15,
+    "poster": "covers/king.svg",
+    "verifiedAt": "2026-11-08",
+    "dateConvention": "US release / first streaming availability; One-Shots: first official home/digital release"
+  },
+  {
+    "id": "doomsday",
+    "title": "Мстители: Судный день",
+    "original": "Avengers: Doomsday",
+    "date": "2026-12-18",
+    "year": 2026,
+    "phase": 6,
+    "type": "film",
+    "section": "future",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Будущий фильм. Дата анонсирована; в прогресс вышедших проектов не входит.",
+    "sources": ["https://movies.disney.com/avengers-doomsday"],
+    "chronology": null,
+    "poster": "covers/doomsday.svg",
+    "verifiedAt": "2026-11-08"
+  },
+  {
+    "id": "secret-wars",
+    "title": "Мстители: Секретные войны",
+    "original": "Avengers: Secret Wars",
+    "date": "2027-12-17",
+    "year": 2027,
+    "phase": 6,
+    "type": "film",
+    "section": "future",
+    "seasons": [],
+    "seasonCount": 0,
+    "description": "Анонсированное продолжение саги мультивселенной. Дата может измениться.",
+    "sources": [
+      "https://www.marvel.com/movies",
+      "https://www.disneyplus.com/explore/articles/marvel-movies-in-order/",
+      "https://editorial.rottentomatoes.com/guide/marvel-movie-release-timeline/"
+    ],
+    "chronology": null,
+    "poster": "covers/secret-wars.svg",
+    "verifiedAt": "2026-11-08"
+  }
+]

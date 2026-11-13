@@ -22,13 +22,13 @@ export function markAll(p:Project,r:Entry,on:boolean):Entry{
  const episodes=on?p.seasons.flatMap(s=>Array.from({length:s.episodes},(_,i)=>i+1).filter(e=>available(p,s,e)).map(e=>episodeKey(s.number,e))):[];
  const next={...r,watched:on,episodes,date:on?(r.date||today()):'',updatedAt:new Date().toISOString()};
  if(p.type==='series')next.watched=watched(p,next);
- if(!next.watched){next.anton=null;next.tanya=null;next.date='';}
+ if(!next.watched)next.date='';
  return next;
 }
 export function toggleEpisode(p:Project,r:Entry,key:string){
  const episodes=r.episodes.includes(key)?r.episodes.filter(e=>e!==key):[...r.episodes,key];
  const next={...r,episodes,updatedAt:new Date().toISOString()}; next.watched=watched(p,next);next.date=next.watched?(r.date||today()):'';
- if(!next.watched){next.anton=null;next.tanya=null;} return next;
+ return next;
 }
 export type Filters={query:string;section:Section|'all';type:string;status:string;phase:string;sort:string};
 export function selectProjects(records:Records,f:Filters){
@@ -44,7 +44,7 @@ export function selectProjects(records:Records,f:Filters){
  });
 }
 export function stats(records:Records,projects=catalog.filter(p=>p.section!=='future')){
- const done=projects.filter(p=>watched(p,records[p.id]));const ratings=done.map(p=>average(records[p.id])).filter((x):x is number=>x!==null);
+ const done=projects.filter(p=>watched(p,records[p.id]));const ratings=projects.map(p=>average(records[p.id])).filter((x):x is number=>x!==null);
  return {total:projects.length,done:done.length,left:projects.length-done.length,percent:projects.length?Math.round(done.length/projects.length*100):0,average:ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:null,films:done.filter(p=>p.type==='film').length,series:done.filter(p=>p.type==='series').length,episodes:projects.reduce((n,p)=>n+(p.type==='series'?progress(p,records[p.id]).done:0),0)};
 }
 export function validateBackup(input:unknown):Records{
