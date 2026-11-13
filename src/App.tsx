@@ -1798,7 +1798,7 @@ function Detail({
                     <option
                       key={n}
                       value={n}
-                      
+
                     >
                       {n}
                     </option>
