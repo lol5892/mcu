@@ -233,6 +233,7 @@ export default function App() {
       cloudActive &&
       [
         "universe",
+        "legend",
         "letters",
         "chat",
         "project",

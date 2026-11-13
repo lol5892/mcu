@@ -233,6 +233,7 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
       }
       if (url.pathname.includes("/rpc/")) {
         const name = url.pathname.split("/").pop();
+        if (name === "mv_legend") return send({awards:[],seen:[],initial:false});
         if (name === "mv_join_status")
           return send({
             can_create:

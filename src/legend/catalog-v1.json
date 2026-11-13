@@ -2150,9 +2150,7 @@
     "seasons": [],
     "seasonCount": 0,
     "description": "Будущий фильм. Дата анонсирована; в прогресс вышедших проектов не входит.",
-    "sources": [
-      "https://movies.disney.com/avengers-doomsday"
-    ],
+    "sources": ["https://movies.disney.com/avengers-doomsday"],
     "chronology": null,
     "poster": "covers/doomsday.svg",
     "verifiedAt": "2026-11-08"

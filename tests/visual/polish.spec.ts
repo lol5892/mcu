@@ -81,3 +81,26 @@ test("focused chat keeps composer inside viewport and above navigation", async (
   await expect(input).toHaveValue("Черновик остаётся");
   await noOverflow(page);
 });
+
+test("legend phase collection opens existing project card", async ({
+  page,
+  context,
+}, info) => {
+  await setup(page, context);
+  await page.goto("/#/legend");
+  await expect(
+    page.getByRole("heading", { name: "Наша легенда", exact: true }),
+  ).toBeVisible();
+  await page.getByLabel("Коллекция наград").selectOption("phases");
+  await noOverflow(page);
+  await page.screenshot({
+    path: `docs/v2.3/${info.project.name}-legend.png`,
+    scale: "css",
+  });
+  await page.getByRole("button", { name: /Фьюри, мы собрали семью/ }).click();
+  await page
+    .getByRole("button", { name: /Железный человек$/, exact: false })
+    .first()
+    .click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+});
