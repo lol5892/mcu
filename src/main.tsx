@@ -1,10 +1,11 @@
-import {AfterCreditsProvider} from "./family/AfterCredits";
+import { AfterCreditsProvider } from "./family/AfterCredits";
 import { LegendProvider } from "./legend/Legend";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./style.css";
 import "./family/family.css";
+import "./design25.css";
 import { FamilyProvider } from "./family/FamilyProvider";
 import { AuthBoundary } from "./family/AuthBoundary";
 import { WelcomeGate } from "./family/Welcome";
@@ -16,9 +17,11 @@ createRoot(document.getElementById("root")!).render(
       <PwaSafetyGate />
       <AuthBoundary>
         <WelcomeGate>
-          <AfterCreditsProvider><LegendProvider>
-            <App />
-          </LegendProvider></AfterCreditsProvider>
+          <AfterCreditsProvider>
+            <LegendProvider>
+              <App />
+            </LegendProvider>
+          </AfterCreditsProvider>
         </WelcomeGate>
       </AuthBoundary>
     </FamilyProvider>

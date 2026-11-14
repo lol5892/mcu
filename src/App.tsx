@@ -1,6 +1,6 @@
-import {Impressions} from "./family/AfterCredits";
-import {Legend} from "./legend/Legend";
-import {Trophy} from "lucide-react";
+import { Impressions } from "./family/AfterCredits";
+import { Legend, LegendHomePreview } from "./legend/Legend";
+import { Trophy } from "lucide-react";
 import { APP_VERSION } from "./pwa/version";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -65,9 +65,14 @@ import {
 import { useFamily } from "./family/FamilyProvider";
 import { WatchControls, WatchInbox } from "./family/WatchConfirmation";
 import { Universe, FamilyHomeCards, useFamilyRoute } from "./family/Universe";
-import { ProjectFamilyTools, StartTogether, ActiveSessionCard } from "./family/Sessions";
+import {
+  ProjectFamilyTools,
+  StartTogether,
+  ActiveSessionCard,
+} from "./family/Sessions";
 import { Sparkles } from "lucide-react";
-type Tab = "home" | "catalog" | "saved" | "stats" | "legend" | "settings" | "universe";
+type Tab =
+  "home" | "catalog" | "saved" | "stats" | "legend" | "settings" | "universe";
 const nav = [
   { id: "home", label: "Главная", icon: Home },
   { id: "catalog", label: "Каталог", icon: Clapperboard },
@@ -98,8 +103,11 @@ function Cover({ p, className = "" }: { p: Project; className?: string }) {
       src={base + p.poster}
       alt={`Авторская обложка: ${p.title}`}
       loading="lazy"
+      decoding="async"
       onError={(e) => {
-        e.currentTarget.style.visibility = "hidden";
+        if (!e.currentTarget.src.endsWith("/cover-fallback.svg")) {
+          e.currentTarget.src = base + "cover-fallback.svg";
+        }
       }}
     />
   );
@@ -254,11 +262,22 @@ export default function App() {
       setSelected(null);
     }
   }, [familyRoute.page, familyRoute.id, cloudActive]);
-  useEffect(()=>{if(familyRoute.page==="project"&&familyRoute.id){setTab("catalog");setSelected(catalog.find(p=>p.id===familyRoute.id)||null);}},[familyRoute.page,familyRoute.id]);
-  useEffect(()=>{if(familyRoute.page==="legend"){setTab(familyRoute.id==="stats"?"stats":"legend");setSelected(null);}},[familyRoute.page,familyRoute.id]);
+  useEffect(() => {
+    if (familyRoute.page === "project" && familyRoute.id) {
+      setTab("catalog");
+      setSelected(catalog.find((p) => p.id === familyRoute.id) || null);
+    }
+  }, [familyRoute.page, familyRoute.id]);
+  useEffect(() => {
+    if (familyRoute.page === "legend") {
+      setTab(familyRoute.id === "stats" ? "stats" : "legend");
+      setSelected(null);
+    }
+  }, [familyRoute.page, familyRoute.id]);
   function go(t: Tab) {
     setTab(t);
-    if (t === "legend" || t === "stats") location.hash=t==="stats"?"/legend/stats":"/legend";
+    if (t === "legend" || t === "stats")
+      location.hash = t === "stats" ? "/legend/stats" : "/legend";
     else if (t === "universe") location.hash = "/universe";
     else if (location.hash.startsWith("#/")) location.hash = "";
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -378,7 +397,11 @@ export default function App() {
           {nav.map((n) => (
             <button
               key={n.id}
-              className={tab === n.id || tab === "stats" && n.id === "legend" ? "active" : ""}
+              className={
+                tab === n.id || (tab === "stats" && n.id === "legend")
+                  ? "active"
+                  : ""
+              }
               onClick={() => go(n.id)}
             >
               <n.icon size={20} />
@@ -438,8 +461,29 @@ export default function App() {
           onNotice={setNotice}
         />
         <main>
-          {(tab==="legend"||tab==="stats")&&<div className="personal-tabs"><button onClick={()=>go("legend")} className={tab==="legend"?"active":""}>Достижения</button><button onClick={()=>go("stats")} className={tab==="stats"?"active":""}>Статистика</button></div>}
-          {tab==="legend"&&<Legend onProject={id=>setSelected(catalog.find(p=>p.id===id)||null)}/>}
+          {(tab === "legend" || tab === "stats") && (
+            <div className="personal-tabs">
+              <button
+                onClick={() => go("legend")}
+                className={tab === "legend" ? "active" : ""}
+              >
+                Достижения
+              </button>
+              <button
+                onClick={() => go("stats")}
+                className={tab === "stats" ? "active" : ""}
+              >
+                Статистика
+              </button>
+            </div>
+          )}
+          {tab === "legend" && (
+            <Legend
+              onProject={(id) =>
+                setSelected(catalog.find((p) => p.id === id) || null)
+              }
+            />
+          )}
 
           {tab === "universe" && (
             <Universe
@@ -470,63 +514,13 @@ export default function App() {
                   THE MARVEL JOURNEY <span>2008 — 2026</span>
                 </div>
               </section>
-              <FamilyHomeCards />
               {cloudActive && <ActiveSessionCard />}
-              <section
-                className="family-stats"
-                aria-label="Семейная статистика"
-              >
-                <div
-                  className="progress-ring"
-                  style={
-                    { "--p": `${allStats.percent}%` } as React.CSSProperties
-                  }
-                >
-                  <div>
-                    <strong>
-                      {allStats.percent}
-                      <em>%</em>
-                    </strong>
-                    <small>вселенной</small>
-                  </div>
-                </div>
-                <div className="stats-body">
-                  <div className="stats-title">
-                    <span>Наш путь по Marvel</span>
-                    <span className="tiny-tag">АНТОН + ТАНЯ</span>
-                  </div>
-                  <div className="stat-numbers">
-                    <div>
-                      <strong>
-                        {allStats.done}
-                        <small> / {allStats.total}</small>
-                      </strong>
-                      <span>Просмотрено</span>
-                    </div>
-                    <div>
-                      <strong>{allStats.left}</strong>
-                      <span>Ещё впереди</span>
-                    </div>
-                    <div>
-                      <strong className="gold">
-                        <Star size={19} fill="currentColor" />
-                        {allStats.average?.toFixed(1) || "—"}
-                      </strong>
-                      <span>Наша оценка</span>
-                    </div>
-                  </div>
-                  <Bar value={allStats.percent} />
-                  <small className="stats-foot">
-                    {allStats.films}{" "}
-                    {plural(allStats.films, "фильм", "фильма", "фильмов")} ·{" "}
-                    {allStats.series}{" "}
-                    {plural(allStats.series, "сериал", "сериала", "сериалов")}{" "}
-                    завершено · Все разделы, без анонсов
-                  </small>
-                </div>
-              </section>
               {next ? (
-                <section className="hero" onClick={() => setSelected(next)}>
+                <section
+                  className="hero"
+                  data-phase={next.phase || undefined}
+                  onClick={() => setSelected(next)}
+                >
                   <div className="hero-art">
                     <Cover p={next} />
                     <div className="orb">
@@ -587,6 +581,61 @@ export default function App() {
                   <p>Самое время выбрать другую вселенную.</p>
                 </div>
               )}
+              <FamilyHomeCards />
+              <section
+                className="family-stats"
+                aria-label="Семейная статистика"
+              >
+                <div
+                  className="progress-ring"
+                  style={
+                    { "--p": `${allStats.percent}%` } as React.CSSProperties
+                  }
+                >
+                  <div>
+                    <strong>
+                      {allStats.percent}
+                      <em>%</em>
+                    </strong>
+                    <small>вселенной</small>
+                  </div>
+                </div>
+                <div className="stats-body">
+                  <div className="stats-title">
+                    <span>Наш путь по Marvel</span>
+                    <span className="tiny-tag">АНТОН + ТАНЯ</span>
+                  </div>
+                  <div className="stat-numbers">
+                    <div>
+                      <strong>
+                        {allStats.done}
+                        <small> / {allStats.total}</small>
+                      </strong>
+                      <span>Просмотрено</span>
+                    </div>
+                    <div>
+                      <strong>{allStats.left}</strong>
+                      <span>Ещё впереди</span>
+                    </div>
+                    <div>
+                      <strong className="gold">
+                        <Star size={19} fill="currentColor" />
+                        {allStats.average?.toFixed(1) || "—"}
+                      </strong>
+                      <span>Наша оценка</span>
+                    </div>
+                  </div>
+                  <Bar value={allStats.percent} />
+                  <small className="stats-foot">
+                    {allStats.films}{" "}
+                    {plural(allStats.films, "фильм", "фильма", "фильмов")} ·{" "}
+                    {allStats.series}{" "}
+                    {plural(allStats.series, "сериал", "сериала", "сериалов")}{" "}
+                    завершено · Все разделы, без анонсов
+                  </small>
+                </div>
+              </section>
+              <LegendHomePreview />
               <div className="section-heading">
                 <div>
                   <div className="eyebrow">
@@ -670,7 +719,7 @@ export default function App() {
                         setFilters({ ...filters, sort: e.target.value })
                       }
                     >
-                      <option value="release">По дате выхода</option>
+                      <option value="release">По выходу</option>
                       <option value="chronology">По событиям</option>
                       <option value="phase">По фазам</option>
                       <option value="rating">По нашей оценке</option>
@@ -996,7 +1045,12 @@ export default function App() {
               </div>
             </>
           )}
-          {tab === "settings" && <p className="muted" aria-label="Версия приложения">Наш Marvel {APP_VERSION} · обновляется автоматически, когда вы не заняты</p>}
+          {tab === "settings" && (
+            <p className="muted" aria-label="Версия приложения">
+              Наш Marvel {APP_VERSION} · обновляется автоматически, когда вы не
+              заняты
+            </p>
+          )}
           {tab === "settings" && cloudActive && (
             <section className="panel">
               <h1>Наше пространство</h1>
@@ -1260,7 +1314,11 @@ export default function App() {
         {nav.map((n) => (
           <button
             key={n.id}
-            className={tab === n.id || tab === "stats" && n.id === "legend" ? "active" : ""}
+            className={
+              tab === n.id || (tab === "stats" && n.id === "legend")
+                ? "active"
+                : ""
+            }
             onClick={() => go(n.id)}
           >
             <n.icon size={21} />
@@ -1362,7 +1420,10 @@ function Card({
     pr = progress(p, r),
     rating = average(r);
   return (
-    <article className={"project-card " + (done ? "is-watched" : "")}>
+    <article
+      data-phase={p.phase || undefined}
+      className={"project-card " + (done ? "is-watched" : "")}
+    >
       <div className="poster-wrap">
         <button
           className="poster-button"
@@ -1478,7 +1539,9 @@ function Dialog({
   close,
   children,
   className = "",
+  phase,
 }: {
+  phase?: number | null;
   title: string;
   close: () => void;
   children: React.ReactNode;
@@ -1527,6 +1590,7 @@ function Dialog({
       }}
     >
       <div
+        data-phase={phase || undefined}
         className={"modal " + className}
         role="dialog"
         aria-modal="true"
@@ -1534,9 +1598,11 @@ function Dialog({
         tabIndex={-1}
         ref={el}
       >
-        <button className="modal-close" onClick={close} aria-label="Закрыть">
-          <X />
-        </button>
+        <div className="dialog-actions">
+          <button className="modal-close" onClick={close} aria-label="Закрыть">
+            <X size={20} width={20} height={20} />
+          </button>
+        </div>
         {className !== "detail" && <h2>{title}</h2>}
         {children}
       </div>
@@ -1564,7 +1630,7 @@ function Detail({
     pr = progress(p, r),
     rating = average(r);
   return (
-    <Dialog title={p.title} close={close} className="detail">
+    <Dialog title={p.title} close={close} className="detail" phase={p.phase}>
       <div className="detail-header">
         <Cover p={p} />
         <div className="detail-header-shade" />
@@ -1791,11 +1857,7 @@ function Detail({
                 <span>Оценка {i === 0 ? "Антона" : "Тани"}</span>
                 <select
                   aria-label={`Оценка ${i === 0 ? "Антона" : "Тани"}`}
-                  disabled={
-                    cloudActive
-                      ? who !== family.role
-                      : false
-                  }
+                  disabled={cloudActive ? who !== family.role : false}
                   value={r[who] ?? ""}
                   onChange={(e) =>
                     change({
@@ -1806,11 +1868,7 @@ function Detail({
                 >
                   <option value="">—</option>
                   {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                    <option
-                      key={n}
-                      value={n}
-
-                    >
+                    <option key={n} value={n}>
                       {n}
                     </option>
                   ))}
@@ -1823,7 +1881,7 @@ function Detail({
             оценок.
           </small>
         </section>
-        {cloudActive&&<Impressions projectId={p.id}/>}
+        {cloudActive && <Impressions projectId={p.id} />}
         <label className="date-field">
           <span>
             <CalendarDays size={17} />

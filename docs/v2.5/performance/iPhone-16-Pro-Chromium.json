@@ -1,0 +1,8 @@
+{
+  "environment": "Headless desktop engine, synthetic family, local Vite; not physical iPhone performance",
+  "detailOpenMs": 218,
+  "frameMedianMs": 16.600000001490116,
+  "frameP95Ms": 21.399999998509884,
+  "jsHeapUsedBytes": 23893367,
+  "visibleArtworkRequests": 12
+}

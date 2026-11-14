@@ -66,4 +66,6 @@ jobs:
           name: visual-polish-screenshots
           path: |
             docs/v2.2/after
+            docs/v2.5/after
+            docs/v2.5/performance
             test-results-visual
