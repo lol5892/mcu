@@ -43,7 +43,7 @@ function worker(visible = false, url = "https://example.test/mcu/") {
         json: () => ({
           id,
           title: "Новое достижение",
-          body: "ЗОЛОТО · Фьюри · +100 XP",
+          body: "ЗОЛОТО · Фьюри · +50 XP",
           route: "/legend/phase-1-v1",
         }),
       },

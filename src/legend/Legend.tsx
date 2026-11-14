@@ -16,7 +16,14 @@ import { updateBlocked } from "../pwa/safety";
 import { evaluate, level, registry } from "./model";
 import "./legend.css";
 import artwork from "./artwork.json";
-import { tierLabels, legacyXP, routeAward, parseNoticeSeen } from "./trophy";
+import {
+  xpScale,
+  trophyXP,
+  ownerXP,
+  rebaseCachedAwards,
+  type XPScale,
+} from "./xp";
+import { tierLabels, routeAward, parseNoticeSeen } from "./trophy";
 type Award = {
   achievement_id: string;
   owner: string;
@@ -24,7 +31,13 @@ type Award = {
   unlocked_at: string;
   historical: boolean;
 };
-type Data = { awards: Award[]; seen: string[]; initial: boolean };
+type Data = {
+  awards: Award[];
+  seen: string[];
+  initial: boolean;
+  xp_scale?: XPScale;
+  xp_version?: string;
+};
 const Context = createContext<{ data: Data; error: string }>({
   data: { awards: [], seen: [], initial: false },
   error: "",
@@ -51,6 +64,8 @@ export function LegendProvider({ children }: { children: ReactNode }) {
   const [identity, setIdentity] = useState("");
   const queue = useRef<{ text?: string; award?: Award }[]>([]);
   const queued = useRef(new Set<string>());
+  const latestAwards = useRef(data.awards);
+  latestAwards.current = data.awards;
   const notifications = useRef(f.snapshot.notifications);
   notifications.current = f.snapshot.notifications;
   const noticeKey = `mv-trophy-seen:${f.familyId}:${f.user?.id}`;
@@ -75,7 +90,18 @@ export function LegendProvider({ children }: { children: ReactNode }) {
     setNotice(null);
     try {
       const cache = localStorage.getItem(key);
-      if (cache) setData(JSON.parse(cache));
+      if (cache) {
+        const cached = JSON.parse(cache) as Data;
+        setData({
+          ...cached,
+          awards: rebaseCachedAwards(
+            cached.awards,
+            cached.xp_version === "2.5.3"
+              ? cached.xp_scale || xpScale
+              : xpScale,
+          ),
+        });
+      }
     } catch {}
     async function read() {
       if (busy || !navigator.onLine || document.hidden) return;
@@ -88,6 +114,21 @@ export function LegendProvider({ children }: { children: ReactNode }) {
         if (!alive) return;
         if (!d || !Array.isArray(d.awards))
           throw Error("Invalid legend response");
+        // Old cached/fixture responses are projected onto the published scale.
+        // A versioned server response must already agree; never hide a DB mismatch.
+        const rules = d.xp_scale || xpScale;
+        if (
+          d.xp_version === "2.5.3" &&
+          d.awards.some((a) =>
+            registry.some(
+              (s) =>
+                s.id === a.achievement_id &&
+                a.xp !== trophyXP(s.displayTier, rules),
+            ),
+          )
+        )
+          throw Error("Server XP mismatch");
+        if (!d.xp_version) d.awards = rebaseCachedAwards(d.awards, rules);
         setData(d);
         localStorage.setItem(key, JSON.stringify(d));
         setError("");
@@ -130,7 +171,7 @@ export function LegendProvider({ children }: { children: ReactNode }) {
       .on(
         "postgres_changes",
         {
-          event: "INSERT",
+          event: "*",
           schema: "public",
           table: "mv_achievements",
           filter: "family_id=eq." + f.familyId,
@@ -163,7 +204,15 @@ export function LegendProvider({ children }: { children: ReactNode }) {
         return;
       const pending = queue.current.splice(0);
       const awards = pending
-        .flatMap((p) => (p.award ? [p.award] : []))
+        .flatMap((p) =>
+          p.award
+            ? [
+                latestAwards.current.find(
+                  (a) => a.achievement_id === p.award!.achievement_id,
+                ) || p.award,
+              ]
+            : [],
+        )
         .sort((a, b) => b.xp - a.xp);
       if (awards.length) {
         try {
@@ -252,7 +301,18 @@ export function LegendProvider({ children }: { children: ReactNode }) {
                 {spec && (
                   <>
                     <p>{spec.description}</p>
-                    <b>+{notice.award!.xp} XP</b>
+                    <b>
+                      +
+                      {
+                        (
+                          data.awards.find(
+                            (a) =>
+                              a.achievement_id === notice.award!.achievement_id,
+                          ) || notice.award!
+                        ).xp
+                      }{" "}
+                      XP
+                    </b>
                     {Boolean(notice.additional) && (
                       <p>И ещё {notice.additional} трофеев в коллекции</p>
                     )}
@@ -385,8 +445,8 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
     [f.serverSnapshot, f.snapshot, f.user?.id],
   );
   const awards = new Map(data.awards.map((a) => [a.achievement_id, a]));
-  const xp = (owner: string) =>
-    data.awards.filter((a) => a.owner === owner).reduce((n, a) => n + a.xp, 0);
+  const totals = ownerXP(data.awards);
+  const xp = (owner: string) => totals[owner as keyof typeof totals] || 0;
   const familyLevel = level(xp("family"));
   const chosen = rows.find((a) => a.id === selected);
   const nearest = rows
@@ -502,7 +562,12 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
               <h3>{a.title}</h3>
               <p className="trophy-description">{a.description}</p>
               <p className="trophy-how">Как получить: {a.howTo}</p>
-              <small>+{awards.get(a.id)?.xp ?? legacyXP(a.rarity)} XP</small>
+              <small>
+                +
+                {awards.get(a.id)?.xp ??
+                  trophyXP(a.displayTier, data.xp_scale || xpScale)}{" "}
+                XP
+              </small>
               <progress value={a.current} max={a.threshold} />
               <span>
                 {a.current} / {a.threshold} ·{" "}
@@ -526,7 +591,9 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
             <h3>Как получить</h3>
             <p>{chosen.howTo}</p>
             <p>
-              Награда: +{awards.get(chosen.id)?.xp ?? legacyXP(chosen.rarity)}{" "}
+              Награда: +
+              {awards.get(chosen.id)?.xp ??
+                trophyXP(chosen.displayTier, data.xp_scale || xpScale)}{" "}
               XP
             </p>
             <progress

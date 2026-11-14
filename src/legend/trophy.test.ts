@@ -2,7 +2,7 @@ import { expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import registry from "./registry.json";
 import original from "../../docs/v2.5.1/art-direction.json";
-import { legacyXP, routeAward, tierLabels, parseNoticeSeen } from "./trophy";
+import { routeAward, tierLabels, parseNoticeSeen } from "./trophy";
 it("has 82 unique individual descriptions and precise separate conditions", () => {
   expect(registry).toHaveLength(82);
   expect(new Set(registry.map((a) => a.description)).size).toBe(82);
@@ -24,7 +24,6 @@ it("has 82 unique individual descriptions and precise separate conditions", () =
       expect(a[field]).toEqual(before[field]);
     if (a.owner === "anton") expect(a.description).toContain("Антон");
     if (a.owner === "tanya") expect(a.description).toContain("Тан");
-    expect(legacyXP(a.rarity)).toBe(legacyXP(before.rarity));
   }
 });
 it("keeps platinum exceptional and synchronizes server display metadata", () => {
