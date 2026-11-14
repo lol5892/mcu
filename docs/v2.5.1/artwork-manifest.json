@@ -753,12 +753,13 @@
     "composition": "Independent centered 3D collectible artifact, strong readable silhouette, cinematic depth, no lettering; generous safe margin",
     "art": "trophies-v251/phase-5-v1.webp",
     "thumbnail": "trophies-v251/thumbs/phase-5-v1.webp",
-    "source_sheet": "exec-5246df4b-5bb6-4f35-880e-c478b47ca38c.png",
-    "source_cell": 3,
-    "source_crop": "512x512+1024+0",
-    "full_bytes": 70704,
-    "thumbnail_bytes": 27778,
-    "sha256": "657b56673d19486d7a30af98abf34e44e87eaf9f6a72393c5a92b5fe4ba5c06c"
+    "source_sheet": "exec-92eb1368-fc8e-4c18-a2c7-798b9ebfa31f.png",
+    "source_cell": 1,
+    "source_crop": "1254x1254+0+0",
+    "full_bytes": 80726,
+    "thumbnail_bytes": 30300,
+    "sha256": "07ef23056404f5a10fd91f5dfb99d538a504ec165e5315d5d091e46546d05d97",
+    "revision_note": "Central family medallion revised to exactly two interwoven ruby and sapphire energies; unintended third human figure removed."
   },
   {
     "id": "phase-6-v1",
