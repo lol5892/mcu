@@ -4,7 +4,7 @@ import { catalog } from "../model";
 import { useFamily } from "./FamilyProvider";
 import { useAction, Feedback, Person, Reactions } from "./ui";
 import { PhotoUpload, PrivatePhoto, PhotoPicker, PhotoPreviews, usePhotoSelection, uploadSelection, mediaForTarget } from "./media";
-import { Chat } from "./Chat";
+
 export function Moments() {
   const f = useFamily(),
     a = useAction(), selection = usePhotoSelection();
@@ -12,17 +12,7 @@ export function Moments() {
   const [create, setCreate] = useState(false),
     [caption, setCaption] = useState(""),
     [project, setProject] = useState(""),
-    [day, setDay] = useState(new Date().toLocaleDateString("en-CA")),
-    [comments, setComments] = useState<string | null>(null);
-  if (comments)
-    return (
-      <>
-        <button className="text-button" onClick={() => setComments(null)}>
-          ← К нашим моментам
-        </button>
-        <Chat scope="moment" target={comments} title="Об этом вечере" />
-      </>
-    );
+    [day, setDay] = useState(new Date().toLocaleDateString("en-CA"));
   return (
     <div className="moments-page">
       <div className="feature-heading">
@@ -143,13 +133,7 @@ export function Moments() {
                 )}
                 <p>{m.caption}</p>
                 <Reactions kind="moment" id={m.id} />
-                <button
-                  className="text-button"
-                  onClick={() => setComments(m.id)}
-                >
-                  <MessageCircle size={16} />
-                  Наши комментарии
-                </button>
+
               </div>
             </article>
           ))}

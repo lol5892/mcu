@@ -1,3 +1,6 @@
+import {Impressions} from "./family/AfterCredits";
+import {Legend} from "./legend/Legend";
+import {Trophy} from "lucide-react";
 import { APP_VERSION } from "./pwa/version";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -64,12 +67,12 @@ import { WatchControls, WatchInbox } from "./family/WatchConfirmation";
 import { Universe, FamilyHomeCards, useFamilyRoute } from "./family/Universe";
 import { ProjectFamilyTools, StartTogether, ActiveSessionCard } from "./family/Sessions";
 import { Sparkles } from "lucide-react";
-type Tab = "home" | "catalog" | "saved" | "stats" | "settings" | "universe";
+type Tab = "home" | "catalog" | "saved" | "stats" | "legend" | "settings" | "universe";
 const nav = [
   { id: "home", label: "Главная", icon: Home },
   { id: "catalog", label: "Каталог", icon: Clapperboard },
   { id: "saved", label: "Наше", icon: Heart },
-  { id: "stats", label: "Статистика", icon: ChartNoAxesCombined },
+  { id: "legend", label: "Достижения", icon: Trophy },
   { id: "universe", label: "Вселенная", icon: Sparkles },
   { id: "settings", label: "Настройки", icon: Settings },
 ] as const;
@@ -233,11 +236,12 @@ export default function App() {
       cloudActive &&
       [
         "universe",
-        "legend",
+
         "letters",
         "chat",
-        "project",
+
         "moments",
+        "photos",
         "events",
         "sessions",
         "settings",
@@ -250,9 +254,12 @@ export default function App() {
       setSelected(null);
     }
   }, [familyRoute.page, familyRoute.id, cloudActive]);
+  useEffect(()=>{if(familyRoute.page==="project"&&familyRoute.id){setTab("catalog");setSelected(catalog.find(p=>p.id===familyRoute.id)||null);}},[familyRoute.page,familyRoute.id]);
+  useEffect(()=>{if(familyRoute.page==="legend"){setTab(familyRoute.id==="stats"?"stats":"legend");setSelected(null);}},[familyRoute.page,familyRoute.id]);
   function go(t: Tab) {
     setTab(t);
-    if (t === "universe") location.hash = "/universe";
+    if (t === "legend" || t === "stats") location.hash=t==="stats"?"/legend/stats":"/legend";
+    else if (t === "universe") location.hash = "/universe";
     else if (location.hash.startsWith("#/")) location.hash = "";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -371,7 +378,7 @@ export default function App() {
           {nav.map((n) => (
             <button
               key={n.id}
-              className={tab === n.id ? "active" : ""}
+              className={tab === n.id || tab === "stats" && n.id === "legend" ? "active" : ""}
               onClick={() => go(n.id)}
             >
               <n.icon size={20} />
@@ -431,6 +438,9 @@ export default function App() {
           onNotice={setNotice}
         />
         <main>
+          {(tab==="legend"||tab==="stats")&&<div className="personal-tabs"><button onClick={()=>go("legend")} className={tab==="legend"?"active":""}>Достижения</button><button onClick={()=>go("stats")} className={tab==="stats"?"active":""}>Статистика</button></div>}
+          {tab==="legend"&&<Legend onProject={id=>setSelected(catalog.find(p=>p.id===id)||null)}/>}
+
           {tab === "universe" && (
             <Universe
               onProject={(id) =>
@@ -1250,7 +1260,7 @@ export default function App() {
         {nav.map((n) => (
           <button
             key={n.id}
-            className={tab === n.id ? "active" : ""}
+            className={tab === n.id || tab === "stats" && n.id === "legend" ? "active" : ""}
             onClick={() => go(n.id)}
           >
             <n.icon size={21} />
@@ -1813,6 +1823,7 @@ function Detail({
             оценок.
           </small>
         </section>
+        {cloudActive&&<Impressions projectId={p.id}/>}
         <label className="date-field">
           <span>
             <CalendarDays size={17} />

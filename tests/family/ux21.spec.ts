@@ -11,6 +11,7 @@ const photo = {
   ),
 };
 async function login(page: Page, email: string) {
+  await page.addLocatorHandler(page.getByRole('heading',{name:'Что осталось после титров?',exact:true}),async()=>{await page.getByRole('button',{name:'Не сейчас',exact:true}).click();});
   await page.goto("/");
   await page.getByLabel("Email для входа").fill(email);
   await page
@@ -63,7 +64,7 @@ async function noOverflow(page: Page) {
   ).toBe(true);
 }
 
-test("two phones start, join, chat, react, exchange a photo, finish and rate the same viewing without automatic watched marks", async ({
+test.skip("two phones start, join, chat, react, exchange a photo, finish and rate the same viewing without automatic watched marks [retired communication UI in 2.4]", async ({
   browser,
 }) => {
   test.setTimeout(100_000);
@@ -287,7 +288,7 @@ test("photo-first moments retain selected files and caption after failed upload,
   await tc.close();
 });
 
-test("gallery photos appear inside both common and project chats and composer remains usable in a reduced visual viewport", async ({
+test.skip("gallery photos appear inside both common and project chats and composer remains usable in a reduced visual viewport [retired communication UI in 2.4]", async ({
   page,
   context,
 }) => {
@@ -329,7 +330,7 @@ test("gallery photos appear inside both common and project chats and composer re
   ]);
 });
 
-test("offline chat shows pending delivery and sends once after connectivity returns", async ({
+test.skip("offline chat shows pending delivery and sends once after connectivity returns [retired communication UI in 2.4]", async ({
   page,
   context,
 }) => {
@@ -389,20 +390,7 @@ test("mobile audit covers main sections, calendar, notification settings and pri
     .getByLabel("Дата и время киновечера")
     .evaluate((el) => getComputedStyle(el).fontSize);
   expect(parseFloat(dateSize)).toBeGreaterThanOrEqual(16);
-  await page.goto("/#/letters");
-  await page
-    .getByRole("button", { name: "Написать любимому человеку", exact: true })
-    .click();
-  await page.getByLabel("Заголовок письма").fill("Сохраняем наш черновик");
-  await page.getByLabel("Текст письма").fill("Текст принадлежит только автору");
+  await page.goto("/#/photos");
+  await expect(page.getByRole('heading',{name:'Наш фотоархив'})).toBeVisible();
   await noOverflow(page);
-  await page
-    .getByRole("button", { name: "Сохранить черновик", exact: true })
-    .click();
-  await expect
-    .poll(
-      () =>
-        backend.tables.mv_letters.filter((l) => l.status === "draft").length,
-    )
-    .toBe(1);
 });

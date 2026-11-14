@@ -28,3 +28,5 @@ export function nextSendable(operations: Operation[]): Operation | undefined {
     (o) => o.state === "queued" && !blocked.has(outboxLane(o)),
   );
 }
+/** Retained for archive/export only; these drafts must never auto-send in 2.4. */
+export function retiredCommunication(o:Pick<Operation,'kind'|'payload'>){return ['message','message_delete','letter','letter_delete','letter_read','letter_favorite'].includes(o.kind)||o.kind==='reaction'&&['message','letter'].includes(String(o.payload.kind));}

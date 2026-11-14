@@ -22,8 +22,8 @@ import {
 import { catalog } from "../model";
 import { useFamily } from "./FamilyProvider";
 import { appURL, cloudConfigured, supabase } from "./client";
-import { Letters } from "./Letters";
-import { Chat } from "./Chat";
+
+import {PhotoArchive} from "./AfterCredits";
 import { Moments } from "./Moments";
 import { Calendar, NextEvening } from "./Calendar";
 import { Notifications } from "./Notifications";
@@ -51,12 +51,6 @@ export function useFamilyRoute() {
 export function FamilyHomeCards() {
   const f = useFamily();
   if (!f.familyId || f.localMode) return null;
-  const unread = f.snapshot.notifications.filter((n) => !n.read_at).length;
-  const letter = f.snapshot.letters
-    .filter((l) => l.recipient_id === f.user?.id && l.status === "delivered")
-    .sort((a, b) =>
-      (b.delivered_at || "").localeCompare(a.delivered_at || ""),
-    )[0];
   const moment = [...f.snapshot.moments].sort((a, b) =>
     b.created_at.localeCompare(a.created_at),
   )[0];
@@ -80,24 +74,6 @@ export function FamilyHomeCards() {
       </div>
       <NextEvening />
       <div className="home-social-links">
-        <button onClick={() => (location.hash = "/chat")}>
-          <MessageCircle size={22} />
-          <span>
-            Наш разговор
-            <small>{unread ? `${unread} новых событий` : "Всегда рядом"}</small>
-          </span>
-        </button>
-        <button
-          onClick={() =>
-            (location.hash = letter ? "/letters/" + letter.id : "/letters")
-          }
-        >
-          <Mail size={22} />
-          <span>
-            Письма друг другу
-            <small>{letter ? letter.title : "Место для тёплых слов"}</small>
-          </span>
-        </button>
         {moment && (
           <button onClick={() => (location.hash = "/moments/" + moment.id)}>
             <Camera size={22} />
@@ -136,7 +112,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
           </button>
         ) : (
           <p className="muted">
-            Авторизация и сервер ещё не настроены. Чат, письма, фотографии и
+            Авторизация и сервер ещё не настроены. Фотографии, киновечера и
             push не имитируются.
           </p>
         )}
@@ -164,35 +140,8 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
     </button>
   );
   if (route.page === "legend") return <>{back}<Legend onProject={onProject}/></>;
-  if (route.page === "letters")
-    return (
-      <>
-        {back}
-        <Letters key={route.id || "all"} initialId={route.id} />
-      </>
-    );
-  if (route.page === "chat")
-    return (
-      <>
-        {back}
-        <Chat />
-      </>
-    );
-  if (route.page === "project" && route.id) {
-    return (
-      <>
-        {back}
-        <button className="wide-button" onClick={() => onProject(route.id!)}>
-          Открыть карточку {catalog.find((p) => p.id === route.id)?.title}
-        </button>
-        <Chat
-          scope="project"
-          target={route.id}
-          title={catalog.find((p) => p.id === route.id)?.title || "Наш фильм"}
-        />
-      </>
-    );
-  }
+  if (["letters","chat","project"].includes(route.page)) return <>{back}<p>Переписки сохранены в архиве данных.</p><PhotoArchive/></>;
+  if (route.page === "photos") return <>{back}<PhotoArchive/></>;
   if (route.page === "moments")
     return (
       <>
@@ -495,18 +444,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
     );
   const links = [
     {
-      title: "Письма друг другу",
-      text: "Маленькие признания. Большое «мы».",
-      route: "/letters",
-      icon: Mail,
-      cls: "rose",
-    },
-    {
-      title: "Наш разговор",
-      text: "Про кино и про всё на свете.",
-      route: "/chat",
-      icon: MessageCircle,
-      cls: "blue",
+      title: "Фотоархив", text: "Все сохранённые фотографии", route: "/photos", icon: Camera, cls: "gold",
     },
     {
       title: "Наши моменты",
@@ -521,9 +459,6 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
       route: "/events",
       icon: CalendarHeart,
       cls: "rose",
-    },
-    {
-      title: "Наша легенда", text: "Каждый фильм — новая глава нашей истории", route: "/legend", icon: Star, cls: "gold",
     },
     {
       title: "Смотрим вместе",
@@ -541,7 +476,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
     },
   ];
   const unread = f.snapshot.notifications
-    .filter((n) => !n.read_at)
+    .filter((n) => !n.read_at && !["message","comment","letter","letter_nudge"].includes(n.type))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
   const differences = catalog
     .map((p) => {

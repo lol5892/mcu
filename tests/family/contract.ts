@@ -27,6 +27,7 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
     ]),
   );
   const tables: Record<string, any[]> = {
+    mv_impressions: [],
     mv_families: [{ id: family, watch_confirmation: watchConfirmation }],
     mv_watch_requests: [],
     mv_members: [
@@ -233,6 +234,7 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
       }
       if (url.pathname.includes("/rpc/")) {
         const name = url.pathname.split("/").pop();
+        if(name === "mv_impression") {const old=tables.mv_impressions.find(r=>r.user_id===id&&r.project_id===body.p_project);if((old?.version||0)!==body.p_expected)return send({code:'40001',message:'VERSION_CONFLICT'},409);if(body.p_body!==null&&(!body.p_body.trim()||Array.from(body.p_body).length>200))return send({message:'INVALID_IMPRESSION'},400);const row={id:old?.id||crypto.randomUUID(),family_id:family,user_id:id,project_id:body.p_project,body:body.p_body,version:(old?.version||0)+1};tables.mv_impressions=tables.mv_impressions.filter(r=>r!==old).concat(row);return send(row);}
         if (name === "mv_legend") return send({awards:[],seen:[],initial:false});
         if (name === "mv_join_status")
           return send({

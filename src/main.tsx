@@ -1,3 +1,4 @@
+import {AfterCreditsProvider} from "./family/AfterCredits";
 import { LegendProvider } from "./legend/Legend";
 import React from "react";
 import { createRoot } from "react-dom/client";
@@ -15,9 +16,9 @@ createRoot(document.getElementById("root")!).render(
       <PwaSafetyGate />
       <AuthBoundary>
         <WelcomeGate>
-          <LegendProvider>
+          <AfterCreditsProvider><LegendProvider>
             <App />
-          </LegendProvider>
+          </LegendProvider></AfterCreditsProvider>
         </WelcomeGate>
       </AuthBoundary>
     </FamilyProvider>
