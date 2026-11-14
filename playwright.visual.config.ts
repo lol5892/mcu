@@ -4,7 +4,12 @@ export default defineConfig({
   testDir: "tests/visual",
   testMatch: baseline
     ? "baseline.spec.ts"
-    : ["polish.spec.ts", "trophies.spec.ts", "system252.spec.ts"],
+    : [
+        "polish.spec.ts",
+        "trophies.spec.ts",
+        "system252.spec.ts",
+        "xp253.spec.ts",
+      ],
   workers: 1,
   timeout: 90000,
   expect: { timeout: 10000 },

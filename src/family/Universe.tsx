@@ -1,3 +1,4 @@
+import {trophyNotificationTitle} from "../legend/xp";
 import {Legend} from "../legend/Legend";
 import { useEffect, useState } from "react";
 import {
@@ -532,7 +533,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
             >
               <Bell size={17} />
               <div>
-                {n.title}
+                {trophyNotificationTitle(n)}
                 <small>{displayDate(n.created_at)}</small>
               </div>
               <ChevronRight size={16} />

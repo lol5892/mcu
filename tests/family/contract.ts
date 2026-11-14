@@ -7,7 +7,7 @@ const anton = "11111111-1111-4111-8111-111111111111",
 export const userIds = { anton, tanya };
 export function fixture(recoverInvitation = false, watchConfirmation = false) {
   const now = new Date().toISOString();
-  const legend: {awards:any[];seen:string[];initial:boolean}={awards:[],seen:[],initial:false};
+  const legend: {awards:any[];seen:string[];initial:boolean;xp_scale:Record<string,number>;xp_version:string}={awards:[],seen:[],initial:false,xp_scale:{bronze:10,silver:25,gold:50,platinum:100},xp_version:"2.5.3"};
   const profiles = new Map(
     [anton, tanya].map((id) => [
       id,

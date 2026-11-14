@@ -26,7 +26,7 @@ test("all trophy tiers filter correctly and descriptions and conditions are avai
     await first.scrollIntoViewIfNeeded();
     await noOverflow(page);
     await page.screenshot({
-      path: `docs/v2.5.2/after/${info.project.name}-${tier}-cards.png`,
+      path: `docs/v2.5.3/after/${info.project.name}-${tier}-cards.png`,
       scale: "css",
     });
     await expect(first.locator(".trophy-description")).not.toBeEmpty();
@@ -45,14 +45,14 @@ test("all trophy tiers filter correctly and descriptions and conditions are avai
     );
     await noOverflow(page);
     await dialog.screenshot({
-      path: `docs/v2.5.2/after/${info.project.name}-${tier}.png`,
+      path: `docs/v2.5.3/after/${info.project.name}-${tier}.png`,
       scale: "css",
     });
     await dialog.getByRole("button", { name: "Закрыть окно" }).click();
   }
   await page.goto("/#/legend/episodes-100");
   await expect(
-    page.getByRole("dialog").getByText("Награда: +25 XP"),
+    page.getByRole("dialog").getByText("Награда: +100 XP"),
   ).toBeVisible();
   await expect(page.getByRole("dialog").locator(".trophy-tier")).toHaveText(
     "ПЛАТИНА",
@@ -60,7 +60,7 @@ test("all trophy tiers filter correctly and descriptions and conditions are avai
   await page.goto("/#/legend/phase-1-v1");
   await expect(page.getByRole("dialog")).toBeVisible();
   await expect(
-    page.getByRole("dialog").getByText("Награда: +100 XP"),
+    page.getByRole("dialog").getByText("Награда: +50 XP"),
   ).toBeVisible();
 });
 test("new saved award waits for a safe moment, shows artwork and server XP once, and deep-links", async ({
@@ -73,7 +73,7 @@ test("new saved award waits for a safe moment, shows artwork and server XP once,
   b.legend.awards.push({
     achievement_id: "phase-1-v1",
     owner: "family",
-    xp: 100,
+    xp: 50,
     historical: false,
     unlocked_at: new Date().toISOString(),
   });
@@ -97,13 +97,13 @@ test("new saved award waits for a safe moment, shows artwork and server XP once,
     .click();
   const toast = page.locator(".trophy-toast");
   await expect(toast).toBeVisible({ timeout: 20000 });
-  await expect(toast).toContainText("+100 XP");
+  await expect(toast).toContainText("+50 XP");
   await expect(toast.locator("img")).toHaveAttribute(
     "src",
     /thumbs\/phase-1-v1.webp$/,
   );
   await toast.screenshot({
-    path: `docs/v2.5.2/after/${info.project.name}-toast.png`,
+    path: `docs/v2.5.3/after/${info.project.name}-toast.png`,
     scale: "css",
   });
   await toast.getByRole("button", { name: "Посмотреть достижение" }).click();
@@ -126,7 +126,12 @@ test("old awards without new server events never create a trophy burst", async (
     ...specs.slice(0, 12).map((a: any) => ({
       achievement_id: a.id,
       owner: a.owner,
-      xp: 25,
+      xp: (
+        { bronze: 10, silver: 25, gold: 50, platinum: 100 } as Record<
+          string,
+          number
+        >
+      )[a.displayTier],
       historical: false,
       unlocked_at: "2026-11-01T12:00:00Z",
     })),
@@ -150,7 +155,7 @@ test("typing, photo upload, synchronization and active viewing defer one compact
     input.value = "Наше впечатление";
   });
   for (const [id, xp] of [
-    ["phase-1-v1", 100],
+    ["phase-1-v1", 50],
     ["hero-stark", 25],
   ] as const) {
     b.legend.awards.push({
@@ -209,7 +214,7 @@ test("typing, photo upload, synchronization and active viewing defer one compact
   const toast = page.locator(".trophy-toast");
   await expect(toast).toBeVisible({ timeout: 20000 });
   await expect(toast).toContainText("И ещё 1");
-  await expect(toast).toContainText("+100 XP");
+  await expect(toast).toContainText("+50 XP");
   await expect.poll(() => b.legend.seen.length).toBe(2);
   await page.evaluate(() => {
     const input = document.createElement("textarea");

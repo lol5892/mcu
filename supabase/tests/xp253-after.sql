@@ -1,0 +1,37 @@
+select public.xp_test((select count(*)=82 from public.mv_achievements),'award count unchanged');
+select public.xp_test((select jsonb_agg(to_jsonb(a)-'xp' order by family_id,achievement_id) from public.mv_achievements a)=(select jsonb_agg(v-'xp') from mv_private.xp_test_snapshot cross join lateral jsonb_array_elements(awards) v),'IDs, owners, dates and historical flags unchanged');
+select public.xp_test((select sum(xp)=3155 from public.mv_achievements),'all 82 historic XP follow new tier scale');
+select public.xp_test(not exists(select 1 from public.mv_achievements a join mv_private.trophy_presentation p on p.id=a.achievement_id join mv_private.trophy_xp_scale s on s.tier=p.tier where a.xp<>s.xp),'every stored row matches authoritative tier XP');
+select public.xp_test((select jsonb_agg(to_jsonb(j) order by id) from mv_private.push_jobs j)=(select jobs from mv_private.xp_test_snapshot),'migration neither requeues nor duplicates device jobs');
+select public.xp_test((select jsonb_agg(to_jsonb(s) order by user_id) from public.mv_legend_seen s)=(select seen from mv_private.xp_test_snapshot),'viewed trophy receipts unchanged');
+select public.xp_test((select count(*)=jsonb_array_length(notifications) from public.mv_notifications,mv_private.xp_test_snapshot group by notifications),'no new notification event');
+select public.xp_test((select title like '%+10 XP' from public.mv_notifications where dedupe_key='xp-test-pending'),'pending text repaired in place');
+select public.xp_test((select title like '%+10 XP' and read_at='2026-02-01'::timestamptz from public.mv_notifications where dedupe_key='xp-test-sent'),'in-app notification history uses new XP without changing read state');
+select public.xp_test((select sum(xp)=280 from public.mv_achievements where owner='anton'),'personal XP remains separate');
+select public.xp_test((select sum(xp)=2595 from public.mv_achievements where owner='family'),'family XP excludes both personal totals');
+select public.xp_test((select count(*)=82 from mv_private.xp_award_revisions),'private audit captures every original award');
+-- A new isolated family earns real future awards through existing data triggers.
+insert into auth.users values('33333333-3333-4333-8333-333333333333','new-a@example.test',now()),('44444444-4444-4444-8444-444444444444','new-t@example.test',now());
+insert into public.mv_profiles(id) values('33333333-3333-4333-8333-333333333333'),('44444444-4444-4444-8444-444444444444') on conflict do nothing;
+insert into public.mv_families(id) values('bbbbbbbb-1111-4111-8111-111111111111');
+insert into public.mv_members(family_id,user_id,role) values('bbbbbbbb-1111-4111-8111-111111111111','33333333-3333-4333-8333-333333333333','anton'),('bbbbbbbb-1111-4111-8111-111111111111','44444444-4444-4444-8444-444444444444','tanya');
+insert into public.mv_entries(family_id,project_id,watched,updated_by) select 'bbbbbbbb-1111-4111-8111-111111111111',p,true,'33333333-3333-4333-8333-333333333333' from unnest(array['iron-man','hulk','iron-man-2','thor','first-avenger','avengers']) p;
+select public.xp_test((select xp=10 from public.mv_achievements where family_id='bbbbbbbb-1111-4111-8111-111111111111' and achievement_id='films-1'),'future bronze receives 10');
+select public.xp_test((select xp=25 from public.mv_achievements where family_id='bbbbbbbb-1111-4111-8111-111111111111' and achievement_id='films-5'),'future silver receives 25');
+select public.xp_test((select xp=50 from public.mv_achievements where family_id='bbbbbbbb-1111-4111-8111-111111111111' and achievement_id='phase-1-v1'),'future gold receives 50');
+select public.xp_test((select count(*)=2 from public.mv_notifications where family_id='bbbbbbbb-1111-4111-8111-111111111111' and route='/legend/phase-1-v1' and title like '%+50 XP'),'new family notifications carry correct saved XP');
+alter table public.mv_episodes disable trigger legend_episode;
+insert into public.mv_episodes(family_id,project_id,season,episode,watched,updated_by) select 'bbbbbbbb-1111-4111-8111-111111111111','shield',(i-1)/22+1,(i-1)%22+1,true,'33333333-3333-4333-8333-333333333333' from generate_series(1,99) i;
+alter table public.mv_episodes enable trigger legend_episode;
+insert into public.mv_episodes(family_id,project_id,season,episode,watched,updated_by) values('bbbbbbbb-1111-4111-8111-111111111111','shield',5,12,true,'33333333-3333-4333-8333-333333333333');
+select public.xp_test((select xp=100 from public.mv_achievements where family_id='bbbbbbbb-1111-4111-8111-111111111111' and achievement_id='episodes-100'),'future platinum receives 100');
+select count(*) as n_before from public.mv_notifications \gset
+select mv_private.legend_refresh('bbbbbbbb-1111-4111-8111-111111111111',false);
+select public.xp_test((select count(*)=:n_before from public.mv_notifications),'refresh does not repeat notifications after rebase');
+set role authenticated;
+select set_config('request.jwt.claim.sub','33333333-3333-4333-8333-333333333333',false);
+select public.xp_test((public.mv_legend()->'xp_scale'->>'platinum')::int=100,'RPC exposes canonical scale');
+select public.xp_denied('update public.mv_achievements set xp=100','client cannot assign XP');
+select public.xp_denied('select * from mv_private.xp_award_revisions','other users cannot read private reconciliation');
+select public.xp_denied('update mv_private.trophy_xp_scale set xp=999','client cannot change scale');
+reset role;

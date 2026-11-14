@@ -70,4 +70,5 @@ jobs:
             docs/v2.5/performance
             docs/v2.5.1/after
             docs/v2.5.2/after
+            docs/v2.5.3/after
             test-results-visual

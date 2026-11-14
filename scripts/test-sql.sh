@@ -20,7 +20,13 @@ import re
 s=re.sub(r'create role (\w+) ([^;]+);',lambda m:"do $$begin if not exists(select 1 from pg_roles where rolname='"+m[1]+"') then create role "+m[1]+" "+m[2]+";end if;end$$;",s)
 print(s)
 PY
-for file in supabase/migrations/*.sql;do docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test < "$file";done
+for file in supabase/migrations/*.sql;do
+ if [[ "$file" == *_fair_xp.sql ]];then
+  docker "${docker_args[@]}" exec our-marvel-sql-test dropdb -U postgres --if-exists marvel_xp_upgrade
+  docker "${docker_args[@]}" exec our-marvel-sql-test createdb -U postgres -T marvel_test marvel_xp_upgrade
+ fi
+ docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test < "$file"
+done
 node scripts/catalog-sql.mjs | docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test
 docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test < supabase/tests/security.sql
 docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test < supabase/tests/ux21.sql
@@ -35,3 +41,5 @@ for actor in 11111111-1111-4111-8111-111111111111 22222222-2222-4222-8222-222222
 done
 for trophy_pid in "${trophy_pids[@]}";do wait "$trophy_pid";done
 docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test -c "select public.test_assert((select count(*)=2 from public.mv_notifications where route='/legend/couple-double101'),'concurrent scores produce one shared event per recipient');select public.test_assert((select count(*)=1 from public.mv_achievements where achievement_id='couple-double101'),'concurrent writes award shared XP only once');"
+
+bash scripts/test-xp-upgrade.sh
