@@ -1,0 +1,8 @@
+{
+  "environment": "Synthetic family; desktop browser emulation, not physical iPhone performance. JS heap excludes decoded image/GPU memory.",
+  "initialUniqueThumbnails": 8,
+  "frameMedianMs": 16.69999999552965,
+  "frameP95Ms": 18.100000001490116,
+  "detailOpenMs": 96,
+  "jsHeapBytes": 27715384
+}

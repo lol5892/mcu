@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { mkdtemp, mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, copyFile, cp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -11,6 +11,7 @@ for(const version of ['v1','v2','v3']){
  await writeFile(join(path,'index.html'),`<!doctype html><html><head><meta charset="utf-8"><title>Our Marvel ${version}</title></head><body><h1>${version}</h1><label>Черновик<textarea></textarea></label><script src="./assets/runtime-${version}.js"></script></body></html>`);
  await writeFile(join(path,'assets',`runtime-${version}.js`),bundle.outputFiles[0].contents);
  await copyFile('public/covers-v25/iron-man.webp',join(path,'assets','catalogue-poster.webp'));
+ await cp('public/trophies-v251',join(path,'trophies-v251'),{recursive:true});
  await copyFile('public/sw-family.js',join(path,'sw-family.js'));
  await copyFile('public/manifest.webmanifest',join(path,'manifest.webmanifest'));
  execFileSync(process.execPath,['scripts/build-sw.mjs'],{env:{...process.env,MV_DIST_DIR:path},stdio:'pipe'});

@@ -15,6 +15,7 @@ import { Sheet } from "../family/ui";
 import { updateBlocked } from "../pwa/safety";
 import { evaluate, level, registry } from "./model";
 import "./legend.css";
+import artwork from "./artwork.json";
 type Award = {
   achievement_id: string;
   owner: string;
@@ -165,118 +166,34 @@ const names: Record<string, string> = {
   critics: "Два кинокритика",
   family: "Наша собственная вселенная",
 };
-export function Emblem({ id }: { id: string }) {
-  const spec = registry.find((a) => a.id === id),
-    index = registry.findIndex((a) => a.id === id),
-    phase = id.startsWith("phase-") ? Number(id.split("-")[1]) : 0;
-  const colors = [
-    "#e5c58a",
-    "#f3c16e",
-    "#70baff",
-    "#ffbb67",
-    "#cfa2ff",
-    "#6fdfda",
-    "#ff9e78",
+export function Emblem({ id, large = false }: { id: string; large?: boolean }) {
+  const art = (artwork as Record<string, { full: string; thumbnail: string }>)[
+    id
   ];
-  const paths = {
-    reactor: "M12 2 22 8v9l-10 6L2 17V8ZM6 9h12l-6 10Z",
-    hammer: "M3 3h13v8H3ZM9 11v11h4V11M16 5l5 2v6l-5-2",
-    shield:
-      "M12 2 22 6v7c0 6-10 10-10 10S2 19 2 13V6ZM12 6l2 5h5l-4 3 2 5-5-3-5 3 2-5-4-3h5Z",
-    star: "M12 2 15 9l8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1Z",
-    heart: "M20 5c-4-4-8 1-8 1S8 1 4 5c-5 5 0 10 8 16 8-6 13-11 8-16Z",
-    orbit: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 18 21 6M3 6l18 12M12 3v18",
-    rocket:
-      "M8 16 5 19 3 21l2-5M8 16l-3-4 4-2c2-5 7-7 12-7 0 5-2 10-7 12l-2 4ZM14 8h2v2h-2",
-    eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12ZM16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
-    film: "M3 3h18v18H3ZM8 3v18M16 3v18M3 8h5M3 16h5M16 8h5M16 16h5",
-    trophy:
-      "M6 2h12v9a6 6 0 0 1-12 0ZM6 5H2v4c0 3 4 4 5 4M18 5h4v4c0 3-4 4-5 4M12 17v5M7 22h10",
-    portal: "M12 2 21 7v10l-9 5-9-5V7ZM12 6l5 3v6l-5 3-5-3V9ZM12 10v4",
-  };
-  const phaseGlyphs: Record<number, string> = {
-    1: paths.shield,
-    2: paths.reactor,
-    3: paths.heart,
-    4: paths.portal,
-    5: paths.rocket,
-    6: paths.orbit,
-  };
-  const glyph = phase
-    ? phaseGlyphs[phase]
-    : id.includes("stark") || id.includes("reactor")
-      ? paths.reactor
-      : id.includes("thor") || phase === 1
-        ? paths.hammer
-        : id.includes("cap") || id.includes("avengers") || phase === 2
-          ? paths.shield
-          : id.includes("strange") || id.includes("worlds") || phase === 4
-            ? paths.portal
-            : id.includes("guardians") || id.includes("planets")
-              ? paths.rocket
-              : spec?.category === "family" || id.includes("infinity")
-                ? paths.heart
-                : spec?.category === "critics"
-                  ? paths.star
-                  : spec?.category === "series"
-                    ? paths.film
-                    : phase === 5 || phase === 6
-                      ? paths.orbit
-                      : paths.trophy;
-  const color = phase
-    ? colors[phase]
-    : spec?.rarity === "legendary"
-      ? colors[0]
-      : spec?.owner === "tanya"
-        ? "#c8a7e6"
-        : spec?.owner === "anton"
-          ? "#8fb8e8"
-          : "#c3cce0";
+  const base = import.meta.env.BASE_URL;
   return (
-    <svg
-      className="legend-emblem"
-      viewBox="0 0 64 64"
+    <span
+      className={`legend-emblem trophy-art${large ? " trophy-art-large" : ""}`}
       aria-hidden="true"
-      style={{ color }}
+      data-rarity={registry.find((award) => award.id === id)?.rarity}
     >
-      <path
-        d="M18 3h28l15 15v28L46 61H18L3 46V18Z"
-        fill="currentColor"
-        opacity=".07"
+      <img
+        src={base + (large ? art?.full : art?.thumbnail)}
+        alt=""
+        width={large ? 512 : 320}
+        height={large ? 512 : 320}
+        loading={large ? "eager" : "lazy"}
+        decoding="async"
+        onError={(event) => {
+          const image = event.currentTarget;
+          if (large && art && image.src.endsWith(art.full)) {
+            image.src = base + art.thumbnail;
+          } else if (!image.src.endsWith("/cover-fallback.svg")) {
+            image.src = base + "cover-fallback.svg";
+          }
+        }}
       />
-      <path
-        d="M18 3h28l15 15v28L46 61H18L3 46V18Z"
-        stroke="currentColor"
-        fill="none"
-        opacity=".65"
-      />
-      <path
-        d="M20 7h24l13 13v24L44 57H20L7 44V20Z"
-        stroke="currentColor"
-        fill="none"
-        opacity=".22"
-      />
-      <g
-        transform="translate(20 17)"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      >
-        <path d={glyph} />
-      </g>
-      <text
-        x="32"
-        y="53"
-        textAnchor="middle"
-        fill="currentColor"
-        fontSize="7"
-        letterSpacing="2"
-      >
-        {String(index + 1).padStart(2, "0")}
-      </text>
-    </svg>
+    </span>
   );
 }
 export function LegendHomePreview() {
@@ -461,7 +378,7 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
       </div>
       {chosen && (
         <Sheet title={chosen.title} close={() => setSelected(null)}>
-          <Emblem id={chosen.id} />
+          <Emblem id={chosen.id} large />
           <p>{chosen.description || "Новая глава нашей истории Marvel."}</p>
           <p>
             {chosen.missing.some(
