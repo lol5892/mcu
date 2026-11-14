@@ -4,13 +4,10 @@ import { Bell, Smartphone, Send, VolumeX, Trash2 } from "lucide-react";
 import { useFamily } from "./FamilyProvider";
 import { useAction, Feedback, displayDate } from "./ui";
 export const notificationKinds = [
-  ["message", "Личные сообщения"],
-  ["comment", "Комментарии"],
   ["rating", "Оценки"],
   ["watch_request", "Запросы подтверждения просмотра"],
   ["watch_confirmed", "Подтверждения просмотра"],
   ["photo", "Фотографии"],
-  ["letter", "Письма ❤️"],
   ["event_invite", "Приглашения"],
   ["event_confirm", "Подтверждение киновечера"],
   ["event_move", "Перенос киновечера"],
@@ -18,7 +15,6 @@ export const notificationKinds = [
   ["session", "Совместные сеансы"],
   ["reminder", "Напоминания о просмотре"],
   ["nudge", "Предложение киновечера"],
-  ["letter_nudge", "Написать тёплое письмо"],
 ] as const;
 export function Notifications() {
   const f = useFamily(),
@@ -245,16 +241,7 @@ export function Notifications() {
             <option value={2}>До двух раз в неделю</option>
           </select>
         </label>
-        <label className="toggle-row">
-          <span>Редко напоминать о тёплом письме</span>
-          <input
-            type="checkbox"
-            checked={profile?.letter_nudges || false}
-            onChange={(e) =>
-              void a.run(() => preference({ letter_nudges: e.target.checked }))
-            }
-          />
-        </label>
+
       </section>
       <section className="panel">
         <h2>Наши устройства</h2>

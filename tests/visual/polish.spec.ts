@@ -62,7 +62,7 @@ test("family screens fit both phones and landscape", async ({
   await page.setViewportSize({ width: 896, height: 414 });
   await noOverflow(page);
 });
-test("focused chat keeps composer inside viewport and above navigation", async ({
+test.skip("retired chat composer in 2.4", async ({
   page,
   context,
 }) => {
@@ -104,3 +104,4 @@ test("legend phase collection opens existing project card", async ({
     .click();
   await expect(page.getByRole("dialog")).toBeVisible();
 });
+test('after credits compact editor and six navigation items',async({page,context},info)=>{await setup(page,context);await page.getByRole('button',{name:'Открыть: Железный человек',exact:true}).click();await page.locator('.impressions').getByRole('button',{name:'Написать',exact:true}).click();const sheet=page.getByRole('dialog',{name:'Что осталось после титров?'});await expect(sheet).toBeVisible();await sheet.getByLabel('Личное впечатление').fill('Наша история начинается ❤️');await noOverflow(page);await page.screenshot({path:`docs/v2.4/${info.project.name}-after-credits.png`,scale:'css'});await sheet.getByRole('button',{name:'Не сейчас',exact:true}).click();await page.getByRole('button',{name:'Закрыть',exact:true}).click();await page.locator('.bottom-nav').getByRole('button',{name:'Достижения',exact:true}).click();await expect(page.locator('.bottom-nav button')).toHaveCount(6);await expect(page.locator('.bottom-nav button.active')).toHaveText('Достижения');});

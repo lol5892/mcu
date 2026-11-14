@@ -63,8 +63,12 @@ select public.mv_tick();select public.mv_tick();
 reset role;
 set role authenticated;
 select set_config('request.jwt.claim.sub','11111111-1111-4111-8111-111111111111',false);
-select public.test_assert((select count(*)=1 from public.mv_letters),'due letter delivered by server scheduler');
-select public.test_assert((select count(*)=1 from public.mv_notifications where type='letter'),'scheduled notification deduplicated');
+select public.test_assert((select count(*)=0 from public.mv_letters),'archived scheduled letter stays hidden');
+select public.test_assert((select count(*)=0 from public.mv_notifications where type='letter'),'retired letter notification suppressed');
+reset role;
+-- Historical delivered fixture only: the scheduler must not deliver new letters.
+update public.mv_letters set status='delivered',delivered_at=now() where id='dddddddd-0000-4000-8000-000000000002';
+set role authenticated;
 select public.mv_apply('cccccccc-0000-4000-8000-000000000004','letter_read','dddddddd-0000-4000-8000-000000000002','{}',0);
 select public.test_assert((select read_at is null from public.mv_letters limit 1),'read receipts off by default');
 select public.mv_update_profile('{"read_receipts":true}');

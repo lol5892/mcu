@@ -2732,3 +2732,5 @@
 .watch-push-hint { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; color: #b6b9c4; font-size: 13px; }
 .pending-episode { border-color: #ad8e57 !important; color: #e4c58b !important; }
 @media(max-width: 480px) { .watch-inbox { margin: 14px 16px; padding: 14px; } }
+/* Compact personal impressions preserve the existing sheet styling. */
+.after-credits textarea{font-size:16px;max-width:100%;min-height:110px}.after-credits output{display:block;text-align:right;color:var(--muted);font-size:13px}.after-credits>button{min-height:44px;margin:6px 0}.impressions{margin-top:24px}.impressions .panel{padding:18px;margin:12px 0}.impressions p{overflow-wrap:anywhere;white-space:pre-wrap}.family-sheet-backdrop:has(.after-credits){padding-top:max(12px,env(safe-area-inset-top));padding-bottom:env(safe-area-inset-bottom)}.family-sheet:has(.after-credits){max-height:100%;padding-bottom:20px}.after-credits h3{overflow-wrap:anywhere}

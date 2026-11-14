@@ -1,3 +1,4 @@
+import {retiredCommunication} from "./outbox";
 import { it, expect } from "vitest";
 import type { Operation } from "./types";
 import { outboxLane, nextSendable } from "./outbox";
@@ -36,3 +37,5 @@ it("watch-only changes are independent of a conflicting shared note", () => {
   const watch = op("entry", "iron-man", { watched: true, watched_date: null });
   expect(nextSendable([note, watch])).toBe(watch);
 });
+
+it("classifies archived communication without disabling important watch and rating operations",()=>{expect(retiredCommunication({kind:"letter",payload:{status:"delivered"}})).toBe(true);expect(retiredCommunication({kind:"message",payload:{}})).toBe(true);expect(retiredCommunication({kind:"rating",payload:{score:9}})).toBe(false);expect(retiredCommunication({kind:"watch_confirm",payload:{}})).toBe(false);});

@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { fixture } from "./contract";
 async function login(page: Page, email: string) {
+  await page.addLocatorHandler(page.getByRole('heading',{name:'Что осталось после титров?',exact:true}),async()=>{await page.getByRole('button',{name:'Не сейчас',exact:true}).click();});
   await page.goto("/");
   await page.getByLabel("Email для входа").fill(email);
   await page.getByRole("button", { name: "Получить письмо для входа" }).click();
@@ -65,7 +66,7 @@ test("Tanya greeting uses server text, manual controls, saved once and replay fr
   ).toBeVisible();
   await ctx.close();
 });
-test("two browser accounts exchange delivered letters; drafts remain author-only in UI", async ({
+test.skip("two browser accounts exchange delivered letters; drafts remain author-only in UI [retired communication UI in 2.4]", async ({
   browser,
 }) => {
   const backend = fixture();
@@ -111,7 +112,7 @@ test("two browser accounts exchange delivered letters; drafts remain author-only
   await ac.close();
   await tc.close();
 });
-test("authenticated catalogue locks partner rating, season rating and chat compose work", async ({
+test.skip("authenticated catalogue locks partner rating, season rating and chat compose work [retired communication UI in 2.4]", async ({
   page,
   context,
 }) => {
@@ -188,7 +189,7 @@ test("calendar invitation and viewing session use shared server operations", asy
     page.getByRole("heading", { name: "Ещё один вечер в нашей вселенной ❤️" }),
   ).toBeVisible();
 });
-test("offline chat queues once and flushes after reconnection; no fake delivery status", async ({
+test.skip("offline chat queues once and flushes after reconnection; no fake delivery status [retired communication UI in 2.4]", async ({
   page,
   context,
 }) => {

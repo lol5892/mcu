@@ -25,3 +25,4 @@ node scripts/catalog-sql.mjs | docker "${docker_args[@]}" exec -i our-marvel-sql
 docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test < supabase/tests/security.sql
 docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test < supabase/tests/ux21.sql
 docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test < supabase/tests/legend23.sql
+docker "${docker_args[@]}" exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d marvel_test < supabase/tests/after24.sql

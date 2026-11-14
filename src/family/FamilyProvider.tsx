@@ -23,7 +23,7 @@ import {
   removeOperation,
   forgetUserCache,
 } from "./cache";
-import { outboxLane, nextSendable } from "./outbox";
+import { outboxLane, nextSendable, retiredCommunication } from "./outbox";
 import { operationSatisfied, supersededWatch } from "./reconcile";
 import { applyOptimistic, legacyProjection } from "./projection";
 import { emptyEntry, type Entry, type Records } from "../model";
@@ -280,10 +280,13 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       return;
     }
     const task = (async () => {
+      const afterCredits=new Set<string>();
       try {
         while (navigator.onLine && identity.current?.id === who.id) {
           const op = nextSendable(await listOperations(who.id));
           if (!op) break;
+          if (retiredCommunication(op)) {await putOperation({...op,state:"failed",error:"Архивное действие: отправка отключена в версии 2.4"});continue;}
+
           const { error } = await supabase!.rpc("mv_apply", {
             p_id: op.id,
             p_kind: op.kind,
@@ -322,10 +325,13 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
             continue;
           }
           await removeOperation(op.id);
+          if(op.kind==="entry"&&op.payload.watched===true||op.kind==="episode"&&op.payload.watched===true||op.kind==="watch_confirm") {const projectId=op.kind==="watch_confirm"?state.current.watchRequests.find(r=>r.id===op.target)?.project_id:op.target;if(projectId)afterCredits.add(projectId);}
+
         }
       } finally {
         setOperations(await listOperations(who.id));
         await refresh();
+        for(const id of afterCredits)window.dispatchEvent(new CustomEvent("mv-after-credits",{detail:id}));
       }
     })();
     flushing.current = task;
