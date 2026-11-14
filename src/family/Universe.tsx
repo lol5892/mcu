@@ -333,21 +333,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
               <PrivatePhoto key={m.id} media={m} />
             ))}
           <PhotoUpload kind="avatar" target={null} />
-          <label className="toggle-row">
-            <span>Показывать партнёру «Прочитано» у писем</span>
-            <input
-              type="checkbox"
-              checked={f.snapshot.profile?.read_receipts || false}
-              onChange={(e) =>
-                void a.run(async () => {
-                  await f.rpc("mv_update_profile", {
-                    p: { read_receipts: e.target.checked },
-                  });
-                  await f.refresh();
-                })
-              }
-            />
-          </label>
+  
           {f.role === "tanya" && (
             <button className="wide-button" onClick={() => setReplay("letter")}>
               <Heart size={17} />
