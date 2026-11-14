@@ -16,7 +16,10 @@
 .trophy-art img {
   display: block;
   width: 100%;
-  height: 100%;
+  /* Intrinsic ratio avoids WebKit resolving 100% height against the bordered
+     aspect-ratio box (284×288 for a 288px frame). */
+  height: auto;
+  aspect-ratio: 1;
   object-fit: contain;
   border-radius: inherit;
 }

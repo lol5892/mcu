@@ -62,6 +62,14 @@ test("all 82 collectible paintings load small and enlarged without clipping", as
     const box = await large.boundingBox();
     expect(box!.width).toBeGreaterThan(200);
     expect(box!.width).toBeCloseTo(box!.height, 0);
+    const frame = await large.locator("..").boundingBox();
+    expect(frame!.width).toBeCloseTo(frame!.height, 0);
+    expect(
+      Math.abs(box!.x + box!.width / 2 - frame!.x - frame!.width / 2),
+    ).toBeLessThan(0.5);
+    expect(
+      Math.abs(box!.y + box!.height / 2 - frame!.y - frame!.height / 2),
+    ).toBeLessThan(0.5);
     await dialog
       .getByRole("button", { name: "Закрыть окно", exact: true })
       .click();
