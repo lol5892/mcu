@@ -20,3 +20,8 @@ select set_config('request.jwt.claim.sub','11111111-1111-4111-8111-111111111111'
 select public.test_denied('select public.mv_impression(''iron-man'',chr(8199)||chr(8239),2)','Unicode whitespace-only impression rejected');
 select public.test_assert(jsonb_array_length(public.mv_export()->'impressions')=2,'backup includes both family impressions');
 reset role;
+set role authenticated;
+select set_config('request.jwt.claim.sub','11111111-1111-4111-8111-111111111111',false);
+select public.mv_impression('thor','v',0);
+select public.test_assert((select body='v' from public.mv_impressions where project_id='thor'),'ordinary Latin letter is not treated as whitespace');
+reset role;

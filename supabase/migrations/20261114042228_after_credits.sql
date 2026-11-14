@@ -3,7 +3,7 @@ create table public.mv_impressions(
  user_id uuid not null references public.mv_profiles(id),project_id text not null references public.mv_projects(id),
  body text,version bigint not null default 1,created_at timestamptz not null default now(),updated_at timestamptz not null default now(),
  primary key(family_id,user_id,project_id),unique(id),
- check(body is null or (char_length(body) between 1 and 200 and translate(body,E' \t\n\r\f\v'||chr(160)||chr(5760)||chr(8192)||chr(8193)||chr(8194)||chr(8195)||chr(8196)||chr(8197)||chr(8198)||chr(8199)||chr(8200)||chr(8201)||chr(8202)||chr(8232)||chr(8233)||chr(8239)||chr(8287)||chr(12288)||chr(65279),'')<>''))
+ check(body is null or (char_length(body) between 1 and 200 and translate(body,' '||chr(9)||chr(10)||chr(11)||chr(12)||chr(13)||chr(160)||chr(5760)||chr(8192)||chr(8193)||chr(8194)||chr(8195)||chr(8196)||chr(8197)||chr(8198)||chr(8199)||chr(8200)||chr(8201)||chr(8202)||chr(8232)||chr(8233)||chr(8239)||chr(8287)||chr(12288)||chr(65279),'')<>''))
 );
 alter table public.mv_impressions enable row level security;
 create policy family_read on public.mv_impressions for select to authenticated using(family_id=mv_private.family());
