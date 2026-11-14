@@ -4,14 +4,15 @@ self.addEventListener('push',event=>{
  event.waitUntil((async()=>{
   let payload;try{payload=event.data?.json();}catch{return;}
   if(!payload||typeof payload.id!=='string'||!/^[a-f0-9-]{36}$/i.test(payload.id))return;
-  const safeRoute=typeof payload.route==='string'&&/^\/(letters|chat|project|moments|events|sessions|settings)(\/[a-zA-Z0-9-]+)?$/.test(payload.route)?payload.route:'/universe';
+  const safeRoute=typeof payload.route==='string'&&/^\/(letters|chat|project|moments|events|sessions|settings|legend)(\/[a-zA-Z0-9-]+)?$/.test(payload.route)?payload.route:'/universe';
   const cache=await caches.open('mv-push-receipts-v1');
   const key=new URL('__push_receipt__/'+payload.id,self.registration.scope).href;
   if(await cache.match(key))return;
   // Stable tags collapse retries across transport failures; a durable receipt
   // also avoids showing the same server notification twice on this device.
-  await self.registration.showNotification(typeof payload.title==='string'?payload.title.slice(0,160):'Наша маленькая вселенная',{
-   body:'Откройте «Наш Marvel», чтобы посмотреть.',tag:'marvel:'+payload.id,
+  if(safeRoute.startsWith('/legend/') && (await self.clients.matchAll({type:'window',includeUncontrolled:true})).some(c=>c.url.startsWith(self.registration.scope)&&c.visibilityState==='visible')){await cache.put(key,new Response('foreground'));return;}
+  await self.registration.showNotification(safeRoute.startsWith('/legend/')&&typeof payload.body==='string'?'Наш Marvel — новое достижение!':typeof payload.title==='string'?payload.title.slice(0,160):'Наша маленькая вселенная',{
+   body:safeRoute.startsWith('/legend/')&&typeof payload.body==='string'?payload.body.slice(0,240):'Откройте «Наш Marvel», чтобы посмотреть.',tag:'marvel:'+payload.id,
    icon:new URL('icons/icon-192.png',self.registration.scope).href,
    badge:new URL('icons/icon-192.png',self.registration.scope).href,
    data:{route:safeRoute,id:payload.id},renotify:false,
@@ -23,7 +24,7 @@ self.addEventListener('push',event=>{
 self.addEventListener('notificationclick',event=>{
  event.notification.close();
  const route=event.notification.data?.route||'/universe';
- const safeRoute=/^\/(letters|chat|project|moments|events|sessions|settings)(\/[a-zA-Z0-9-]+)?$/.test(route)?route:'/universe';
+ const safeRoute=/^\/(letters|chat|project|moments|events|sessions|settings|legend)(\/[a-zA-Z0-9-]+)?$/.test(route)?route:'/universe';
  const target=new URL('./',self.registration.scope);target.hash=safeRoute;
  event.waitUntil((async()=>{const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});
   for(const client of windows)if(client.url.startsWith(self.registration.scope)){await client.navigate(target.href);return client.focus();}

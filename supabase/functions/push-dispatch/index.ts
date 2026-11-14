@@ -66,6 +66,7 @@ Deno.serve(async (req) => {
         JSON.stringify({
           id: job.notification_id,
           title: job.title,
+          body: job.route.startsWith("/legend/") ? job.title : undefined,
           route: job.route,
         }),
         { TTL: 3600, urgency: "normal", timeout: 10000 },

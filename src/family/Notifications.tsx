@@ -4,6 +4,7 @@ import { Bell, Smartphone, Send, VolumeX, Trash2 } from "lucide-react";
 import { useFamily } from "./FamilyProvider";
 import { useAction, Feedback, displayDate } from "./ui";
 export const notificationKinds = [
+  ["achievement", "Достижения и трофеи"],
   ["rating", "Оценки"],
   ["watch_request", "Запросы подтверждения просмотра"],
   ["watch_confirmed", "Подтверждения просмотра"],
