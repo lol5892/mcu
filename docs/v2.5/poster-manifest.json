@@ -1,0 +1,731 @@
+[
+  {
+    "id": "iron-man",
+    "file": "public/covers-v25/iron-man.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Original red/gold energy workshop at twilight",
+    "concept": false,
+    "sha256": "e44e028f5c083a5ef82cafaf40b52356e04a59cf4d271776c6055d3da2b0a720",
+    "bytes": 212022
+  },
+  {
+    "id": "hulk",
+    "file": "public/covers-v25/hulk.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An abandoned genetics laboratory in a rain soaked city, shattered glass, huge humanlike footprints in wet concrete, luminous green experimental liquid, military searchlights cutting mist, green and charcoal palette, street level cinematic perspective.",
+    "concept": false,
+    "sha256": "aea4675b39249b479e222423412792c53b1db6c77b2cb2aff36a01f71233a267",
+    "bytes": 238696
+  },
+  {
+    "id": "iron-man-2",
+    "file": "public/covers-v25/iron-man-2.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An extravagant racing circuit at night in Monaco beside the sea, a red gold futuristic armored silhouette in the distance, electrified whips carving blue arcs in the foreground, racing debris and amber sparks, dynamic diagonal composition.",
+    "concept": false,
+    "sha256": "2ec5d8a697dfb13d320c2e0d6180710a1404d1ed098584b7daa5489d97438ea8",
+    "bytes": 211758
+  },
+  {
+    "id": "thor",
+    "file": "public/covers-v25/thor.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A monumental golden celestial palace above clouds, a massive weathered battle hammer resting on a stone bridge in foreground, blue lightning splitting a violet sky, shining rainbow bridge receding into majestic Nordic architecture.",
+    "concept": false,
+    "sha256": "60e7c494505f453c13740638458db86b0bdbf7fd7e186560b1d0d00fc4f7be17",
+    "bytes": 230254
+  },
+  {
+    "id": "first-avenger",
+    "file": "public/covers-v25/first-avenger.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A worn red white blue round shield leaning against a military motorcycle, snow covered 1940s European railway station, steam train and warm lamplight, distant anonymous soldier silhouette, heroic vintage wartime cinema atmosphere.",
+    "concept": false,
+    "sha256": "81df611dfd9e5c8831fed1b403d12babd7a431a9118e2aa51f382c2f48547a92",
+    "bytes": 206950
+  },
+  {
+    "id": "avengers",
+    "file": "public/covers-v25/avengers.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An alien portal opening above a New York skyline, a small team of distinct anonymous heroic silhouettes on a rooftop amid blue energy and flying debris, sweeping wide-angle vertical perspective, red gold heroic accents.",
+    "concept": false,
+    "sha256": "cf77858a686fc0360929d8484037c5b353c702c7bf1d4647250ac49134f37087",
+    "bytes": 138318
+  },
+  {
+    "id": "iron-man-3",
+    "file": "public/covers-v25/iron-man-3.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A stormy ocean at night, a wrecked futuristic clifftop laboratory, several unique empty red-gold metal armor suits lit by a blue furnace glow, smoke and orange sparks, intimate reflective cinematic composition.",
+    "concept": false,
+    "sha256": "3a922723bdba389f47d95593c73e54d3971918ddbe0e7252868520aa1a9eda90",
+    "bytes": 141180
+  },
+  {
+    "id": "thor-dark",
+    "file": "public/covers-v25/thor-dark.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Dark Nordic celestial city, immense black angular spacecraft eclipsing crimson nebulae, red liquid-like energy twisting around ancient stone columns, a distant lone cloaked figure with a hammer, dark blue silver and ruby lighting.",
+    "concept": false,
+    "sha256": "71cf1fd06c428fb82486ea39e192fc3904edb22930f583bd35475f6d46c389e1",
+    "bytes": 87272
+  },
+  {
+    "id": "winter-soldier",
+    "file": "public/covers-v25/winter-soldier.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A modern intelligence headquarters reflected in a fractured glass wall, a battered circular shield foreground, a shadowed metal prosthetic hand, rain and aircraft searchlights, cold blue political-thriller atmosphere.",
+    "concept": false,
+    "sha256": "377a4e48d3b4fed0a1e8a2187229d30416703b9e758710ce9aa9b2b34feb2b53",
+    "bytes": 91556
+  },
+  {
+    "id": "guardians",
+    "file": "public/covers-v25/guardians.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A ramshackle orange and blue starship banking over a colorful alien planet, five tiny eccentric explorer silhouettes on a rocky overlook, magenta nebulae, glowing flora and a tiny sapling, exuberant original space adventure painting.",
+    "concept": false,
+    "sha256": "9486120c49e91820e5428e20dc5fad9344212e89f7360aafc31bc7254a493a86",
+    "bytes": 142562
+  },
+  {
+    "id": "ultron",
+    "file": "public/covers-v25/ultron.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A ruined European city floating above clouds, red-eyed broken robot heads in the foreground, metallic robotic swarms and blue lightning, dark crimson and steel palette, epic apocalyptic cinematic depth.",
+    "concept": false,
+    "sha256": "4761d72a1596450f4e7175854ab2dfcafae4f2a680ad39c0de180fb79385ae8a",
+    "bytes": 126678
+  },
+  {
+    "id": "ant-man",
+    "file": "public/covers-v25/ant-man.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An extraordinarily detailed macro landscape on a wooden workbench, a tiny anonymous red-silver explorer beside enormous ants, giant screws and circuit board canyon, warm sunlight and depth-of-field, playful scientific adventure.",
+    "concept": false,
+    "sha256": "42f6af2ef93c0bbe1ff421fde4ee4eef4a35d906a6db79bf1ef610a5ca318734",
+    "bytes": 97632
+  },
+  {
+    "id": "civil-war",
+    "file": "public/covers-v25/civil-war.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Two anonymous teams of heroes facing each other across a deserted airport tarmac, a scratched red blue shield and red gold metal gauntlet in foreground, overcast divided warm/cool lighting, dramatic restrained composition.",
+    "concept": false,
+    "sha256": "93d88a2f917a95eb488462d0af8997e8174ed31c404613cf36bf2494f0333f0d",
+    "bytes": 79254
+  },
+  {
+    "id": "strange",
+    "file": "public/covers-v25/strange.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An original mystic in a crimson cloak seen from behind on a rooftop, elaborate orange magic portal rings, a city folding upward like an architectural kaleidoscope, amber sparks against deep midnight blue, intricate painterly fantasy.",
+    "concept": false,
+    "sha256": "95bc735f3950ddd12b6c30c2b575a0156fbd2a0f379cb195512eb0665adab759",
+    "bytes": 130562
+  },
+  {
+    "id": "guardians-2",
+    "file": "public/covers-v25/guardians-2.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A weathered spaceship flying through a luminous golden living planet with enormous cosmic roots, a tiny blue tree-like sapling beside a cassette player in foreground, brilliant violet and teal galactic clouds, warm family adventure mood.",
+    "concept": false,
+    "sha256": "03c34599af5e94d72f66f61f4d1a44e2ae45befb7e2e8da5480fdeaa83869fe3",
+    "bytes": 136150
+  },
+  {
+    "id": "spider-home",
+    "file": "public/covers-v25/spider-home.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Sunlit neighborhood rooftop, a homemade wrist gadget on red and blue cloth, web threads, school bag and city water towers",
+    "concept": false,
+    "sha256": "47229a76606921ca84f6e082f16c00c8dcde595aaf01f3b1b55edc15b3512fd3",
+    "bytes": 166410
+  },
+  {
+    "id": "ragnarok",
+    "file": "public/covers-v25/ragnarok.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An alien scrap-metal arena, broken silver hammer, gladiator helmet, twin moons and a volcanic horizon",
+    "concept": false,
+    "sha256": "93f2df8298a7524ada83106e83589693e4baaaa4893a23e96fdea73c7ec5e9b4",
+    "bytes": 149494
+  },
+  {
+    "id": "panther",
+    "file": "public/covers-v25/panther.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Futuristic African mountain city, waterfalls and an obsidian panther sculpture with violet energy veins",
+    "concept": false,
+    "sha256": "4429767a1e9cefe84d6f5938049b7e51d09a49d3809ea3aaa68e0a491d240aea",
+    "bytes": 191848
+  },
+  {
+    "id": "infinity-war",
+    "file": "public/covers-v25/infinity-war.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A gold mechanical relic with six glowing cosmic crystals on an empty alien plain beneath broken moons",
+    "concept": false,
+    "sha256": "386c9bc5294148f029674d07f878a35cfeef1b177d413b40446b71773b0e8f68",
+    "bytes": 128478
+  },
+  {
+    "id": "ant-wasp",
+    "file": "public/covers-v25/ant-wasp.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Two tiny anonymous futuristic explorers on the petal of a flower in a vibrant quantum garden, translucent insect wings, floating subatomic bubbles, lime violet and amber lighting, intricate macro adventure composition.",
+    "concept": false,
+    "sha256": "5d9460709fcae95c41f47ff52fdfe45a9f56a27ac96afd1ec669a1060f1a6874",
+    "bytes": 134080
+  },
+  {
+    "id": "captain-marvel",
+    "file": "public/covers-v25/captain-marvel.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A golden star-shaped energy emblem reflected in the cockpit of a 1990s fighter jet, an anonymous glowing heroine silhouette flying through indigo space, red blue gold photon trails, bold original retro cosmic cinema.",
+    "concept": false,
+    "sha256": "a5538a107ad8f272eec9e39a806542db7966784d980968465ae8a86e26b7c161",
+    "bytes": 128710
+  },
+  {
+    "id": "endgame",
+    "file": "public/covers-v25/endgame.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An empty battlefield at dawn, a broken shield and golden portals opening to peaceful worlds",
+    "concept": false,
+    "sha256": "dcda381574aba2ca12ce29011b109ac502e62ff2d9cb7a15559f58adc9ab4dd8",
+    "bytes": 159338
+  },
+  {
+    "id": "spider-far",
+    "file": "public/covers-v25/spider-far.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Venetian canal, carnival mask and wrist gadget, web threads and green illusion-like clouds",
+    "concept": false,
+    "sha256": "5220e31a1bdd3a3eb4a8a1fcb59166698593fe0b0aae73b64af0de125ccddd99",
+    "bytes": 187920
+  },
+  {
+    "id": "widow",
+    "file": "public/covers-v25/widow.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A red hourglass motif etched onto a worn espionage device, an anonymous red-haired operative silhouette on a snowy bridge, industrial fortress and falling crimson flares, silver black and red spy-thriller palette.",
+    "concept": false,
+    "sha256": "152acafcf4aa10550ca9513f204c7fa06bd3f595bced34643174b8c8d315827c",
+    "bytes": 102636
+  },
+  {
+    "id": "shang-chi",
+    "file": "public/covers-v25/shang-chi.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Ten ornate glowing metal rings circling an ancient dragon gate over a misty lake, a distant anonymous martial artist silhouette on the shore, jade mountains, golden lanterns and blue-orange energy, sumptuous fantasy painting.",
+    "concept": false,
+    "sha256": "d03bb4e1c8261280b4542d6112877ada46ce891454fbae4e4abf8060a9c7e16a",
+    "bytes": 125074
+  },
+  {
+    "id": "eternals",
+    "file": "public/covers-v25/eternals.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Ancient stone ruins on an ocean cliff beneath the immense silhouette of a celestial figure emerging through cosmic clouds, golden circular inscriptions, diverse small immortal wanderer silhouettes, quiet mythic scale.",
+    "concept": false,
+    "sha256": "22868e10c32fad98112db875a3ac8f915be3e748c4d8622eb050d16f94af53b8",
+    "bytes": 174644
+  },
+  {
+    "id": "spider-no-way",
+    "file": "public/covers-v25/spider-no-way.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A red blue masked acrobatic silhouette between three fractured city realities, spiderweb strands over a gothic tower, orange magical cracks and violet lightning, emotionally intense original multiverse artwork.",
+    "concept": false,
+    "sha256": "b5ab325390c45f97969c0d17af7ae8fd6f83d9bcc5dc623c6eaf394eb463ae64",
+    "bytes": 160442
+  },
+  {
+    "id": "strange-2",
+    "file": "public/covers-v25/strange-2.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A crimson-cloaked mystic silhouette at the threshold of multiple fractured universes, ornate orange spell circles and scarlet energy across floating stone staircases, kaleidoscopic ruined city reflections, dark violet fantasy cinema.",
+    "concept": false,
+    "sha256": "4c6f0d2714b64aa7310f35ac72b0e2c988c68264df9f3edcaab612c65b84a43c",
+    "bytes": 133182
+  },
+  {
+    "id": "thor-love",
+    "file": "public/covers-v25/thor-love.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A weathered battle axe and glowing repaired hammer standing on a bright alien shore, two distant caped adventurer silhouettes beneath a vast starlit sky, vibrant pink blue lightning and warm golden horizon, romantic cosmic adventure.",
+    "concept": false,
+    "sha256": "a2c2192d5a13c7c755cdae004d233a8d00fd5ac4b5111cc181a0fde06f9a9584",
+    "bytes": 123670
+  },
+  {
+    "id": "wakanda",
+    "file": "public/covers-v25/wakanda.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A solemn black feline mask with gold filigree on a stone altar, advanced African coastal city above and luminous underwater kingdom below, turquoise bioluminescence, violet mourning drapery, dignified cinematic painting.",
+    "concept": false,
+    "sha256": "6b062859599bb01c145d130759b8793846abe39c57d4686b94a411145377c3ad",
+    "bytes": 160606
+  },
+  {
+    "id": "quantumania",
+    "file": "public/covers-v25/quantumania.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Tiny silver-red explorers overlooking an immense subatomic city inside a glowing quantum bubble, spiraling alien organisms, violet orange towers and levitating islands, richly detailed surreal science fiction.",
+    "concept": false,
+    "sha256": "71fe6e1b7e014c2b7efe11cad6ad47906955cad2ecd95460417656d55bd29f80",
+    "bytes": 143038
+  },
+  {
+    "id": "guardians-3",
+    "file": "public/covers-v25/guardians-3.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A worn cassette tape and small tree sapling on a spaceship window ledge, a blue alien planet and a vast organic space station outside, tiny anonymous adventurer crew silhouettes, bittersweet magenta gold space-opera painting.",
+    "concept": false,
+    "sha256": "832b5b708261b064f5ebca6bb44f21a7128ca4c5392e1a30658fa3dc6f0bd99f",
+    "bytes": 98062
+  },
+  {
+    "id": "marvels",
+    "file": "public/covers-v25/marvels.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Three distinct anonymous glowing heroine silhouettes connected by interwoven gold blue violet photon trails across space, a bright star emblem and spacecraft cockpit foreground, joyful grand cosmic adventure.",
+    "concept": false,
+    "sha256": "03a1d14e6c5302c86bd319477db8c9e6fbb158fe45b671ea08d71c9341db34e6",
+    "bytes": 112384
+  },
+  {
+    "id": "deadpool",
+    "file": "public/covers-v25/deadpool.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Two anonymous masked antihero silhouettes, one red-black and one weathered yellow-blue, walking along a ruined multiverse road, metal claw marks in foreground, burnt orange dust and broken neon portals, irreverent cinematic action without gore.",
+    "concept": false,
+    "sha256": "2966c73e606c1edb4f3dd7801081e6d1d58d76ac330d37d13f1bd9aceb5589b5",
+    "bytes": 122726
+  },
+  {
+    "id": "brave-world",
+    "file": "public/covers-v25/brave-world.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A battered round shield with red blue wings reflected in a government building's broken windows, Washington skyline at dusk, an anonymous winged hero silhouette and a looming crimson shadow, serious political superhero thriller.",
+    "concept": false,
+    "sha256": "d5d137b9cd17ce07c79f8dec9d5ce4a3f0db8c76ba571b228d7eae70ac884b4c",
+    "bytes": 87636
+  },
+  {
+    "id": "thunderbolts",
+    "file": "public/covers-v25/thunderbolts.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A group of six anonymous unlikely covert operatives entering an industrial hangar, a cracked black sun casting gold light behind them, worn tactical equipment and yellow hazard paint in foreground, grounded dark ensemble action.",
+    "concept": false,
+    "sha256": "55fbf42ec6b6a2170f36f7cd0ca128671082f04bda01f420b1d096150cc90c8b",
+    "bytes": 98636
+  },
+  {
+    "id": "fantastic-four",
+    "file": "public/covers-v25/fantastic-four.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A retrofuturistic 1960s rocket launching beside a bright blue family spacecraft hangar, four anonymous explorer silhouettes on a balcony, a huge orange planet and elegant silver architecture, blue suits without logos, optimistic vintage science fiction.",
+    "concept": false,
+    "sha256": "4f31c7fa7f44b7a2ef435aa21124c38b871839327818878026d378d199de08c3",
+    "bytes": 77266
+  },
+  {
+    "id": "spider-new",
+    "file": "public/covers-v25/spider-new.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A solitary red blue acrobat silhouette on a New York rooftop at sunrise, fresh spiderweb shimmering between water towers, warm hopeful golden light after a violet night, original quiet new-beginning composition.",
+    "concept": false,
+    "sha256": "8908d815968924ba42fb09386fc96673bfe5d66c15a878758447e5117230575a",
+    "bytes": 67332
+  },
+  {
+    "id": "wandavision",
+    "file": "public/covers-v25/wandavision.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An idyllic suburban living room split between monochrome vintage television and vivid scarlet magical reality, two anonymous lovers' silhouettes reflected on a TV screen, uncanny red glow, elegant emotional surrealism.",
+    "concept": false,
+    "sha256": "152192233ed113248e442353438c7bbb6576c77defb6a5f7588fc794c3e1c3ad",
+    "bytes": 65828
+  },
+  {
+    "id": "falcon",
+    "file": "public/covers-v25/falcon.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A pair of metallic flight wings folded beside a scratched circular shield on a riverside dock, sunrise over a working-class American town, two anonymous friends in the distance, grounded blue red silver cinematic palette.",
+    "concept": false,
+    "sha256": "6d02d40aa87713c6c56acfc44dfcdb4013263b5ac8bf74b44a1abe16527e0bbc",
+    "bytes": 107844
+  },
+  {
+    "id": "loki",
+    "file": "public/covers-v25/loki.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An ornate green-gold timekeeper's desk with a broken hourglass and branching luminous timelines growing into an immense cosmic tree, a tiny horned silhouette on a stairway, emerald and amber temporal fantasy.",
+    "concept": false,
+    "sha256": "82064cbf5180c8cf0cabbebff7aa30324b03b6fde0d0eb45b3adcc89ea6b3344",
+    "bytes": 123888
+  },
+  {
+    "id": "what-if",
+    "file": "public/covers-v25/what-if.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A giant translucent observer silhouette in the star field, floating fragments of alternate heroic worlds inside crystal shards, painterly animated anthology atmosphere, vibrant violet blue and orange cosmic lighting.",
+    "concept": false,
+    "sha256": "6ee5bdf091d66276b6e547cca49f30634417dab9d1163264d692fab2d9e1e275",
+    "bytes": 92592
+  },
+  {
+    "id": "hawkeye",
+    "file": "public/covers-v25/hawkeye.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A purple-fletched arrow resting beside two bows on a snow-covered New York fire escape, holiday lights and a distant pair of anonymous archers crossing rooftops, cozy purple gold urban adventure.",
+    "concept": false,
+    "sha256": "0d9403b4dcbf955d158b871fc4345ce34c8f071c8f7f5fdff3367e76a2a3ae97",
+    "bytes": 108246
+  },
+  {
+    "id": "moon-knight",
+    "file": "public/covers-v25/moon-knight.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A silver crescent blade on ancient Egyptian stone, an anonymous white-hooded figure atop a pyramid beneath a huge moon, drifting sand and cold silver-blue highlights, mysterious supernatural cinematic painting.",
+    "concept": false,
+    "sha256": "5389a01e707ef99210a03d218f1f3dc0ecdb4ab0c53cca53f8afbdd9fa24638a",
+    "bytes": 95734
+  },
+  {
+    "id": "ms-marvel",
+    "file": "public/covers-v25/ms-marvel.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An intricately engraved golden bangle radiating purple crystalline light on a teenager's desk, colorful Jersey City street outside, an anonymous young heroine silhouette forming a luminous hand, warm vibrant coming-of-age fantasy.",
+    "concept": false,
+    "sha256": "afeddacf3898c9a9535477715811684225bfc9d0e8f4347a68000161e79cef0f",
+    "bytes": 99370
+  },
+  {
+    "id": "groot",
+    "file": "public/covers-v25/groot.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An original tiny tree-creature seedling playing among oversized spaceship tools and glowing alien mushrooms, huge curious eyes, richly painted whimsical macro space garden, bright green warm amber and indigo, no text.",
+    "concept": false,
+    "sha256": "cdd7e5e3b25ff52d5be235905c52c9165c906aa5772ec442fcbcf1adbc8d46a7",
+    "bytes": 138672
+  },
+  {
+    "id": "she-hulk",
+    "file": "public/covers-v25/she-hulk.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A modern law office at twilight, a neat tailored purple jacket draped over an oversized green chair, legal books and a cracked marble column, city lights outside, clever elegant green and purple superhero legal-comedy atmosphere.",
+    "concept": false,
+    "sha256": "a1dfbf20c50773bbf407331a9d7b80ef86087b88362fcd9bfb8d99677e677111",
+    "bytes": 89124
+  },
+  {
+    "id": "secret-invasion",
+    "file": "public/covers-v25/secret-invasion.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A rain-soaked espionage alley with a human face reflected as a subtly different alien silhouette in a puddle, intelligence files and red surveillance lights, cold green shadows, grounded paranoid spy cinema.",
+    "concept": false,
+    "sha256": "f112248cd27b263e48153c29f2fe5a6092965a099ae9a7852413b5a9f91c91d6",
+    "bytes": 109158
+  },
+  {
+    "id": "echo",
+    "file": "public/covers-v25/echo.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A lone anonymous indigenous heroine silhouette on a small-town rooftop under a deep crimson moon, intricate beadwork in foreground and ancestral light patterns through mist, dark red copper and teal, dignified original thriller painting.",
+    "concept": false,
+    "sha256": "6ba4fe8c3223e2412d45e9c76ed05a8ea319d0938445086f4dd1fe57f05bdac1",
+    "bytes": 101190
+  },
+  {
+    "id": "agatha",
+    "file": "public/covers-v25/agatha.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A winding midnight forest road lined by violet witch-light candles, an ornate antique brooch and black hat in foreground, distant anonymous coven silhouettes, burgundy velvet and purple mist, richly atmospheric magical mystery.",
+    "concept": false,
+    "sha256": "b8436cc67cf5e115727e676d1c24b938f18bc1a61a398b9d7939f6b943ab9b64",
+    "bytes": 111832
+  },
+  {
+    "id": "born-again",
+    "file": "public/covers-v25/born-again.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An anonymous blind vigilante silhouette on a gothic urban rooftop, a red mask and cane reflected in rainwater, oppressive city towers and crimson dawn, gritty but elegant red black noir superhero illustration.",
+    "concept": false,
+    "sha256": "826e085bc7bca27d6e6a012abcdbf531e4e7530377261d8d90fc45972e5198b2",
+    "bytes": 101808
+  },
+  {
+    "id": "ironheart",
+    "file": "public/covers-v25/ironheart.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An unfinished original compact red black technological flight suit in a young inventor's colorful workshop, bright blue energy core, Chicago skyline through a window, copper tools and subtle mystical violet light, inventive cinematic mood.",
+    "concept": false,
+    "sha256": "9dd997852aed41fc3dce6b45403ed02a914167ebffbae8c1bbb015826b10fa25",
+    "bytes": 104286
+  },
+  {
+    "id": "wakanda-eyes",
+    "file": "public/covers-v25/wakanda-eyes.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An ornate African heirloom resting beside a black gold reconnaissance mask, advanced stealth aircraft over a luminous green jungle city, layered historic warrior silhouettes in mist, warm ochre teal and violet anthology painting.",
+    "concept": false,
+    "sha256": "ff65af7ac265af6061973261c0756647501a1c0d14888cae1fb668aaeb5628fb",
+    "bytes": 115232
+  },
+  {
+    "id": "zombies",
+    "file": "public/covers-v25/zombies.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A deserted superhero city overtaken by luminous green mist, abandoned broken masks and shields in foreground, distant indistinct undead silhouettes with no gore, haunted crimson moon, stylized animated survival atmosphere.",
+    "concept": false,
+    "sha256": "70e57996853e55934a651d7dffa5da4fc51128d7d5f427e495a0a62807ba5bdf",
+    "bytes": 96560
+  },
+  {
+    "id": "friendly-spider",
+    "file": "public/covers-v25/friendly-spider.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A lively red blue masked neighborhood acrobat above colorful urban rooftops, sketchbook and homemade gadgets on a window ledge, bold painterly animation-inspired shapes with detailed environments, warm optimistic daylight.",
+    "concept": false,
+    "sha256": "24d57bedf55aa13e971bddd81c4cc078644938ef66d3a9494d06bec754cd4e00",
+    "bytes": 128234
+  },
+  {
+    "id": "xmen97",
+    "file": "public/covers-v25/xmen97.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An imposing academy mansion at sunset, a group of anonymous distinct mutant hero silhouettes with a visor glow and a weather-controlling figure above, vivid gold purple blue 1990s animation-inspired cinematic painting, no logos.",
+    "concept": false,
+    "sha256": "5aa1bdf6fb9f8c3940ce2ec184c452b592b2fd2d2f2066aa7ed5293cbd4dcace",
+    "bytes": 95310
+  },
+  {
+    "id": "wonder-man",
+    "file": "public/covers-v25/wonder-man.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A vintage Hollywood film studio at sunset with a glowing violet stage entrance, an anonymous actor-hero silhouette and a cracked stunt helmet in foreground, crimson gold spotlights, glamorous original superhero show-business artwork.",
+    "concept": false,
+    "sha256": "49ac7dc52f954f941b0028d33338a8686fda71617b997ef748d693943abdc0fd",
+    "bytes": 84782
+  },
+  {
+    "id": "visionquest",
+    "file": "public/covers-v25/visionquest.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A solitary pale synthetic humanoid silhouette exploring an abandoned observatory under an enormous blue-white star, fragmented memory prisms and elegant silver circuits, contemplative cool science fiction concept art, future-collection atmosphere.",
+    "concept": false,
+    "sha256": "b0d494e0cbb2f04495cbd4e805cf7289646da80a2a828b4c21b2b737fce668aa",
+    "bytes": 161466
+  },
+  {
+    "id": "daredevil",
+    "file": "public/covers-v25/daredevil.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A pair of red batons crossed on a rainy church rooftop, a distant anonymous red-masked vigilante crouching over a dense noir city, crimson neon reflected in puddles, deep shadow and dramatic perspective.",
+    "concept": false,
+    "sha256": "3a5dbafa94a2697158f8364c9736ff71098d5c581719c2f398429b716a8a3b3f",
+    "bytes": 120980
+  },
+  {
+    "id": "jessica",
+    "file": "public/covers-v25/jessica.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A private investigator's desk with a damaged camera, whiskey glass and photographs turned face down, anonymous leather-jacketed woman silhouette beyond a rain-streaked window, violet neon and gritty metropolitan mystery.",
+    "concept": false,
+    "sha256": "f46841478a644abf3f569b4c167561ca5f56260e833a6670bfbca180da10ba7a",
+    "bytes": 109678
+  },
+  {
+    "id": "luke",
+    "file": "public/covers-v25/luke.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A sturdy anonymous heroic silhouette in a yellow hoodie on a Harlem street, cracked bullet casings on wet pavement with no injury or violence shown, golden streetlights and brownstone architecture, soulful cinematic urban painting.",
+    "concept": false,
+    "sha256": "532197da99b1ec4aab9b35d60376244b439bf0c61f09de7b1141910810b14b72",
+    "bytes": 138636
+  },
+  {
+    "id": "iron-fist",
+    "file": "public/covers-v25/iron-fist.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A glowing golden fist-shaped energy aura above an ancient monastery floor, an anonymous martial artist silhouette framed by green dragon murals, distant New York skyline blending with misty mountains, emerald and gold.",
+    "concept": false,
+    "sha256": "062505e2215ea032cbe845a64d8004022764820ee76cca55db845b95b23697c4",
+    "bytes": 169262
+  },
+  {
+    "id": "defenders",
+    "file": "public/covers-v25/defenders.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Four anonymous street-level heroic silhouettes standing across a rain-soaked New York intersection, red purple gold and green neon reflections, ruined subway tunnel entrance in foreground, moody ensemble urban thriller.",
+    "concept": false,
+    "sha256": "d715aed17d62e37b87bd7f91cb5e71eeee2f89772790459edee60e2bfd56db11",
+    "bytes": 156032
+  },
+  {
+    "id": "punisher",
+    "file": "public/covers-v25/punisher.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An abandoned tactical vest and worn combat boots on a rooftop, a distant anonymous lone vigilante silhouette facing a cold industrial city at dawn, subtle white abstract stencil marks, blue gray and muted crimson, no gore or weapon action.",
+    "concept": false,
+    "sha256": "1cdd2f03ddecd54de6f0561d02ec42f2026f0185657d79358da9f0d4cbdb0c13",
+    "bytes": 93080
+  },
+  {
+    "id": "shield",
+    "file": "public/covers-v25/shield.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A covert aircraft hangar with a sleek black transport jet, several anonymous intelligence-team silhouettes walking toward blue light, silver circuitry and an eagle-like original compass insignia on a tablet, sophisticated spy adventure.",
+    "concept": false,
+    "sha256": "d00de9a556fe367a18fafa4c85805fcc31883c3f3e911a4ebfb76c1ef594a0cb",
+    "bytes": 77330
+  },
+  {
+    "id": "carter",
+    "file": "public/covers-v25/carter.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An anonymous elegant 1940s woman agent in a red hat and blue coat on a rainy Brooklyn street, vintage typewriter and classified folders in foreground, warm gold noir lighting and deep navy shadows.",
+    "concept": false,
+    "sha256": "381c829b4fe4efed53a88ed01b86748e6fd5f709ef61df8590310a5a38299ff1",
+    "bytes": 80626
+  },
+  {
+    "id": "inhumans",
+    "file": "public/covers-v25/inhumans.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A hidden white-stone lunar palace overlooking Earth, an ornate crown and rippling silver fabric in foreground, anonymous royal silhouettes standing at a moonlit balcony, regal dark blue silver and amber fantasy.",
+    "concept": false,
+    "sha256": "2c9870854c8fc8d2cf511bcf14bb93ac0e7fb27b00bdb46310378145d2249e85",
+    "bytes": 109806
+  },
+  {
+    "id": "runaways",
+    "file": "public/covers-v25/runaways.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Six anonymous young adventurer silhouettes in an underground lair, a strange glowing staff and dinosaur footprint in foreground, neon green purple pink graffiti, youthful secret-superpower adventure painting.",
+    "concept": false,
+    "sha256": "71c679111902ba04c419015bb697e6d7a4f9a7918130a81f875860b75d708da4",
+    "bytes": 160498
+  },
+  {
+    "id": "cloak-dagger",
+    "file": "public/covers-v25/cloak-dagger.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Two anonymous young silhouettes on a New Orleans bridge, one wrapped in shadow and one radiating soft golden light, intertwined dark fabric and luminous glass shards, indigo and gold romantic supernatural urban atmosphere.",
+    "concept": false,
+    "sha256": "453d35db3606620a3ba6e1e0edb52d00f694a6ecdb9740e8b03e1f6ef8277404",
+    "bytes": 138444
+  },
+  {
+    "id": "slingshot",
+    "file": "public/covers-v25/slingshot.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An anonymous young speedster silhouette leaving twin amber motion trails through a covert industrial laboratory, finely detailed circuitry and a wrist device foreground, teal gold and dark graphite spy-action illustration.",
+    "concept": false,
+    "sha256": "5d6a05cf80b0ec4d124c7635a642948562608dca94c91caa33ff2bd7e8f00ea9",
+    "bytes": 100168
+  },
+  {
+    "id": "helstrom",
+    "file": "public/covers-v25/helstrom.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An antique occult book and fractured mirror on a candlelit desk, two anonymous investigator silhouettes in a decaying mansion hallway, subtle eerie orange light and charcoal shadows, supernatural mystery without gore.",
+    "concept": false,
+    "sha256": "a5e67cca19e52ba95e23b6fe28e11bd1ca7a104b9be86d7e15702fd3ccd4afbf",
+    "bytes": 98114
+  },
+  {
+    "id": "werewolf",
+    "file": "public/covers-v25/werewolf.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An old gothic mansion under a vast full moon, claw marks on a silver antique medallion, a distant wolf-like silhouette among black pine trees, painted monochrome with selective crimson highlights, classic horror atmosphere without gore.",
+    "concept": false,
+    "sha256": "170b1a4eca4802216a0285b6453653e27ef24bb41af594ef7ea4b3d7d648d63f",
+    "bytes": 114882
+  },
+  {
+    "id": "holiday",
+    "file": "public/covers-v25/holiday.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A tiny tree sapling beside a gift-wrapped cassette player in a starship lounge, colorful alien holiday lights and a snowy cosmic outpost outside, warm green red and golden festive space adventure illustration.",
+    "concept": false,
+    "sha256": "508d94e4d226dd963192b59456ce3be2d383d69b2c48270438a4871721f99e58",
+    "bytes": 101004
+  },
+  {
+    "id": "punisher-special",
+    "file": "public/covers-v25/punisher-special.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A solitary anonymous tactical silhouette at the end of a deserted city pier at dawn, a battered duffel bag and worn vigilante mask in foreground, steel gray muted red and pale gold, intimate final-mission thriller, no gore.",
+    "concept": false,
+    "sha256": "dd1f3cffb26ddb1bc196429c33be6b8057999924165f30e88d38718b942b6ef2",
+    "bytes": 62234
+  },
+  {
+    "id": "consultant",
+    "file": "public/covers-v25/consultant.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A discreet late-night diner booth with two anonymous suited intelligence-agent silhouettes, a classified briefcase and green laboratory reflection on the window, amber tungsten and deep navy, compact cinematic espionage story.",
+    "concept": false,
+    "sha256": "42854b9d8d68b5c30c11e6a46e6a77b68d0e3e489cb068efd5f4767ee2a8a299",
+    "bytes": 55100
+  },
+  {
+    "id": "thor-hammer",
+    "file": "public/covers-v25/thor-hammer.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A weathered silver hammer standing upright in the middle of an empty desert road at sunrise, a roadside gas station and anonymous traveler silhouette in distance, warm sand and electric blue sky, witty cinematic adventure.",
+    "concept": false,
+    "sha256": "1363b9a9fd3df4c1c9c9f3b5130531e2a69cb1d275c000782581c8b6550e3a77",
+    "bytes": 140744
+  },
+  {
+    "id": "item47",
+    "file": "public/covers-v25/item47.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A mysterious recovered alien energy device in an open suitcase on a cheap motel bed, two anonymous young fugitive silhouettes reflected in a window, blue energy and warm amber neon, detailed original sci-fi heist atmosphere.",
+    "concept": false,
+    "sha256": "d818f84b51115864408f34f5a35afe742616fc16eaa76db53337d7a520007e98",
+    "bytes": 106948
+  },
+  {
+    "id": "carter-short",
+    "file": "public/covers-v25/carter-short.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "A red fedora and vintage pistol-shaped spy gadget safely resting beside a classified folder on a 1940s desk, anonymous woman agent silhouette in blue coat at a doorway, gold lamplight and deep red noir atmosphere.",
+    "concept": false,
+    "sha256": "83b7ed589934a20314c4e221d1b23753954983bed62c9bcfebccaf8571d208e8",
+    "bytes": 62448
+  },
+  {
+    "id": "king",
+    "file": "public/covers-v25/king.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An ornate theatrical crown on a prison cell shelf, an old stage spotlight casting warm gold through bars, a distant anonymous eccentric actor silhouette, mysterious dark red and jade cinematic satire with no text.",
+    "concept": false,
+    "sha256": "4610a764822397e7dc8bdc12ef911fc4057d2fe8e1a093d333ad7ad0b0ee5759",
+    "bytes": 75200
+  },
+  {
+    "id": "doomsday",
+    "file": "public/covers-v25/doomsday.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "An immense ominous green cosmic storm above a fractured planet, an original silver medieval-style mask and dark green cloak draped on an empty throne, distant anonymous heroic silhouettes facing the horizon, premium concept art for an unreleased epic, no plot claim.",
+    "concept": true,
+    "sha256": "137d0cefe7bcaf1201a072de1bff2fa9a6a62fd620d3428f6de7bae6d87740f9",
+    "bytes": 104306
+  },
+  {
+    "id": "secret-wars",
+    "file": "public/covers-v25/secret-wars.webp",
+    "provenance": "Original generated illustration; project-specific scene; no external poster download",
+    "scene": "Fragments of several impossible cities and planets floating above a vast cosmic battlefield, a broken golden hourglass in foreground and tiny anonymous explorers at a precipice, crimson orange violet starlight, original concept illustration for an unreleased multiverse epic.",
+    "concept": true,
+    "sha256": "6a331cafc18700d050b549d710c138ab3fceb5f256ab2e721f26f4e6571bf4f4",
+    "bytes": 128418
+  }
+]

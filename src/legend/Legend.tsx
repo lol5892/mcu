@@ -27,7 +27,12 @@ const Context = createContext<{ data: Data; error: string }>({
   data: { awards: [], seen: [], initial: false },
   error: "",
 });
-async function legendRPC(args:Record<string,unknown>={}) {if(!supabase)throw Error('Cloud unavailable');const {data,error}=await supabase.rpc('mv_legend',args);if(error)throw error;return data as Data;}
+async function legendRPC(args: Record<string, unknown> = {}) {
+  if (!supabase) throw Error("Cloud unavailable");
+  const { data, error } = await supabase.rpc("mv_legend", args);
+  if (error) throw error;
+  return data as Data;
+}
 export function LegendProvider({ children }: { children: ReactNode }) {
   const f = useFamily();
   const [data, setData] = useState<Data>({
@@ -37,7 +42,7 @@ export function LegendProvider({ children }: { children: ReactNode }) {
     }),
     [error, setError] = useState(""),
     [notice, setNotice] = useState("");
-  const [identity,setIdentity]=useState("");
+  const [identity, setIdentity] = useState("");
   const queue = useRef<string[]>([]);
   const initialNotice = useRef(false);
   useEffect(() => {
@@ -45,7 +50,8 @@ export function LegendProvider({ children }: { children: ReactNode }) {
     let alive = true,
       busy = false;
     const key = `mv-legend:${f.familyId}:${f.user.id}`;
-    setData({awards:[],seen:[],initial:false});setIdentity(key);
+    setData({ awards: [], seen: [], initial: false });
+    setIdentity(key);
     try {
       const cache = localStorage.getItem(key);
       if (cache) setData(JSON.parse(cache));
@@ -133,7 +139,15 @@ export function LegendProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(timer);
   }, [f.snapshot.sessions]);
   return (
-    <Context.Provider value={{ data:identity===`mv-legend:${f.familyId}:${f.user?.id}`?data:{awards:[],seen:[],initial:false}, error }}>
+    <Context.Provider
+      value={{
+        data:
+          identity === `mv-legend:${f.familyId}:${f.user?.id}`
+            ? data
+            : { awards: [], seen: [], initial: false },
+        error,
+      }}
+    >
       {children}
       {notice && (
         <div className="legend-toast" role="status">
@@ -152,50 +166,146 @@ const names: Record<string, string> = {
   family: "Наша собственная вселенная",
 };
 export function Emblem({ id }: { id: string }) {
-  const symbol = id.includes("thor")
-    ? "ϟ"
+  const spec = registry.find((a) => a.id === id),
+    index = registry.findIndex((a) => a.id === id),
+    phase = id.startsWith("phase-") ? Number(id.split("-")[1]) : 0;
+  const colors = [
+    "#e5c58a",
+    "#f3c16e",
+    "#70baff",
+    "#ffbb67",
+    "#cfa2ff",
+    "#6fdfda",
+    "#ff9e78",
+  ];
+  const paths = {
+    reactor: "M12 2 22 8v9l-10 6L2 17V8ZM6 9h12l-6 10Z",
+    hammer: "M3 3h13v8H3ZM9 11v11h4V11M16 5l5 2v6l-5-2",
+    shield:
+      "M12 2 22 6v7c0 6-10 10-10 10S2 19 2 13V6ZM12 6l2 5h5l-4 3 2 5-5-3-5 3 2-5-4-3h5Z",
+    star: "M12 2 15 9l8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1Z",
+    heart: "M20 5c-4-4-8 1-8 1S8 1 4 5c-5 5 0 10 8 16 8-6 13-11 8-16Z",
+    orbit: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 18 21 6M3 6l18 12M12 3v18",
+    rocket:
+      "M8 16 5 19 3 21l2-5M8 16l-3-4 4-2c2-5 7-7 12-7 0 5-2 10-7 12l-2 4ZM14 8h2v2h-2",
+    eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12ZM16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
+    film: "M3 3h18v18H3ZM8 3v18M16 3v18M3 8h5M3 16h5M16 8h5M16 16h5",
+    trophy:
+      "M6 2h12v9a6 6 0 0 1-12 0ZM6 5H2v4c0 3 4 4 5 4M18 5h4v4c0 3-4 4-5 4M12 17v5M7 22h10",
+    portal: "M12 2 21 7v10l-9 5-9-5V7ZM12 6l5 3v6l-5 3-5-3V9ZM12 10v4",
+  };
+  const phaseGlyphs: Record<number, string> = {
+    1: paths.shield,
+    2: paths.reactor,
+    3: paths.heart,
+    4: paths.portal,
+    5: paths.rocket,
+    6: paths.orbit,
+  };
+  const glyph = phase
+    ? phaseGlyphs[phase]
     : id.includes("stark") || id.includes("reactor")
-      ? "△"
-      : id.includes("cap") || id.includes("avengers")
-        ? "★"
-        : id.includes("strange")
-          ? "◎"
-          : id.startsWith("family-") || id.includes("infinity")
-            ? "♡"
-            : null;
-  const index = registry.findIndex((a) => a.id === id),
-    hue = (index * 137) % 360;
+      ? paths.reactor
+      : id.includes("thor") || phase === 1
+        ? paths.hammer
+        : id.includes("cap") || id.includes("avengers") || phase === 2
+          ? paths.shield
+          : id.includes("strange") || id.includes("worlds") || phase === 4
+            ? paths.portal
+            : id.includes("guardians") || id.includes("planets")
+              ? paths.rocket
+              : spec?.category === "family" || id.includes("infinity")
+                ? paths.heart
+                : spec?.category === "critics"
+                  ? paths.star
+                  : spec?.category === "series"
+                    ? paths.film
+                    : phase === 5 || phase === 6
+                      ? paths.orbit
+                      : paths.trophy;
+  const color = phase
+    ? colors[phase]
+    : spec?.rarity === "legendary"
+      ? colors[0]
+      : spec?.owner === "tanya"
+        ? "#c8a7e6"
+        : spec?.owner === "anton"
+          ? "#8fb8e8"
+          : "#c3cce0";
   return (
     <svg
       className="legend-emblem"
       viewBox="0 0 64 64"
       aria-hidden="true"
-      style={{ color: `hsl(${hue} 45% 65%)` }}
+      style={{ color }}
     >
-      <circle
-        cx="32"
-        cy="32"
-        r="28"
-        fill="none"
-        stroke="currentColor"
-        opacity=".4"
+      <path
+        d="M18 3h28l15 15v28L46 61H18L3 46V18Z"
+        fill="currentColor"
+        opacity=".07"
       />
       <path
-        d={
-          index % 3 === 0
-            ? "M32 10 51 22 51 43 32 54 13 43 13 22Z"
-            : index % 3 === 1
-              ? "M32 10 40 24 55 28 44 40 44 54 32 47 20 54 20 40 9 28 24 24Z"
-              : "M32 9 53 32 32 55 11 32Z"
-        }
+        d="M18 3h28l15 15v28L46 61H18L3 46V18Z"
+        stroke="currentColor"
+        fill="none"
+        opacity=".65"
+      />
+      <path
+        d="M20 7h24l13 13v24L44 57H20L7 44V20Z"
+        stroke="currentColor"
+        fill="none"
+        opacity=".22"
+      />
+      <g
+        transform="translate(20 17)"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
-      />
-      <text x="32" y="38" textAnchor="middle" fill="currentColor" fontSize="18">
-        {symbol || index + 1}
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      >
+        <path d={glyph} />
+      </g>
+      <text
+        x="32"
+        y="53"
+        textAnchor="middle"
+        fill="currentColor"
+        fontSize="7"
+        letterSpacing="2"
+      >
+        {String(index + 1).padStart(2, "0")}
       </text>
     </svg>
+  );
+}
+export function LegendHomePreview() {
+  const { data } = useContext(Context);
+  const last = [...data.awards].sort((a, b) =>
+    b.unlocked_at.localeCompare(a.unlocked_at),
+  )[0];
+  const spec = last && registry.find((r) => r.id === last.achievement_id);
+  return (
+    <button
+      className="legend-home-preview"
+      onClick={() => (location.hash = "/legend")}
+    >
+      {spec ? <Emblem id={spec.id} /> : <Emblem id="films-1" />}
+      <span>
+        <small>{spec ? "ПОСЛЕДНИЙ ТРОФЕЙ" : "НАША ЛЕГЕНДА"}</small>
+        <strong>{spec?.title || "Собираем историю наших приключений"}</strong>
+      </span>
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M6 18 18 6M6 6h12v12"
+          stroke="currentColor"
+          fill="none"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
   );
 }
 export function Legend({ onProject }: { onProject: (id: string) => void }) {
@@ -245,7 +355,15 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
             }
           </p>
         )}
-        <progress value={familyLevel.current} max={familyLevel.total} />
+        <progress
+          aria-label="Опыт до следующего уровня"
+          value={familyLevel.current}
+          max={familyLevel.total}
+        />
+        <small className="legend-level-next">
+          {familyLevel.current} / {familyLevel.total} XP до уровня{" "}
+          {familyLevel.level + 1}
+        </small>
         <p>
           Антон: уровень {level(xp("anton")).level} · {xp("anton")} XP
           <br />
@@ -317,7 +435,18 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
                       ? "Редкая"
                       : "Обычная"}
               </small>
-              <h3>{a.title}</h3><small>+{a.rarity === "legendary" ? 100 : a.rarity === "epic" ? 50 : a.rarity === "rare" ? 25 : 10} XP</small>
+              <h3>{a.title}</h3>
+              <small>
+                +
+                {a.rarity === "legendary"
+                  ? 100
+                  : a.rarity === "epic"
+                    ? 50
+                    : a.rarity === "rare"
+                      ? 25
+                      : 10}{" "}
+                XP
+              </small>
               <progress value={a.current} max={a.threshold} />
               <span>
                 {a.current} / {a.threshold} ·{" "}

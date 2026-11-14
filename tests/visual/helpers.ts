@@ -31,6 +31,42 @@ export async function safeArea(
   });
 }
 export async function noOverflow(page: Page) {
+  await expect
+    .poll(
+      () =>
+        page.locator("img").evaluateAll((images) =>
+          images
+            .filter((img) => {
+              const r = img.getBoundingClientRect();
+              return (
+                r.width > 0 &&
+                r.height > 0 &&
+                r.bottom > 0 &&
+                r.top < innerHeight
+              );
+            })
+            .every(
+              (img) =>
+                (img as HTMLImageElement).complete &&
+                (img as HTMLImageElement).naturalWidth > 0,
+            ),
+        ),
+      { timeout: 15000 },
+    )
+    .toBe(true);
+
+  await page.locator("img").evaluateAll(async (images) => {
+    await Promise.all(
+      images
+        .filter((img) => {
+          const r = img.getBoundingClientRect();
+          return (
+            r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight
+          );
+        })
+        .map((img) => (img as HTMLImageElement).decode().catch(() => {})),
+    );
+  });
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth - innerWidth,

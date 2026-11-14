@@ -31,8 +31,12 @@ self.addEventListener('install',event=>event.waitUntil((async()=>{
   // A deployment/CDN race or truncated mobile download must not activate a
   // shell containing HTML and chunks from different builds.
   for(const [url,digest] of ASSET_URLS){
-   const response=await fetch(new Request(url,{cache:'reload',credentials:'same-origin'}));
-   if(!response.ok||hex(await crypto.subtle.digest('SHA-256',await response.clone().arrayBuffer()))!==digest)throw Error('Incomplete app release');
+   // Reuse only byte-identical public shell resources from an earlier cache.
+   // This avoids downloading the entire illustrated catalogue for a CSS update.
+   let response=await caches.match(url);
+   const matches=async r=>r?.ok&&hex(await crypto.subtle.digest('SHA-256',await r.clone().arrayBuffer()))===digest;
+   if(!await matches(response))response=await fetch(new Request(url,{cache:'reload',credentials:'same-origin'}));
+   if(!await matches(response))throw Error('Incomplete app release');
    await cache.put(url,response);
   }
   await cache.put(READY,new Response(CACHE));
