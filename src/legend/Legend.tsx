@@ -16,6 +16,7 @@ import { updateBlocked } from "../pwa/safety";
 import { evaluate, level, registry } from "./model";
 import "./legend.css";
 import artwork from "./artwork.json";
+import { tierLabels, legacyXP, routeAward, parseNoticeSeen } from "./trophy";
 type Award = {
   achievement_id: string;
   owner: string;
@@ -42,10 +43,25 @@ export function LegendProvider({ children }: { children: ReactNode }) {
       initial: false,
     }),
     [error, setError] = useState(""),
-    [notice, setNotice] = useState("");
+    [notice, setNotice] = useState<{
+      text?: string;
+      award?: Award;
+      additional?: number;
+    } | null>(null);
   const [identity, setIdentity] = useState("");
-  const queue = useRef<string[]>([]);
+  const queue = useRef<{ text?: string; award?: Award }[]>([]);
+  const queued = useRef(new Set<string>());
+  const notifications = useRef(f.snapshot.notifications);
+  notifications.current = f.snapshot.notifications;
+  const noticeKey = `mv-trophy-seen:${f.familyId}:${f.user?.id}`;
+  const noticeKeyRef = useRef(noticeKey);
+  noticeKeyRef.current = noticeKey;
   const initialNotice = useRef(false);
+  const sessions = useRef(f.snapshot.sessions);
+  sessions.current = f.snapshot.sessions;
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
   useEffect(() => {
     if (!f.familyId || !f.user || f.localMode) return;
     let alive = true,
@@ -53,6 +69,10 @@ export function LegendProvider({ children }: { children: ReactNode }) {
     const key = `mv-legend:${f.familyId}:${f.user.id}`;
     setData({ awards: [], seen: [], initial: false });
     setIdentity(key);
+    queue.current = [];
+    queued.current.clear();
+    initialNotice.current = false;
+    setNotice(null);
     try {
       const cache = localStorage.getItem(key);
       if (cache) setData(JSON.parse(cache));
@@ -61,7 +81,10 @@ export function LegendProvider({ children }: { children: ReactNode }) {
       if (busy || !navigator.onLine || document.hidden) return;
       busy = true;
       try {
-        const d = await legendRPC();
+        const locallySeen: string[] = parseNoticeSeen(
+          localStorage.getItem(noticeKeyRef.current),
+        );
+        const d = await legendRPC({ p_ack: locallySeen });
         if (!alive) return;
         if (!d || !Array.isArray(d.awards))
           throw Error("Invalid legend response");
@@ -71,23 +94,26 @@ export function LegendProvider({ children }: { children: ReactNode }) {
         if (d.initial && !initialNotice.current) {
           await legendRPC({ p_ack: ["__baseline__"] });
           initialNotice.current = true;
-          queue.current.push(
-            `Наши прошлые подвиги найдены! Приключения уже принесли ${d.awards.length} достижений.`,
-          );
+          queue.current.push({
+            text: `Наши прошлые подвиги найдены! Приключения уже принесли ${d.awards.length} достижений.`,
+          });
         } else {
-          const fresh = d.awards.filter(
-            (a) => !d.seen.includes(a.achievement_id),
+          const eventIds = new Set(
+            notifications.current
+              .filter((n) => n.type === "achievement")
+              .map((n) => n.route.split("/").at(-1)),
           );
-          if (fresh.length) {
-            await legendRPC({
-              p_ack: fresh.map((a) => a.achievement_id),
-            });
-            for (const a of fresh) {
-              const spec = registry.find((r) => r.id === a.achievement_id);
-              queue.current.push(
-                `Достижение открыто! ${spec?.title} · +${a.xp} XP`,
-              );
-            }
+          const fresh = d.awards.filter(
+            (a) =>
+              !a.historical &&
+              eventIds.has(a.achievement_id) &&
+              !d.seen.includes(a.achievement_id) &&
+              !locallySeen.includes(a.achievement_id) &&
+              !queued.current.has(a.achievement_id),
+          );
+          for (const award of fresh) {
+            queued.current.add(award.achievement_id);
+            queue.current.push({ award });
           }
         }
       } catch {
@@ -127,18 +153,71 @@ export function LegendProvider({ children }: { children: ReactNode }) {
     const timer = setInterval(() => {
       if (
         !queue.current.length ||
+        document.hidden ||
         updateBlocked() ||
         document.querySelector(
           '[role="dialog"],input:focus,textarea:focus,select:focus',
         ) ||
-        f.snapshot.sessions.some((s) => s.status === "active")
+        sessions.current.some((s) => s.status === "active")
       )
         return;
-      setNotice(queue.current.shift()!);
-      setTimeout(() => setNotice(""), 6000);
+      const pending = queue.current.splice(0);
+      const awards = pending
+        .flatMap((p) => (p.award ? [p.award] : []))
+        .sort((a, b) => b.xp - a.xp);
+      if (awards.length) {
+        try {
+          const seen: string[] = parseNoticeSeen(
+            localStorage.getItem(noticeKeyRef.current),
+          );
+          localStorage.setItem(
+            noticeKeyRef.current,
+            JSON.stringify([
+              ...new Set([...seen, ...awards.map((a) => a.achievement_id)]),
+            ]),
+          );
+        } catch {
+          queue.current.unshift(...pending);
+          return;
+        }
+        setNotice({ award: awards[0], additional: awards.length - 1 });
+        void legendRPC({ p_ack: awards.map((a) => a.achievement_id) }).catch(
+          () => {},
+        );
+      } else setNotice(pending[0]);
+      clearTimeout(hideTimer.current);
+      hideTimer.current = setTimeout(() => setNotice(null), 7000);
     }, 7000);
-    return () => clearInterval(timer);
-  }, [f.snapshot.sessions]);
+    return () => {
+      clearInterval(timer);
+      clearTimeout(hideTimer.current);
+    };
+  }, []);
+  useEffect(() => {
+    if (!notice) return;
+    const hideIfBusy = () => {
+      if (
+        updateBlocked() ||
+        sessions.current.some((s) => s.status === "active") ||
+        document.querySelector(
+          '[role="dialog"],input:focus,textarea:focus,select:focus',
+        )
+      )
+        setNotice(null);
+    };
+    const observer = new MutationObserver(hideIfBusy);
+    observer.observe(document.body, { childList: true, subtree: true });
+    document.addEventListener("visibilitychange", hideIfBusy);
+    window.addEventListener("focusin", hideIfBusy);
+    window.addEventListener("mv-update-safety", hideIfBusy);
+    hideIfBusy();
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", hideIfBusy);
+      window.removeEventListener("focusin", hideIfBusy);
+      window.removeEventListener("mv-update-safety", hideIfBusy);
+    };
+  }, [notice]);
   return (
     <Context.Provider
       value={{
@@ -150,11 +229,47 @@ export function LegendProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-      {notice && (
-        <div className="legend-toast" role="status">
-          {notice}
-        </div>
-      )}
+      {notice &&
+        (() => {
+          const spec = registry.find(
+            (a) => a.id === notice.award?.achievement_id,
+          );
+          return (
+            <aside
+              className="legend-toast trophy-toast"
+              role="status"
+              data-tier={spec?.displayTier}
+            >
+              {spec && <Emblem id={spec.id} />}
+              <div>
+                <small>{spec ? "ДОСТИЖЕНИЕ ОТКРЫТО!" : "НАША ЛЕГЕНДА"}</small>
+                {spec && (
+                  <span className="trophy-tier">
+                    {tierLabels[spec.displayTier]}
+                  </span>
+                )}
+                <strong>{spec?.title || notice.text}</strong>
+                {spec && (
+                  <>
+                    <p>{spec.description}</p>
+                    <b>+{notice.award!.xp} XP</b>
+                    {Boolean(notice.additional) && (
+                      <p>И ещё {notice.additional} трофеев в коллекции</p>
+                    )}
+                    <button
+                      onClick={() => {
+                        location.hash = "/legend/" + spec.id;
+                        setNotice(null);
+                      }}
+                    >
+                      Посмотреть достижение
+                    </button>
+                  </>
+                )}
+              </div>
+            </aside>
+          );
+        })()}
     </Context.Provider>
   );
 }
@@ -176,6 +291,7 @@ export function Emblem({ id, large = false }: { id: string; large?: boolean }) {
       className={`legend-emblem trophy-art${large ? " trophy-art-large" : ""}`}
       aria-hidden="true"
       data-rarity={registry.find((award) => award.id === id)?.rarity}
+      data-tier={registry.find((award) => award.id === id)?.displayTier}
     >
       <img
         src={base + (large ? art?.full : art?.thumbnail)}
@@ -230,7 +346,30 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
     { data, error } = useContext(Context);
   const [category, setCategory] = useState("all"),
     [filter, setFilter] = useState("all"),
+    [tier, setTier] = useState("all"),
     [selected, setSelected] = useState<string | null>(null);
+  useEffect(() => {
+    const change = () =>
+      setSelected(
+        routeAward(
+          location.hash,
+          registry.map((a) => a.id),
+        ),
+      );
+    change();
+    window.addEventListener("hashchange", change);
+    return () => window.removeEventListener("hashchange", change);
+  }, []);
+  function closeAward() {
+    setSelected(null);
+    if (
+      routeAward(
+        location.hash,
+        registry.map((a) => a.id),
+      )
+    )
+      location.hash = "/legend";
+  }
   const rows = useMemo(
     () =>
       evaluate(
@@ -317,12 +456,25 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
           <option value="locked">Неоткрытые</option>
           <option value="near">Почти получены</option>
         </select>
+        <select
+          aria-label="Уровень трофея"
+          value={tier}
+          onChange={(e) => setTier(e.target.value)}
+        >
+          <option value="all">Все уровни</option>
+          {Object.entries(tierLabels).map(([id, label]) => (
+            <option key={id} value={id}>
+              {label}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="legend-grid">
         {rows
           .filter(
             (a) =>
               (category === "all" || a.category === category) &&
+              (tier === "all" || a.displayTier === tier) &&
               (filter === "all" ||
                 (filter === "open" && awards.has(a.id)) ||
                 (filter === "locked" && !awards.has(a.id)) ||
@@ -334,6 +486,7 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
             <button
               className={`legend-card ${awards.has(a.id) ? "earned" : ""} ${a.rarity}`}
               key={a.id}
+              data-tier={a.displayTier}
               onClick={() => setSelected(a.id)}
             >
               <Emblem id={a.id} />
@@ -344,26 +497,12 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
                     ? "Антон"
                     : "Таня"}{" "}
                 ·{" "}
-                {a.rarity === "legendary"
-                  ? "Легендарная"
-                  : a.rarity === "epic"
-                    ? "Эпическая"
-                    : a.rarity === "rare"
-                      ? "Редкая"
-                      : "Обычная"}
+                <span className="trophy-tier">{tierLabels[a.displayTier]}</span>
               </small>
               <h3>{a.title}</h3>
-              <small>
-                +
-                {a.rarity === "legendary"
-                  ? 100
-                  : a.rarity === "epic"
-                    ? 50
-                    : a.rarity === "rare"
-                      ? 25
-                      : 10}{" "}
-                XP
-              </small>
+              <p className="trophy-description">{a.description}</p>
+              <p className="trophy-how">Как получить: {a.howTo}</p>
+              <small>+{awards.get(a.id)?.xp ?? legacyXP(a.rarity)} XP</small>
               <progress value={a.current} max={a.threshold} />
               <span>
                 {a.current} / {a.threshold} ·{" "}
@@ -377,19 +516,35 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
           ))}
       </div>
       {chosen && (
-        <Sheet title={chosen.title} close={() => setSelected(null)}>
-          <Emblem id={chosen.id} large />
-          <p>{chosen.description || "Новая глава нашей истории Marvel."}</p>
-          <p>
-            {chosen.missing.some(
-              (id) => catalog.find((p) => p.id === id)?.section === "future",
-            )
-              ? "Коллекция ожидает будущих релизов. "
-              : ""}
-            {chosen.current} / {chosen.threshold}
-            {awards.get(chosen.id) &&
-              ` · ${new Date(awards.get(chosen.id)!.unlocked_at).toLocaleDateString("ru-RU")}`}
-          </p>
+        <Sheet title={chosen.title} close={closeAward}>
+          <div className="trophy-detail" data-tier={chosen.displayTier}>
+            <Emblem id={chosen.id} large />
+            <span className="trophy-tier">
+              {tierLabels[chosen.displayTier]}
+            </span>
+            <p>{chosen.description}</p>
+            <h3>Как получить</h3>
+            <p>{chosen.howTo}</p>
+            <p>
+              Награда: +{awards.get(chosen.id)?.xp ?? legacyXP(chosen.rarity)}{" "}
+              XP
+            </p>
+            <progress
+              value={chosen.current}
+              max={chosen.threshold}
+              aria-label="Прогресс трофея"
+            />
+            <p>
+              {chosen.missing.some(
+                (id) => catalog.find((p) => p.id === id)?.section === "future",
+              )
+                ? "Коллекция ожидает будущих релизов. "
+                : ""}
+              {chosen.current} / {chosen.threshold}
+              {awards.get(chosen.id) &&
+                ` · ${new Date(awards.get(chosen.id)!.unlocked_at).toLocaleDateString("ru-RU")}`}
+            </p>
+          </div>
           {chosen.projects.map((id) => (
             <button
               className="legend-project"

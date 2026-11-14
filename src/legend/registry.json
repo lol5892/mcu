@@ -46,8 +46,10 @@
     "threshold": 1,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Тони начал с пещеры и коробки деталей. Антон и Таня — с дивана и одного фильма: бюджет скромнее, удовольствие сопоставимое.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 1 фильма основного MCU из зафиксированной коллекции.",
+    "displayTier": "bronze"
   },
   {
     "id": "films-3",
@@ -96,8 +98,10 @@
     "threshold": 3,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Три фильма — и остановка уже не входит в планы. Похоже, Фьюри незаметно подписал вас на продолжение.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 3 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "bronze"
   },
   {
     "id": "films-5",
@@ -146,8 +150,10 @@
     "threshold": 5,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Пять историй в коллекции. Супергеройской команде пора выбрать позывные — «Кто забрал попкорн?» пока лидирует.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 5 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "silver"
   },
   {
     "id": "films-10",
@@ -196,8 +202,10 @@
     "threshold": 10,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Десять фильмов позади. Фьюри готов предложить контракт, если удастся согласовать график с Таней.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 10 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "silver"
   },
   {
     "id": "films-15",
@@ -246,8 +254,10 @@
     "threshold": 15,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Пятнадцать приключений — серьёзная заявка на легенду. Даже костюм Тони успел бы несколько раз обновиться за этот марафон.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 15 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "gold"
   },
   {
     "id": "films-20",
@@ -296,8 +306,10 @@
     "threshold": 20,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Двадцать историй, а любимый напарник всё тот же. Мультивселенная велика, но место рядом на диване уже занято.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 20 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "gold"
   },
   {
     "id": "films-25",
@@ -346,8 +358,10 @@
     "threshold": 25,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Двадцать пять фильмов — семейный штаб работает без выходных. Отряд попкорна просит подкрепление.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 25 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "gold"
   },
   {
     "id": "films-30",
@@ -396,8 +410,10 @@
     "threshold": 30,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "У Marvel есть продюсеры, у вашей саги — Антон и Таня. Тридцать фильмов спустя титры всё ещё не хочется пропускать.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 30 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "gold"
   },
   {
     "id": "films-35",
@@ -446,8 +462,10 @@
     "threshold": 35,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Тридцать пять историй под защитой. Енот проверил коллекцию и настоятельно рекомендует новый запас закусок.",
+    "rarity": "rare",
+    "howTo": "Подтвердить совместный просмотр 35 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "platinum"
   },
   {
     "id": "all-films-v1",
@@ -496,8 +514,10 @@
     "threshold": 38,
     "owner": "family",
     "category": "path",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "legendary"
+    "description": "Фильмы зафиксированной коллекции собраны. Фьюри признал вашу семью отдельной командой — кухню под штаб переделывать необязательно.",
+    "rarity": "legendary",
+    "howTo": "Подтвердить совместный просмотр всех 38 фильмов зафиксированной коллекции MCU. Новые проекты не меняют её состав.",
+    "displayTier": "platinum"
   },
   {
     "id": "phase-1-v1",
@@ -514,8 +534,10 @@
     "threshold": 6,
     "owner": "family",
     "category": "phases",
-    "description": "Шесть историй. Два зрителя. Одна команда",
-    "rarity": "legendary"
+    "description": "Фьюри собирал Мстителей годами. Антон и Таня справились за шесть фильмов и несколько уютных вечеров.",
+    "rarity": "legendary",
+    "howTo": "Подтвердить просмотр всех 6 фильмов фазы 1 MCU. Сериалы и спецвыпуски не нужны.",
+    "displayTier": "gold"
   },
   {
     "id": "phase-2-v1",
@@ -532,8 +554,10 @@
     "threshold": 6,
     "owner": "family",
     "category": "phases",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "legendary"
+    "description": "Альтрон хотел порядок во всём мире. Антону и Тане хватило порядка в списке второй фазы — и это гораздо приятнее.",
+    "rarity": "legendary",
+    "howTo": "Подтвердить просмотр всех 6 фильмов фазы 2 MCU. Сериалы и спецвыпуски не нужны.",
+    "displayTier": "gold"
   },
   {
     "id": "phase-3-v1",
@@ -555,8 +579,10 @@
     "threshold": 11,
     "owner": "family",
     "category": "phases",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "legendary"
+    "description": "Щелчок пережили, до Финала добрались. Танос недооценил силу семейного расписания и упрямого «смотрим дальше».",
+    "rarity": "legendary",
+    "howTo": "Подтвердить просмотр всех 11 фильмов фазы 3 MCU. Сериалы и спецвыпуски не нужны.",
+    "displayTier": "gold"
   },
   {
     "id": "phase-4-v1",
@@ -574,8 +600,10 @@
     "threshold": 7,
     "owner": "family",
     "category": "phases",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "legendary"
+    "description": "Стрэндж открывает всё новые реальности. В вашей четвёртой фазе действует один закон: лучшее место — рядом друг с другом.",
+    "rarity": "legendary",
+    "howTo": "Подтвердить просмотр всех 7 фильмов фазы 4 MCU. Сериалы и спецвыпуски не нужны.",
+    "displayTier": "gold"
   },
   {
     "id": "phase-5-v1",
@@ -592,184 +620,275 @@
     "threshold": 6,
     "owner": "family",
     "category": "phases",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "legendary"
+    "description": "Новые герои меняют правила игры, но семейная команда остаётся прежней. Мультивселенной придётся подстроиться под ваш киновечер.",
+    "rarity": "legendary",
+    "howTo": "Подтвердить просмотр всех 6 фильмов фазы 5 MCU. Сериалы и спецвыпуски не нужны.",
+    "displayTier": "gold"
   },
   {
     "id": "phase-6-v1",
     "title": "Наше наследие вечнее времени",
-    "projects": ["fantastic-four", "spider-new", "doomsday", "secret-wars"],
+    "projects": [
+      "fantastic-four",
+      "spider-new",
+      "doomsday",
+      "secret-wars"
+    ],
     "metric": "collection",
     "threshold": 4,
     "owner": "family",
     "category": "phases",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "legendary"
+    "description": "Будущие битвы ещё ждут своего часа. Когда шестая фаза соберётся целиком, у вашего семейного наследия появится особенно эффектная глава.",
+    "rarity": "legendary",
+    "howTo": "Подтвердить просмотр всех 4 фильмов фазы 6 MCU. Сериалы и спецвыпуски не нужны. Награда ждёт выхода всех четырёх фильмов, включая «Судный день» и «Секретные войны».",
+    "displayTier": "gold"
   },
   {
     "id": "hero-reactor",
     "title": "Сердце из реактора",
-    "projects": ["iron-man"],
+    "projects": [
+      "iron-man"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Реактор загорелся — и обычный вечер стал началом большой истории. Только не пытайтесь повторить сборку брони на кухне.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Железный человек».",
+    "displayTier": "bronze"
   },
   {
     "id": "hero-stark",
     "title": "Семья Старков",
-    "projects": ["iron-man", "iron-man-2", "iron-man-3"],
+    "projects": [
+      "iron-man",
+      "iron-man-2",
+      "iron-man-3"
+    ],
     "metric": "collection",
     "threshold": 3,
     "owner": "family",
     "category": "heroes",
-    "description": "За бронёй скрывается настоящее сердце",
-    "rarity": "rare"
+    "description": "Три фильма, несколько костюмов и нескончаемые проблемы Тони. Хорошо, что у Антона и Тани ремонт обычно обходится без взрывов.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Железный человек»; «Железный человек 2»; «Железный человек 3».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-thor",
     "title": "Достойны Мьёльнира",
-    "projects": ["thor", "thor-dark", "ragnarok", "thor-love"],
+    "projects": [
+      "thor",
+      "thor-dark",
+      "ragnarok",
+      "thor-love"
+    ],
     "metric": "collection",
     "threshold": 4,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "После четырёх приключений Тора молот обязан признать вас достойными. Главное — не проверять это рядом с телевизором.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Тор»; «Тор 2: Царство тьмы»; «Тор: Рагнарёк»; «Тор: Любовь и гром».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-cap",
     "title": "До конца пути — вместе",
-    "projects": ["first-avenger", "winter-soldier", "civil-war", "brave-world"],
+    "projects": [
+      "first-avenger",
+      "winter-soldier",
+      "civil-war",
+      "brave-world"
+    ],
     "metric": "collection",
     "threshold": 4,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Щит меняет руки, обещание остаётся. Четыре истории Капитана Америки доказывают: хороший напарник важнее безупречного плана.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Первый мститель»; «Первый мститель: Другая война»; «Первый мститель: Противостояние»; «Капитан Америка: Новый мир».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-avengers",
     "title": "Антон и Таня. Мстители, общий сбор!",
-    "projects": ["avengers", "ultron", "infinity-war", "endgame"],
+    "projects": [
+      "avengers",
+      "ultron",
+      "infinity-war",
+      "endgame"
+    ],
     "metric": "collection",
     "threshold": 4,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Самые громкие битвы Marvel прошли через ваш экран. Антон и Таня, общий сбор — плед уже на боевой позиции.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Мстители»; «Мстители: Эра Альтрона»; «Мстители: Война бесконечности»; «Мстители: Финал».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-infinity",
     "title": "Я люблю тебя в трёх тысячах вселенных",
-    "projects": ["infinity-war", "endgame"],
+    "projects": [
+      "infinity-war",
+      "endgame"
+    ],
     "metric": "collection",
     "threshold": 2,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Две истории, после которых цифра три тысячи звучит совсем иначе. Некоторые обещания переживают даже финальные титры.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Мстители: Война бесконечности»; «Мстители: Финал».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-spider",
     "title": "Наш дружелюбный сосед",
-    "projects": ["spider-home", "spider-far", "spider-no-way", "spider-new"],
+    "projects": [
+      "spider-home",
+      "spider-far",
+      "spider-no-way",
+      "spider-new"
+    ],
     "metric": "collection",
     "threshold": 4,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Паутина связала четыре паучьи истории. К счастью, для вашего маршрута по Нью-Йорку достаточно пульта.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Человек-паук: Возвращение домой»; «Человек-паук: Вдали от дома»; «Человек-паук: Нет пути домой»; «Человек-паук: Совершенно новый день».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-guardians",
     "title": "Мы — свои среди Стражей",
-    "projects": ["guardians", "guardians-2", "guardians-3"],
+    "projects": [
+      "guardians",
+      "guardians-2",
+      "guardians-3"
+    ],
     "metric": "collection",
     "threshold": 3,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Стражи нашли семью на другом конце галактики. Антон и Таня — намного ближе, зато с не менее отличным саундтреком.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Стражи Галактики»; «Стражи Галактики. Часть 2»; «Стражи Галактики. Часть 3».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-strange",
     "title": "Вместе во всех реальностях",
-    "projects": ["strange", "strange-2"],
+    "projects": [
+      "strange",
+      "strange-2"
+    ],
     "metric": "collection",
     "threshold": 2,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Два фильма, несколько сломанных реальностей и ни одной инструкции. Хорошо, что путь обратно на общий диван не требует заклинаний.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Доктор Стрэндж»; «Доктор Стрэндж: В мультивселенной безумия».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-ant",
     "title": "Большая любовь маленьких героев",
-    "projects": ["ant-man", "ant-wasp", "quantumania"],
+    "projects": [
+      "ant-man",
+      "ant-wasp",
+      "quantumania"
+    ],
     "metric": "collection",
     "threshold": 3,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Маленькие герои устроили приключения огромного масштаба. Три фильма спустя даже крошка попкорна кажется отдельной вселенной.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Человек-муравей»; «Человек-муравей и Оса»; «Человек-муравей и Оса: Квантомания».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-panther",
     "title": "Ваканда — наша семья",
-    "projects": ["panther", "wakanda"],
+    "projects": [
+      "panther",
+      "wakanda"
+    ],
     "metric": "collection",
     "threshold": 2,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Ваканда умеет хранить наследие. В вашей семье две истории о Пантере тоже займут особое место — без испытания поединком.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Чёрная пантера»; «Чёрная пантера: Ваканда навеки».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-marvel",
     "title": "Выше звёзд",
-    "projects": ["captain-marvel", "marvels"],
+    "projects": [
+      "captain-marvel",
+      "marvels"
+    ],
     "metric": "collection",
     "threshold": 2,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Две космические истории подняли планку выше звёзд. Заодно напомнили: лучший экипаж уже сидит рядом.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Капитан Марвел»; «Капитан Марвел 2».",
+    "displayTier": "silver"
   },
   {
     "id": "hero-fantastic",
     "title": "Фантастическая семья",
-    "projects": ["fantastic-four"],
+    "projects": [
+      "fantastic-four"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Четверо героев, один фантастический вечер. Суперспособность Антона и Тани — всегда находить время для своей команды.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Фантастическая четвёрка: Первые шаги».",
+    "displayTier": "bronze"
   },
   {
     "id": "hero-deadpool",
     "title": "Хаос на двоих",
-    "projects": ["deadpool"],
+    "projects": [
+      "deadpool"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Дэдпул добавил хаоса, Росомаха — когтей. Хорошо, что вашему дивану досталась только роль зрителя.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Дэдпул и Росомаха».",
+    "displayTier": "bronze"
   },
   {
     "id": "hero-endgame",
     "title": "Мы пережили Финал",
-    "projects": ["endgame"],
+    "projects": [
+      "endgame"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "heroes",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Финал пережит. Теперь можно выдохнуть, обняться и признать: «ещё один фильм» иногда меняет целый вечер.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Мстители: Финал».",
+    "displayTier": "bronze"
   },
   {
     "id": "episodes-1",
@@ -779,8 +898,10 @@
     "threshold": 1,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Первая серия включена — дверь в маленькие вселенные открыта. Выход там же, где и вход, но Локи уже переставил указатели.",
+    "rarity": "rare",
+    "howTo": "Подтвердить просмотр 1 вышедшего эпизода зафиксированной коллекции сериалов.",
+    "displayTier": "bronze"
   },
   {
     "id": "episodes-10",
@@ -790,8 +911,10 @@
     "threshold": 10,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Десять эпизодов позади, а заставка стала почти родной. Приложение вежливо воздержится от вопроса «и что дальше?».",
+    "rarity": "rare",
+    "howTo": "Подтвердить просмотр 10 разных вышедших эпизодов зафиксированной коллекции сериалов.",
+    "displayTier": "bronze"
   },
   {
     "id": "episodes-25",
@@ -801,8 +924,10 @@
     "threshold": 25,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "«Ещё одну серию, и спать» прозвучало слишком убедительно. Даже Локи перестал верить этой версии событий.",
+    "rarity": "rare",
+    "howTo": "Подтвердить просмотр 25 разных вышедших эпизодов зафиксированной коллекции сериалов.",
+    "displayTier": "silver"
   },
   {
     "id": "episodes-50",
@@ -812,8 +937,10 @@
     "threshold": 50,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Пятьдесят эпизодов — уже собственная телевизионная хронология. Пульт заслужил отпуск, но вряд ли его получит.",
+    "rarity": "rare",
+    "howTo": "Подтвердить просмотр 50 разных вышедших эпизодов зафиксированной коллекции сериалов.",
+    "displayTier": "gold"
   },
   {
     "id": "episodes-100",
@@ -823,8 +950,10 @@
     "threshold": 100,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Сто серий и сто причин чуть позже лечь спать. Даже Вечные впечатлены вашей выдержкой.",
+    "rarity": "rare",
+    "howTo": "Подтвердить просмотр 100 разных вышедших эпизодов зафиксированной коллекции сериалов.",
+    "displayTier": "platinum"
   },
   {
     "id": "series-1",
@@ -834,8 +963,10 @@
     "threshold": 1,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Первый сериал завершён — редкий случай, когда все серии действительно посмотрены. Можно гордо закрыть вкладку и тут же выбрать следующую.",
+    "rarity": "rare",
+    "howTo": "Полностью подтвердить просмотр 1 сериала из зафиксированной коллекции сезонов.",
+    "displayTier": "silver"
   },
   {
     "id": "series-3",
@@ -845,8 +976,10 @@
     "threshold": 3,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Три сериала связаны одним семейным маршрутом. Сценаристы ещё спорят о кроссовере, а у вас он уже состоялся.",
+    "rarity": "rare",
+    "howTo": "Полностью подтвердить просмотр 3 сериалов из зафиксированной коллекции сезонов.",
+    "displayTier": "gold"
   },
   {
     "id": "series-5",
@@ -856,8 +989,10 @@
     "threshold": 5,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Пять завершённых сериалов — остановиться непросто. Впрочем, Щ.И.Т. пока не запретил следующий сезон.",
+    "rarity": "rare",
+    "howTo": "Полностью подтвердить просмотр 5 сериалов из зафиксированной коллекции сезонов.",
+    "displayTier": "gold"
   },
   {
     "id": "series-10",
@@ -867,85 +1002,118 @@
     "threshold": 10,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Десять сериалов за спиной — малые экраны под надёжной защитой. Теперь даже телевизор знает, кто здесь хранители истории.",
+    "rarity": "rare",
+    "howTo": "Полностью подтвердить просмотр 10 сериалов из зафиксированной коллекции сезонов.",
+    "displayTier": "platinum"
   },
   {
     "id": "serial-wandavision",
     "title": "Любовь сильнее магии хаоса",
-    "projects": ["wandavision"],
+    "projects": [
+      "wandavision"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Ванда меняла реальность ради любви. Антон и Таня ограничились полным просмотром — заметно безопаснее для соседей.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Ванда/Вижн». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "silver"
   },
   {
     "id": "serial-loki",
     "title": "Семья вне времени",
-    "projects": ["loki"],
+    "projects": [
+      "loki"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Локи освоил время, а вы — оба сезона его приключений. Семейное «потом досмотрим» наконец получило счастливый конец.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Локи». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "gold"
   },
   {
     "id": "serial-what-if",
     "title": "Наш собственный вариант мультивселенной",
-    "projects": ["what-if"],
+    "projects": [
+      "what-if"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Наблюдатель видел бесчисленные варианты событий. Ваш любимый — тот, где все обязательные серии уже просмотрены вместе.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Что, если…?». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "gold"
   },
   {
     "id": "serial-wandavision-trilogy",
     "title": "Только мы знаем, что реально",
-    "projects": ["wandavision", "agatha", "visionquest"],
+    "projects": [
+      "wandavision",
+      "agatha",
+      "visionquest"
+    ],
     "metric": "collection",
     "threshold": 3,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Магия, тайны и новая реальность складываются не сразу. Когда все три истории станут доступны, ваша коллекция узнает, что было настоящим.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Ванда/Вижн»; «Это всё Агата»; «ВижнКвест». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "gold"
   },
   {
     "id": "serial-daredevil",
     "title": "Друзья из Адской кухни",
-    "projects": ["daredevil", "born-again"],
+    "projects": [
+      "daredevil",
+      "born-again"
+    ],
     "metric": "collection",
     "threshold": 2,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Адская кухня пережила немало бессонных ночей. Ваш маршрут по двум историям Сорвиголовы тоже потребует выдержки — и хорошего пледа.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Сорвиголова»; «Сорвиголова: Рождённый заново». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "platinum"
   },
   {
     "id": "serial-shield",
     "title": "Щ.И.Т. сообщает: семья под защитой",
-    "projects": ["shield"],
+    "projects": [
+      "shield"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Пока агенты спасали мир сезон за сезоном, вы держали семейный тыл. Щ.И.Т. рекомендует выдать дивану официальный допуск.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Агенты Щ.И.Т.». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "platinum"
   },
   {
     "id": "serial-hawkeye",
     "title": "Стрела попала в сердце",
-    "projects": ["hawkeye"],
+    "projects": [
+      "hawkeye"
+    ],
     "metric": "collection",
     "threshold": 1,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Клинт умеет попадать точно в цель. Шесть эпизодов спустя ваша стрела тоже нашла адрес — уютный совместный вечер.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Соколиный глаз». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "silver"
   },
   {
     "id": "defenders-v1",
@@ -962,8 +1130,10 @@
     "threshold": 6,
     "owner": "family",
     "category": "series",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Защитники собирались непросто, зато ваш список серий наконец стал командой. Адская кухня может спать спокойно, даже если вы ещё нет.",
+    "rarity": "rare",
+    "howTo": "Подтвердить полный совместный просмотр: «Сорвиголова»; «Джессика Джонс»; «Люк Кейдж»; «Железный кулак»; «Защитники»; «Каратель». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "platinum"
   },
   {
     "id": "anton-ratings-1",
@@ -973,8 +1143,10 @@
     "threshold": 1,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "common"
+    "description": "Антон впервые вынес вердикт. Тони бы добавил к нему презентацию, но одной сохранённой оценки вполне достаточно.",
+    "rarity": "common",
+    "howTo": "Антону сохранить первую личную оценку проекта или сезона.",
+    "displayTier": "bronze"
   },
   {
     "id": "anton-ratings-5",
@@ -984,8 +1156,10 @@
     "threshold": 5,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Антон оценил пять фильмов — реактор критического мышления запущен. Джарвис пока не возражает против выставленных баллов.",
+    "rarity": "rare",
+    "howTo": "Антону сохранить личные оценки 5 разных фильмов. Просмотр не обязателен.",
+    "displayTier": "silver"
   },
   {
     "id": "anton-ratings-10",
@@ -995,8 +1169,10 @@
     "threshold": 10,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Десять оценок Антона заслужили отдельную папку Щ.И.Т. Гриф «секретно» не нужен: Таня всё равно всё увидит.",
+    "rarity": "rare",
+    "howTo": "Антону сохранить личные оценки 10 разных фильмов. Просмотр не обязателен.",
+    "displayTier": "silver"
   },
   {
     "id": "anton-ratings-20",
@@ -1006,8 +1182,10 @@
     "threshold": 20,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Антон собрал двадцать киновердиктов. На следующем совете Мстителей ему точно предложат прокомментировать сценарий.",
+    "rarity": "rare",
+    "howTo": "Антону сохранить личные оценки 20 разных фильмов. Просмотр не обязателен.",
+    "displayTier": "gold"
   },
   {
     "id": "anton-ratings-30",
@@ -1017,8 +1195,10 @@
     "threshold": 30,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Тридцать фильмов получили оценку Антона. Даже Тони пришлось бы подготовиться перед спором с таким кинокритиком.",
+    "rarity": "rare",
+    "howTo": "Антону сохранить личные оценки 30 разных фильмов. Просмотр не обязателен.",
+    "displayTier": "gold"
   },
   {
     "id": "anton-perfect1",
@@ -1028,8 +1208,10 @@
     "threshold": 1,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Антон нашёл свою десятку. Никаких запасных реальностей — именно это впечатление сохранено на сервере.",
+    "rarity": "rare",
+    "howTo": "Антону сохранить оценку 10/10 проекту или сезону.",
+    "displayTier": "bronze"
   },
   {
     "id": "anton-strict1",
@@ -1039,8 +1221,10 @@
     "threshold": 1,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Антон поставил три или меньше. Асгардский суд суров, но право пересмотреть решение остаётся за автором.",
+    "rarity": "rare",
+    "howTo": "Антону сохранить оценку от 1 до 3 проекту или сезону.",
+    "displayTier": "bronze"
   },
   {
     "id": "anton-rated-series5",
@@ -1050,8 +1234,10 @@
     "threshold": 5,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Пять сериалов получили мнение Антона. Теперь спор о следующем сезоне можно подкрепить собственной таблицей баллов.",
+    "rarity": "rare",
+    "howTo": "Антону оценить 5 разных сериалов; учитывается оценка сериала или его сезона.",
+    "displayTier": "gold"
   },
   {
     "id": "anton-rated-series10",
@@ -1061,8 +1247,10 @@
     "threshold": 10,
     "owner": "anton",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Антон оценил десять сериалов — Наблюдатель просит советы. Рекомендации принимаются без спойлеров и обязательной лекции.",
+    "rarity": "rare",
+    "howTo": "Антону оценить 10 разных сериалов; учитывается оценка сериала или его сезона.",
+    "displayTier": "gold"
   },
   {
     "id": "tanya-ratings-1",
@@ -1072,8 +1260,10 @@
     "threshold": 1,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "common"
+    "description": "Таня оставила первое киномнение. Фьюри ценит уверенный голос в команде, особенно когда он выбирает следующий фильм.",
+    "rarity": "common",
+    "howTo": "Тане сохранить первую личную оценку проекта или сезона.",
+    "displayTier": "bronze"
   },
   {
     "id": "tanya-ratings-5",
@@ -1083,8 +1273,10 @@
     "threshold": 5,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Пять фильмов получили оценки Тани. Старк принёс бы пять букетов, но пять честных вердиктов смотрятся не хуже.",
+    "rarity": "rare",
+    "howTo": "Тане сохранить личные оценки 5 разных фильмов. Просмотр не обязателен.",
+    "displayTier": "silver"
   },
   {
     "id": "tanya-ratings-10",
@@ -1094,8 +1286,10 @@
     "threshold": 10,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Десять оценок Тани попали в досье Щ.И.Т. Антон получил доступ к материалам, но права редактирования ему не выдали.",
+    "rarity": "rare",
+    "howTo": "Тане сохранить личные оценки 10 разных фильмов. Просмотр не обязателен.",
+    "displayTier": "silver"
   },
   {
     "id": "tanya-ratings-20",
@@ -1105,8 +1299,10 @@
     "threshold": 20,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "У Тани двадцать киновердиктов — весомый аргумент на совете команды. Мстителям придётся внимательно выслушать замечания.",
+    "rarity": "rare",
+    "howTo": "Тане сохранить личные оценки 20 разных фильмов. Просмотр не обязателен.",
+    "displayTier": "gold"
   },
   {
     "id": "tanya-ratings-30",
@@ -1116,8 +1312,10 @@
     "threshold": 30,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Таня оценила тридцать фильмов. Даже Стрэндж не нашёл реальность, где её мнение можно было бы проигнорировать.",
+    "rarity": "rare",
+    "howTo": "Тане сохранить личные оценки 30 разных фильмов. Просмотр не обязателен.",
+    "displayTier": "gold"
   },
   {
     "id": "tanya-perfect1",
@@ -1127,8 +1325,10 @@
     "threshold": 1,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Таня сохранила первую десятку. Где-то в мультивселенной режиссёр облегчённо выдохнул и попросил показать скриншот.",
+    "rarity": "rare",
+    "howTo": "Тане сохранить оценку 10/10 проекту или сезону.",
+    "displayTier": "bronze"
   },
   {
     "id": "tanya-strict1",
@@ -1138,8 +1338,10 @@
     "threshold": 1,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Таня выставила три или меньше. Асгард услышал приговор, а Антон узнал, какой фильм лучше пока не предлагать на повтор.",
+    "rarity": "rare",
+    "howTo": "Тане сохранить оценку от 1 до 3 проекту или сезону.",
+    "displayTier": "bronze"
   },
   {
     "id": "tanya-rated-series5",
@@ -1149,8 +1351,10 @@
     "threshold": 5,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Пять сериалов оценены Таней — малый экран получил серьёзную экспертизу. Короткой заставкой от вопросов не отделаться.",
+    "rarity": "rare",
+    "howTo": "Тане оценить 5 разных сериалов; учитывается оценка сериала или его сезона.",
+    "displayTier": "gold"
   },
   {
     "id": "tanya-rated-series10",
@@ -1160,8 +1364,10 @@
     "threshold": 10,
     "owner": "tanya",
     "category": "critics",
-    "description": "Антон и Таня собирают свою коллекцию Marvel",
-    "rarity": "rare"
+    "description": "Десять сериалов получили вердикт Тани. Локи попытался оспорить результат, но его вариант оценочной таблицы не прошёл проверку.",
+    "rarity": "rare",
+    "howTo": "Тане оценить 10 разных сериалов; учитывается оценка сериала или его сезона.",
+    "displayTier": "gold"
   },
   {
     "id": "couple-paired1",
@@ -1171,8 +1377,10 @@
     "threshold": 1,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Первый общий вердикт готов: у каждого свой балл. Семейный совет работает без единогласия, и это прекрасная новость.",
+    "rarity": "epic",
+    "howTo": "Антону и Тане сохранить по личной оценке одного и того же фильма.",
+    "displayTier": "bronze"
   },
   {
     "id": "couple-equal1",
@@ -1182,8 +1390,10 @@
     "threshold": 1,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Два зрителя неожиданно настроились на одну частоту. Даже Джарвис не стал бы пересчитывать такое совпадение.",
+    "rarity": "epic",
+    "howTo": "Поставить одному фильму одинаковые личные оценки Антона и Тани.",
+    "displayTier": "bronze"
   },
   {
     "id": "couple-difference41",
@@ -1193,8 +1403,10 @@
     "threshold": 1,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Капитан и Старк спорили о принципах. У Антона и Тани разница в четыре балла — диван срочно объявлен нейтральной территорией.",
+    "rarity": "epic",
+    "howTo": "Поставить одному фильму две личные оценки с разницей не менее 4 баллов.",
+    "displayTier": "bronze"
   },
   {
     "id": "couple-double101",
@@ -1204,8 +1416,10 @@
     "threshold": 1,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Два зрителя, две десятки — абсолютная гармония. Даже Танос не нашёл бы повода для семейного спора об этом фильме.",
+    "rarity": "epic",
+    "howTo": "Антону и Тане поставить одному фильму по 10/10.",
+    "displayTier": "silver"
   },
   {
     "id": "couple-paired5",
@@ -1215,8 +1429,10 @@
     "threshold": 5,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Пять фильмов обсудили без обязательного единогласия. Консилиум постановил: две независимые оценки лучше одной навязанной.",
+    "rarity": "epic",
+    "howTo": "Антону и Тане оценить одни и те же 5 разных фильмов.",
+    "displayTier": "silver"
   },
   {
     "id": "couple-paired10",
@@ -1226,8 +1442,10 @@
     "threshold": 10,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Десять фильмов получили два личных вердикта. Щ.И.Т. завёл семейное досье, а попкорн потребовал указать его соавтором.",
+    "rarity": "epic",
+    "howTo": "Антону и Тане оценить одни и те же 10 разных фильмов.",
+    "displayTier": "silver"
   },
   {
     "id": "couple-paired25",
@@ -1237,8 +1455,10 @@
     "threshold": 25,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Двадцать пять общих киновердиктов — полноценный Совет Мстителей. Правда, самые важные решения всё ещё принимаются на двоих.",
+    "rarity": "epic",
+    "howTo": "Антону и Тане оценить одни и те же 25 разных фильмов.",
+    "displayTier": "gold"
   },
   {
     "id": "couple-equal5",
@@ -1248,8 +1468,10 @@
     "threshold": 5,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Пять совпадений — уже больше, чем случайный сигнал. Похоже, у вашей команды действительно общий внутренний саундтрек.",
+    "rarity": "epic",
+    "howTo": "Поставить одинаковые личные оценки 5 разным фильмам. Нужны обе оценки проекта.",
+    "displayTier": "silver"
   },
   {
     "id": "couple-difference33",
@@ -1259,8 +1481,10 @@
     "threshold": 3,
     "owner": "family",
     "category": "critics",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Три фильма дали повод поспорить как супергерои. Хорошая новость: броню ремонтировать не придётся, а мнение можно изменить.",
+    "rarity": "epic",
+    "howTo": "Поставить 3 разным фильмам две личные оценки с разницей не менее 3 баллов.",
+    "displayTier": "silver"
   },
   {
     "id": "family-beginning",
@@ -1270,8 +1494,10 @@
     "threshold": 1,
     "owner": "family",
     "category": "family",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "У каждой легенды есть начало. У вашей — первый подтверждённый фильм и два лучших места рядом.",
+    "rarity": "epic",
+    "howTo": "Подтвердить совместный просмотр 1 фильма основного MCU из зафиксированной коллекции.",
+    "displayTier": "bronze"
   },
   {
     "id": "family-superpower",
@@ -1281,8 +1507,10 @@
     "threshold": 10,
     "owner": "family",
     "category": "family",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Десять совместных фильмов доказали: главная суперсила не выдаётся с костюмом. Она просто садится рядом и спрашивает: «включаем?».",
+    "rarity": "epic",
+    "howTo": "Подтвердить совместный просмотр 10 разных фильмов основного MCU из зафиксированной коллекции.",
+    "displayTier": "silver"
   },
   {
     "id": "family-thanos",
@@ -1316,8 +1544,10 @@
     "threshold": 23,
     "owner": "family",
     "category": "family",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Вся Сага бесконечности пройдена вместе. Танос может сколько угодно щёлкать — эти вечера уже стали вашей историей.",
+    "rarity": "epic",
+    "howTo": "Подтвердить совместный просмотр всех 23 фильмов первых трёх фаз MCU. Сериалы и спецвыпуски не нужны.",
+    "displayTier": "platinum"
   },
   {
     "id": "family-vibranium",
@@ -1334,8 +1564,10 @@
     "threshold": 6,
     "owner": "family",
     "category": "family",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Шесть историй о долге, наследии и стойкости сложились в семейный сплав. Даже вибраниуму есть чему поучиться у вашего союза.",
+    "rarity": "epic",
+    "howTo": "Подтвердить полный совместный просмотр: «Первый мститель»; «Первый мститель: Другая война»; «Первый мститель: Противостояние»; «Капитан Америка: Новый мир»; «Чёрная пантера»; «Чёрная пантера: Ваканда навеки».",
+    "displayTier": "gold"
   },
   {
     "id": "family-planets",
@@ -1353,19 +1585,28 @@
     "threshold": 7,
     "owner": "family",
     "category": "family",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Асгард и далёкий космос пройдены одной командой. Где бы ни оказались Тор и Стражи, ваш экипаж остаётся прежним.",
+    "rarity": "epic",
+    "howTo": "Подтвердить полный совместный просмотр: «Тор»; «Тор 2: Царство тьмы»; «Тор: Рагнарёк»; «Тор: Любовь и гром»; «Стражи Галактики»; «Стражи Галактики. Часть 2»; «Стражи Галактики. Часть 3».",
+    "displayTier": "gold"
   },
   {
     "id": "family-worlds",
     "title": "В любом из миров я выбираю тебя",
-    "projects": ["strange", "strange-2", "spider-no-way", "loki"],
+    "projects": [
+      "strange",
+      "strange-2",
+      "spider-no-way",
+      "loki"
+    ],
     "metric": "collection",
     "threshold": 4,
     "owner": "family",
     "category": "family",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Порталы, паутина и время предлагали множество маршрутов. В каждом из них Антон и Таня снова выбирают друг друга.",
+    "rarity": "epic",
+    "howTo": "Подтвердить полный совместный просмотр: «Доктор Стрэндж»; «Доктор Стрэндж: В мультивселенной безумия»; «Человек-паук: Нет пути домой»; «Локи». Для сериалов нужны все эпизоды фиксированных сезонов; недоступные проекты не завершают коллекцию.",
+    "displayTier": "gold"
   },
   {
     "id": "family-adventure",
@@ -1375,7 +1616,9 @@
     "threshold": 1,
     "owner": "family",
     "category": "family",
-    "description": "Антон и Таня — наша история Marvel",
-    "rarity": "epic"
+    "description": "Тридцать фильмов и пять завершённых сериалов — это уже экспедиция. Лучший трофей по-прежнему тот, кто прошёл её рядом.",
+    "rarity": "epic",
+    "howTo": "Подтвердить совместный просмотр 30 фильмов основного MCU и полностью завершить 5 сериалов.",
+    "displayTier": "platinum"
   }
 ]
