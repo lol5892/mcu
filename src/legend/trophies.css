@@ -1,0 +1,73 @@
+/* Artwork presentation only. Registry, rarity, progress and XP are unchanged. */
+.legend-emblem.trophy-art {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  flex: none;
+  overflow: hidden;
+  border-radius: 13px;
+  border: 1px solid #b5c0d238;
+  background: #101724;
+  filter: none;
+  box-shadow: inset 0 0 0 1px #ffffff08;
+}
+.trophy-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: inherit;
+}
+.legend-card {
+  gap: 12px;
+}
+.legend-card.common .trophy-art {
+  border-color: #b5c0d24d;
+}
+.legend-card.rare .trophy-art {
+  border-color: #7daadd66;
+}
+.legend-card.epic .trophy-art {
+  border: 2px solid #b298dd99;
+}
+.legend-card.legendary .trophy-art {
+  border: 2px solid #e4bd71c7;
+  box-shadow: 0 3px 15px #c68c2720;
+}
+/* Locked awards retain their full painted identity; status is in readable text. */
+.legend-card .trophy-art {
+  opacity: 1;
+}
+.legend-home-preview > .legend-emblem.trophy-art {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+}
+.legend-emblem.trophy-art-large {
+  width: min(100%, 288px);
+  height: auto;
+  margin: 8px auto 22px;
+  border: 2px solid #d6bd8780;
+  border-radius: 20px;
+  box-shadow: 0 8px 28px #0005;
+}
+@media (min-width: 900px) {
+  .legend-card .trophy-art {
+    max-width: 192px;
+  }
+}
+
+.trophy-art-large[data-rarity="common"] {
+  border-color: #b5c0d24d;
+}
+.trophy-art-large[data-rarity="rare"] {
+  border-color: #7daadd88;
+}
+.trophy-art-large[data-rarity="epic"] {
+  border-color: #b298ddaa;
+}
+.trophy-art-large[data-rarity="legendary"] {
+  border-color: #e4bd71c7;
+}

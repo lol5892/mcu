@@ -6,6 +6,7 @@ import App from "./App";
 import "./style.css";
 import "./family/family.css";
 import "./design25.css";
+import "./legend/trophies.css";
 import { FamilyProvider } from "./family/FamilyProvider";
 import { AuthBoundary } from "./family/AuthBoundary";
 import { WelcomeGate } from "./family/Welcome";

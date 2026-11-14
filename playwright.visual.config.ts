@@ -2,7 +2,9 @@ import { defineConfig } from "@playwright/test";
 const baseline = process.env.VISUAL_BASELINE === "1";
 export default defineConfig({
   testDir: "tests/visual",
-  testMatch: baseline ? "baseline.spec.ts" : "polish.spec.ts",
+  testMatch: baseline
+    ? "baseline.spec.ts"
+    : ["polish.spec.ts", "trophies.spec.ts"],
   workers: 1,
   timeout: 90000,
   expect: { timeout: 10000 },

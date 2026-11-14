@@ -61,3 +61,14 @@ test('a second tab with a draft vetoes activation, then both tabs adopt the new 
  await second.locator('textarea').fill('');await expect(second.locator('h1')).toHaveText('v2');await page.bringToFront();await page.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));await expect(page.locator('h1')).toHaveText('v2');
 });
 test('unchanged artwork is reused only after checksum verification; corrupted cache is repaired',async({page})=>{await opened(page);const before=await(await page.request.get('/__stats')).json();await release(page,'v2');await check(page);await expect(page.locator('h1')).toHaveText('v2');const reused=await(await page.request.get('/__stats')).json();expect(reused.artworkRequests).toBe(before.artworkRequests);await page.evaluate(async()=>{for(const key of await caches.keys())if(key.startsWith('our-marvel-'))await(await caches.open(key)).put('/mcu/assets/catalogue-poster.webp',new Response('corrupt cached artwork'));});await release(page,'v3');await check(page);await expect(page.locator('h1')).toHaveText('v3');const repaired=await(await page.request.get('/__stats')).json();expect(repaired.artworkRequests).toBe(before.artworkRequests+1);});
+
+// Exercise the actual 164 release illustrations, not a token dummy image.
+import { readFileSync } from 'node:fs';
+const trophyArtwork = JSON.parse(readFileSync(new URL('../../src/legend/artwork.json', import.meta.url),'utf8')) as Record<string,{full:string;thumbnail:string}>;
+test('all 82 full trophies and 82 thumbnails remain available offline after a safe update',async({page,context})=>{
+ await opened(page);await release(page,'v2');await check(page);await expect(page.locator('h1')).toHaveText('v2');
+ await context.setOffline(true);await page.reload();await expect(page.locator('h1')).toHaveText('v2');
+ const paths=Object.values(trophyArtwork).flatMap(a=>[a.full,a.thumbnail]);
+ const results=await page.evaluate(async paths=>Promise.all(paths.map(async p=>{const r=await fetch('/mcu/'+p);const b=await r.arrayBuffer();return {ok:r.ok,bytes:b.byteLength,magic:new TextDecoder().decode(b.slice(8,12))};})),paths);
+ expect(results).toHaveLength(164);expect(results.every(r=>r.ok&&r.bytes>1000&&r.magic==='WEBP')).toBe(true);
+});
