@@ -170,7 +170,7 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
     const changed=Object.keys(tables).filter(k=>JSON.stringify(tables[k])!==before[k]);
     if(JSON.stringify(legend)!==before.__legend)changed.push("mv_achievements");
     for(const s of sockets)for(const b of s.bindings)if(changed.includes(b.table)){
-      try{s.socket.send(JSON.stringify([s.ref,null,s.topic,"postgres_changes",{ids:[b.id],data:{schema:"public",table:b.table,type:"UPDATE",commit_timestamp:now,errors:null,record:{family_id:family},old_record:{}}}]));}catch{}
+      try{s.socket.send(JSON.stringify([s.ref,null,s.topic,"postgres_changes",{ids:[b.id],data:{schema:"public",table:b.table,type:"UPDATE",commit_timestamp:now,errors:null,record:{family_id:family},old_record:{},columns:[{name:"family_id",type:"uuid"}]}}]));}catch{}
     }
   }
   async function connect(context: BrowserContext, initialIntent=true) {
@@ -741,6 +741,7 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
   }
   return {
     connect,
+    publish:()=>changes({}),
     legend,
     tables,
     profiles,

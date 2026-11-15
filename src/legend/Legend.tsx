@@ -81,7 +81,7 @@ export function LegendProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!f.familyId || !f.user || f.localMode) return;
     let alive = true,
-      busy = false;
+      busy = false, healthy=false, pendingRead=false;
     const key = `mv-legend:${f.familyId}:${f.user.id}`;
     setData({ awards: [], seen: [], initial: false });
     setIdentity(key);
@@ -105,7 +105,8 @@ export function LegendProvider({ children }: { children: ReactNode }) {
       }
     } catch {}
     async function read() {
-      if (busy || !navigator.onLine || document.hidden) return;
+      if (busy) {pendingRead=true;return;}
+      if (!navigator.onLine || document.hidden) return;
       busy = true;
       try {
         const locallySeen: string[] = parseNoticeSeen(
@@ -165,6 +166,7 @@ export function LegendProvider({ children }: { children: ReactNode }) {
           );
       } finally {
         busy = false;
+        if(pendingRead && alive){pendingRead=false;void read();}
       }
     }
     const channel = supabase
@@ -179,18 +181,23 @@ export function LegendProvider({ children }: { children: ReactNode }) {
         },
         () => void read(),
       )
-      .subscribe();
+      .subscribe(status=>{healthy=status === "SUBSCRIBED";if(healthy)void read();});
     void read();
-    const interval = setInterval(() => void read(), 60000);
+    const interval = setInterval(() => {if(!healthy)void read();}, 60000);
+    window.addEventListener("kv-legend-notification",read);
+    document.addEventListener("visibilitychange",read);
     window.addEventListener("online", read);
     return () => {
       alive = false;
       if (channel) void supabase?.removeChannel(channel);
       clearInterval(interval);
       window.removeEventListener("online", read);
+      window.removeEventListener("kv-legend-notification",read);
+      document.removeEventListener("visibilitychange",read);
       queue.current = [];
     };
   }, [f.familyId, f.user?.id, f.localMode]);
+  useEffect(()=>{window.dispatchEvent(new Event("kv-legend-notification"));},[f.snapshot.notifications.map(n=>n.id).join(",")]);
   useEffect(() => {
     const timer = setInterval(() => {
       if (

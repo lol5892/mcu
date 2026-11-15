@@ -17,11 +17,15 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npx playwright install --with-deps chromium
+        id: browsers
       - run: npm run test:e2e
+        if: always() && steps.browsers.outcome == 'success'
         env: { CI: true, PLAYWRIGHT_USE_BUNDLED: '1' }
       - run: npm run test:pwa
+        if: always() && steps.browsers.outcome == 'success'
         env: { CI: true, PLAYWRIGHT_USE_BUNDLED: '1' }
       - run: npm run test:family
+        if: always() && steps.browsers.outcome == 'success'
         env: { CI: true, PLAYWRIGHT_USE_BUNDLED: '1' }
       - uses: actions/upload-artifact@v4
         if: always()

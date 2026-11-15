@@ -87,6 +87,7 @@ test("server reconciliation refreshes totals and details without creating a new 
       )[a.achievement_id === "phase-1-v1" ? "gold" : "bronze"],
     })),
   );
+  b.publish();
   await page.goto("/#/legend");
   await expect(page.locator(".legend-summary")).toContainText("60 XP");
   await page.goto("/#/legend/phase-1-v1");

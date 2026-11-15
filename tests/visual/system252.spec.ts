@@ -77,6 +77,7 @@ test("new saved award waits for a safe moment, shows artwork and server XP once,
     historical: false,
     unlocked_at: new Date().toISOString(),
   });
+  b.publish();
   b.tables.mv_notifications.push({
     id: "aaaaaaaa-1111-4111-8111-111111111111",
     family_id: b.tables.mv_members[0].family_id,
@@ -87,7 +88,8 @@ test("new saved award waits for a safe moment, shows artwork and server XP once,
     created_at: new Date().toISOString(),
     read_at: null,
   });
-  // Force the fixture snapshot refresh; unlike production this fixture has no Realtime service.
+  b.publish();
+  // Publish the fixture event through its WebSocket protocol contract.
   await page.evaluate(() => window.dispatchEvent(new Event("online")));
   await page.waitForTimeout(8000);
   await expect(page.locator(".trophy-toast")).toHaveCount(0);
@@ -136,6 +138,7 @@ test("old awards without new server events never create a trophy burst", async (
       unlocked_at: "2026-11-01T12:00:00Z",
     })),
   );
+  b.publish();
   await page.evaluate(() => window.dispatchEvent(new Event("online")));
   await page.waitForTimeout(8000);
   await expect(page.locator(".trophy-toast")).toHaveCount(0);
@@ -165,6 +168,7 @@ test("typing, photo upload, synchronization and active viewing defer one compact
       historical: false,
       unlocked_at: new Date().toISOString(),
     });
+  b.publish();
     b.tables.mv_notifications.push({
       id: crypto.randomUUID(),
       family_id: b.tables.mv_members[0].family_id,
@@ -175,6 +179,7 @@ test("typing, photo upload, synchronization and active viewing defer one compact
       created_at: new Date().toISOString(),
       read_at: null,
     });
+  b.publish();
   }
   await page.waitForTimeout(8000);
   await expect(page.locator(".trophy-toast")).toHaveCount(0);
@@ -206,11 +211,13 @@ test("typing, photo upload, synchronization and active viewing defer one compact
     created_at: new Date().toISOString(),
     finished_at: null,
   });
+  b.publish();
   await page.waitForTimeout(6000);
   await block("test-sync", false);
   await page.waitForTimeout(8000);
   await expect(page.locator(".trophy-toast")).toHaveCount(0);
   b.tables.mv_sessions.length = 0;
+  b.publish();
   const toast = page.locator(".trophy-toast");
   await expect(toast).toBeVisible({ timeout: 20000 });
   await expect(toast).toContainText("И ещё 1");

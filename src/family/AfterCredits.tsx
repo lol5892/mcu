@@ -52,6 +52,7 @@ export function AfterCreditsProvider({ children }: { children: ReactNode }) {
     }
   }
   useEffect(() => {
+    let healthy=false;
     setRows([]);
     if (!f.familyId || !f.user) return;
     const key = `mv-impressions:${f.familyId}:${f.user.id}`;
@@ -60,7 +61,7 @@ export function AfterCreditsProvider({ children }: { children: ReactNode }) {
     } catch {}
     void refresh();
     const timer = setInterval(() => {
-      if (navigator.onLine && !document.hidden) void refresh();
+      if (navigator.onLine && !document.hidden && !healthy) void refresh();
     }, 60000);
     const channel = supabase
       ?.channel("impressions:" + f.familyId)
@@ -74,7 +75,7 @@ export function AfterCreditsProvider({ children }: { children: ReactNode }) {
         },
         () => void refresh(),
       )
-      .subscribe();
+      .subscribe(status=>{healthy=status === "SUBSCRIBED";if(healthy)void refresh();});
     return () => {
       clearInterval(timer);
       if (channel) void supabase?.removeChannel(channel);
