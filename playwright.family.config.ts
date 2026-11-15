@@ -19,7 +19,7 @@ export default defineConfig({
   },
   webServer: {
     command:
-      "VITE_SUPABASE_URL=http://127.0.0.1:54321 VITE_SUPABASE_PUBLISHABLE_KEY=test-public-key VITE_VAPID_PUBLIC_KEY=contract-public-key npm run dev -- --port 4175",
+      "VITE_BETA_AUTH_READY=true VITE_SUPABASE_URL=http://127.0.0.1:54321 VITE_SUPABASE_PUBLISHABLE_KEY=test-public-key VITE_VAPID_PUBLIC_KEY=contract-public-key npm run dev -- --port 4175",
     url: "http://127.0.0.1:4175",
     reuseExistingServer: false,
   },

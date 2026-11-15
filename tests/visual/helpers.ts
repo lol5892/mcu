@@ -14,7 +14,7 @@ export async function setup(page: Page, context: BrowserContext) {
     .click();
   await page.getByLabel("Код подтверждения").fill("123456");
   await page
-    .getByRole("button", { name: "Войти в нашу вселенную", exact: true })
+    .getByRole("button", { name: "Подтвердить email", exact: true })
     .click();
   await expect(page.locator(".family-stats")).toBeVisible();
   return backend;

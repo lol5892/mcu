@@ -1,0 +1,62 @@
+name: Verify isolated public beta
+on:
+  push:
+    branches: [public-beta-3]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run verify:beta
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env: { CI: true, PLAYWRIGHT_USE_BUNDLED: '1' }
+      - run: npm run test:pwa
+        env: { CI: true, PLAYWRIGHT_USE_BUNDLED: '1' }
+      - run: npm run test:family
+        env: { CI: true, PLAYWRIGHT_USE_BUNDLED: '1' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: beta-core-results, path: 'test-results*' }
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm run test:sql
+      - run: npm run test:public-sql
+  edge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with: { deno-version: v2.x }
+      - run: deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts
+      - run: deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts supabase/functions/_shared/public-image_test.ts
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:visual
+        env: { PLAYWRIGHT_USE_BUNDLED: '1' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: beta-visual-results
+          path: |
+            docs/public-beta/screenshots
+            test-results-visual
+            docs/v2.5.3/after

@@ -1,5 +1,7 @@
+import { PRIVATE_PROJECT_REF } from "../public-beta/config";
 import { createClient } from "@supabase/supabase-js";
 const url = import.meta.env.VITE_SUPABASE_URL;
+if (url?.includes(PRIVATE_PROJECT_REF)) throw Error("PRIVATE_FAMILY_PROJECT_FORBIDDEN: configure a separate beta server");
 const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 export const cloudConfigured = Boolean(url && key);
 export const supabase = cloudConfigured
@@ -35,7 +37,13 @@ export function errorText(error: unknown) {
     EMAIL_NOT_CONFIRMED: "Подтвердите email кодом из письма.",
     INVITATION_INVALID:
       "Приглашение истекло, уже использовано или вы вошли с другим email.",
-    FAMILY_FULL: "В нашей вселенной уже два участника.",
+    FAMILY_FULL: "В этой вселенной уже два участника.",
+    NEW_UNIVERSE_REQUIRED: "Нового партнёра нельзя подключить к истории прежней пары. Для новой пары потребуется новое пространство.",
+    BETA_CAPACITY: "Набор в закрытую бету временно приостановлен.",
+    BETA_INVITATION_REQUIRED: "Для закрытой беты нужно приглашение разработчика.",
+    FAMILY_PHOTO_QUOTA: "Место для фото заполнено. Сохраните нужные снимки и удалите ненужный снимок вручную.",
+    INVALID_NAME: "Введите имя от 1 до 40 символов без служебных знаков.",
+    CLOSED_BETA_REGISTRATION: "Регистрация пока доступна только приглашённым участникам беты.",
     PARTNER_NOT_JOINED: "Сначала пригласите второго участника.",
     WATCH_FIRST: "Сначала отметьте просмотр фильма или серии.",
     LETTER_NOT_EDITABLE: "Доставленное письмо нельзя переписывать.",

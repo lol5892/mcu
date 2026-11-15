@@ -162,10 +162,8 @@ export function applyOptimistic(s: Snapshot, op: Operation): Snapshot {
   return n;
 }
 export function personalName(s: Snapshot, id: string) {
-  return s.members.find((m) => m.user_id === id)?.role === "tanya"
-    ? "Таня"
-    : "Антон";
+  return s.members.find((m) => m.user_id === id)?.display_name || "Участник";
 }
-export function roleName(role: Role) {
-  return role === "anton" ? "Антон" : "Таня";
+export function roleName(role: Role, s?: Snapshot) {
+  return s?.members.find(m => m.role === role)?.display_name || (role === "anton" ? "Первый участник" : "Партнёр");
 }

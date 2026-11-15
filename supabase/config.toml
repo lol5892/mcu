@@ -1,4 +1,4 @@
-project_id = "our-marvel-family"
+project_id = "kino-vdvoem-beta"
 [functions.push-dispatch]
 verify_jwt = false
 [functions.media-upload]

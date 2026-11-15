@@ -1,3 +1,4 @@
+import {slotName,pairName,memberName} from "../public-beta/names";
 import {
   createContext,
   useContext,
@@ -60,7 +61,7 @@ export function AfterCreditsProvider({ children }: { children: ReactNode }) {
     void refresh();
     const timer = setInterval(() => {
       if (navigator.onLine && !document.hidden) void refresh();
-    }, 5000);
+    }, 60000);
     const channel = supabase
       ?.channel("impressions:" + f.familyId)
       .on(
@@ -241,10 +242,10 @@ export function Impressions({ projectId }: { projectId: string }) {
           );
         return (
           <article className="panel" key={role}>
-            <strong>{role === "anton" ? "Антон" : "Таня"}</strong>
+            <strong>{slotName(f.snapshot,role)}</strong>
             <p>
               {row?.body ||
-                `${role === "anton" ? "Антон" : "Таня"} пока не ${role === "anton" ? "поделился" : "поделилась"} впечатлением`}
+                `${slotName(f.snapshot,role)} пока не ${role === "anton" ? "поделился" : "поделилась"} впечатлением`}
             </p>
             {f.role === role && (
               <button
@@ -265,7 +266,7 @@ export function PhotoArchive() {
   return (
     <section>
       <h1>Наш фотоархив</h1>
-      <p>Фотографии наших вечеров, включая снимки из прежних переписок.</p>
+      <p>Фотографии наших вечеров и совместных просмотров.</p>
       <div className="session-photo-grid">
         {f.snapshot.media
           .filter((m) => !["avatar", "staged"].includes(m.kind) && m.ready)

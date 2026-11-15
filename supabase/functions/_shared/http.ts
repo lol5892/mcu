@@ -1,7 +1,7 @@
 export function cors(req: Request) {
   const origin = req.headers.get("origin") || "";
   const allowed = (
-    Deno.env.get("APP_ORIGINS") || "https://lol5892.github.io"
+    Deno.env.get("APP_ORIGINS") || "http://localhost:5173"
   ).split(",");
   return {
     "Access-Control-Allow-Origin": allowed.includes(origin)

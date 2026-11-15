@@ -1,3 +1,4 @@
+import {slotName,pairName,memberName} from "../public-beta/names";
 import {
   createContext,
   useContext,
@@ -180,7 +181,7 @@ export function LegendProvider({ children }: { children: ReactNode }) {
       )
       .subscribe();
     void read();
-    const interval = setInterval(() => void read(), 5000);
+    const interval = setInterval(() => void read(), 60000);
     window.addEventListener("online", read);
     return () => {
       alive = false;
@@ -454,7 +455,7 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
     .sort((a, b) => b.current / b.threshold - a.current / a.threshold)[0];
   return (
     <section className="legend">
-      <div className="eyebrow">АНТОН + ТАНЯ</div>
+      <div className="eyebrow">{pairName(f.snapshot)}</div>
       <h1>Наша легенда</h1>
       <p>Каждый фильм — новая глава нашей истории</p>
       <div className="panel legend-summary">
@@ -481,9 +482,9 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
           {familyLevel.level + 1}
         </small>
         <p>
-          Антон: уровень {level(xp("anton")).level} · {xp("anton")} XP
+          {slotName(f.snapshot,"anton")}: уровень {level(xp("anton")).level} · {xp("anton")} XP
           <br />
-          Таня: уровень {level(xp("tanya")).level} · {xp("tanya")} XP
+          {slotName(f.snapshot,"tanya")}: уровень {level(xp("tanya")).level} · {xp("tanya")} XP
         </p>
         {nearest && (
           <button onClick={() => setSelected(nearest.id)}>
@@ -551,11 +552,7 @@ export function Legend({ onProject }: { onProject: (id: string) => void }) {
             >
               <Emblem id={a.id} />
               <small>
-                {a.owner === "family"
-                  ? "Антон + Таня"
-                  : a.owner === "anton"
-                    ? "Антон"
-                    : "Таня"}{" "}
+                {a.owner === "family" ? pairName(f.snapshot) : slotName(f.snapshot,a.owner === "anton" ? "anton" : "tanya")}{" "}
                 ·{" "}
                 <span className="trophy-tier">{tierLabels[a.displayTier]}</span>
               </small>

@@ -1,3 +1,4 @@
+import {LoadOlder} from "../public-beta/Tools";
 import { useEffect, useState } from "react";
 import { CalendarHeart, Check, Clock3, X, Plus, MapPin } from "lucide-react";
 import { catalog } from "../model";
@@ -281,7 +282,7 @@ export function Calendar({ initialProject }: { initialProject?: string }) {
             );
           })}
         </div>
-      </section>
+      <LoadOlder kind="events" count={f.snapshot.events.length}/></section>
       <div className="evenings-list">
         {rows.map((e) => (
           <article className="panel evening-card" key={e.id}>

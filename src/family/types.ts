@@ -4,8 +4,10 @@ export type Member = {
   user_id: string;
   role: Role;
   joined_at: string;
+  display_name?: string;
 };
 export type Profile = {
+  display_name?: string;
   id: string;
   avatar_path: string | null;
   welcome_seen_at: string | null;
@@ -115,6 +117,8 @@ export type Moment = Versioned & {
   created_at: string;
 };
 export type Media = {
+  thumbnail_path?: string | null;
+  thumbnail_bytes?: number;
   id: string;
   family_id: string;
   author_id: string;
@@ -185,7 +189,7 @@ export type WatchRequest = {
   version: number;
 };
 export type Snapshot = {
-  family: { id: string; watch_confirmation: boolean } | null;
+  family: { id: string; name?: string; watch_confirmation: boolean } | null;
   watchRequests: WatchRequest[];
   members: Member[];
   profile: Profile | null;

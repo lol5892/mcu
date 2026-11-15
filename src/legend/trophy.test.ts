@@ -13,7 +13,6 @@ it("has 82 unique individual descriptions and precise separate conditions", () =
     const before = original.find((x) => x.id === a.id)!;
     for (const field of [
       "id",
-      "title",
       "projects",
       "metric",
       "threshold",
@@ -22,8 +21,7 @@ it("has 82 unique individual descriptions and precise separate conditions", () =
       "category",
     ] as const)
       expect(a[field]).toEqual(before[field]);
-    if (a.owner === "anton") expect(a.description).toContain("Антон");
-    if (a.owner === "tanya") expect(a.description).toContain("Тан");
+    expect(a.description).not.toMatch(/Антон|Тан[яиюе]/);
   }
 });
 it("keeps platinum exceptional and synchronizes server display metadata", () => {
@@ -39,8 +37,11 @@ it("keeps platinum exceptional and synchronizes server display metadata", () => 
     "supabase/migrations/20261114095901_trophy_system.sql",
     "utf8",
   );
-  for (const a of registry)
-    expect(sql).toContain(`'${a.id}','${a.title}','${a.displayTier}'`);
+  const publicSql=readFileSync("supabase/public-migrations/20261115223300_public_beta.sql","utf8");
+  for (const a of registry) {
+    expect(sql).toContain(`'${a.id}',`);
+    expect(publicSql).toContain(`set title='${a.title.replaceAll("'","''")}' where id='${a.id}'`);
+  }
   expect(
     registry
       .filter((a) => a.id.startsWith("phase-"))

@@ -34,7 +34,7 @@ export function Person({ id }: { id: string }) {
       {f.avatars[id] ? (
         <img className="avatar" src={f.avatars[id]} alt={name} />
       ) : (
-        <span className={"avatar " + (name === "Таня" ? "tanya" : "anton")}>
+        <span className={"avatar " + (f.snapshot.members.find(m => m.user_id === id)?.role || "anton")}>
           {name[0]}
         </span>
       )}

@@ -8,7 +8,7 @@ async function login(page: Page, email: string) {
     .click();
   await page.getByLabel("Код подтверждения").fill("123456");
   await page
-    .getByRole("button", { name: "Войти в нашу вселенную", exact: true })
+    .getByRole("button", { name: "Подтвердить email", exact: true })
     .click();
   await expect(page.locator(".family-stats")).toBeVisible();
 }

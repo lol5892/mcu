@@ -20,7 +20,7 @@ it("maps all 82 unchanged achievement definitions to individual original artwork
   for (const a of registry) {
     const m = manifest.find((m) => m.id === a.id)!;
     for (const [key, value] of Object.entries(a).filter(
-      ([key]) => !["description", "howTo", "displayTier"].includes(key),
+      ([key]) => !["title", "description", "howTo", "displayTier"].includes(key),
     ))
       expect(m[key as keyof typeof m]).toEqual(value);
     concepts.add(m.concept);

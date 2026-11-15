@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const ref='aadztcqfwtuniucrlsgc';
+if(process.env.VITE_SUPABASE_URL && !process.env.VITE_SUPABASE_URL.includes(ref) && !process.env.VITE_SUPABASE_URL.startsWith('http://127.0.0.1:'))throw Error('Unexpected beta backend; original family project is forbidden');
+if(fs.existsSync('.github/family-public.env') || fs.existsSync('.github/workflows/deploy.yml'))throw Error('Private family deployment configuration must not be inherited');
+const pkg=JSON.parse(fs.readFileSync('package.json'));
+if(pkg.name!=='kino-vdvoem-beta')throw Error('Not the isolated beta checkout');
+const registry=JSON.parse(fs.readFileSync('src/legend/registry.json'));
+if(registry.length!==82 || registry.some(a=>/Антон|Тан[яиюе]/.test(a.title+' '+a.description+' '+a.howTo)))throw Error('Public trophy copy still contains source-pair names');
+if(process.env.VITE_SUPPORT_APPROVED==='true' && !process.env.VITE_SUPPORT_URL)throw Error('Approved support link is missing');
+console.log('Beta configuration and source-family separation verified.');

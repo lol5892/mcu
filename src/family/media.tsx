@@ -29,7 +29,7 @@ export async function compressPhoto(file: File): Promise<Blob> {
       image.src = url;
     });
     if (!image.naturalWidth || !image.naturalHeight) throw Error("У фотографии не определился размер. Выберите другой снимок.");
-    const scale = Math.min(1, 1800 / Math.max(image.naturalWidth, image.naturalHeight));
+    const scale = Math.min(1, 1600 / Math.max(image.naturalWidth, image.naturalHeight));
     const canvas = document.createElement("canvas");
     canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
     canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
@@ -38,15 +38,15 @@ export async function compressPhoto(file: File): Promise<Blob> {
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-    for (const quality of [0.84, 0.7, 0.55]) {
+    for (const quality of [0.82, 0.7, 0.55, 0.4, 0.28]) {
       const blob = await new Promise<Blob>((resolve, reject) => {
         const timer = setTimeout(() => reject(Error("Обработка фото заняла слишком много времени. Попробуйте снимок меньшего размера.")), 20000);
         canvas.toBlob((b) => { clearTimeout(timer); b ? resolve(b) : reject(Error("Не удалось сжать фотографию. Выберите другой снимок.")); }, "image/jpeg", quality);
       });
       if (blob.type !== "image/jpeg") throw Error("Браузер не смог преобразовать фото в JPEG.");
-      if (blob.size <= 3 * 1024 * 1024) return blob;
+      if (blob.size <= 500 * 1024) return blob;
     }
-    throw Error("После сжатия фото больше 3 МБ. Выберите снимок меньшего размера.");
+    throw Error("После сжатия фото больше 500 КБ. Выберите снимок меньшего размера.");
   } finally {
     image.onload = image.onerror = null;
     image.src = "";
@@ -65,6 +65,7 @@ async function invokePhoto(form: FormData) {
       if (error && "context" in error && error.context instanceof Response) {
         try { detail = (await error.context.clone().json()).error; } catch { /* Generic failure below. */ }
       }
+      if (detail === "FAMILY_PHOTO_QUOTA") throw Error("Лимит фото заполнен. Сохраните и удалите ненужную фотографию вручную.");
       if (detail === "INVALID_IMAGE" || detail === "INVALID_FILE") throw Error("Сервер не смог проверить фотографию. Попробуйте другой снимок или JPEG из приложения «Фото».");
       if (detail === "UNAUTHORIZED") throw Error("Для загрузки нужно восстановить вход в приложение. Выбранное фото остаётся здесь.");
       throw Error("Фотография пока не отправлена. Проверьте интернет и повторите — второй экземпляр не создастся.");
@@ -199,21 +200,29 @@ export function PrivatePhoto({ media }: { media: Media }) {
     setFailed(false);
     setUrl("");
     if (!supabase) return;
-    void supabase.storage.from("marvel-private").download(media.object_path).then(({ data, error }) => {
+    void supabase.storage.from("marvel-private").download(media.thumbnail_path || media.object_path).then(({ data, error }) => {
       if (error || !data) { if (active) setFailed(true); return; }
       object = URL.createObjectURL(data);
       if (active) setUrl(object); else URL.revokeObjectURL(object);
     }).catch(() => { if (active) setFailed(true); });
     return () => { active = false; if (object) URL.revokeObjectURL(object); };
-  }, [media.object_path, media.ready, f.user?.id, retry]);
+  }, [media.object_path, media.thumbnail_path, media.ready, f.user?.id, retry]);
   useEffect(() => {
     const online = () => { if (failed) setRetry((v) => v + 1); };
     window.addEventListener("online", online);
     return () => window.removeEventListener("online", online);
   }, [failed]);
+  const [fullURL,setFullURL]=useState("");
+  useEffect(()=>{
+    if(!full || !supabase)return;
+    if(!media.thumbnail_path){setFullURL(url);return;}
+    let live=true,object="";setFullURL("");
+    void supabase.storage.from("marvel-private").download(media.object_path).then(({data,error})=>{if(error||!data)return;object=URL.createObjectURL(data);if(live)setFullURL(object);else URL.revokeObjectURL(object);});
+    return()=>{live=false;if(object)URL.revokeObjectURL(object);};
+  },[full,media.object_path,media.thumbnail_path,url]);
   async function remove() {
     const linked = (f.snapshot.mediaLinks || []).filter((l) => l.media_id === media.id).length > 1;
-    if (!confirm(linked ? "Удалить вашу фотографию из переписки и всех связанных воспоминаний?" : "Удалить вашу фотографию?")) return;
+    if (!confirm(linked ? "Удалить вашу фотографию из всех связанных воспоминаний?" : "Удалить вашу фотографию?")) return;
     await a.run(async () => {
       const { data, error } = await supabase!.functions.invoke("media-upload", { body: { action: "delete", id: media.id } });
       if (error || !data?.ok) throw Error("Не удалось удалить фотографию. Попробуйте при устойчивой связи.");
@@ -225,6 +234,6 @@ export function PrivatePhoto({ media }: { media: Media }) {
     <div className="photo-author"><Person id={media.author_id} /></div>
     {media.author_id === f.user?.id && <button className="photo-remove" aria-label="Удалить мою фотографию" disabled={a.busy} onClick={() => void remove()}><Trash2 size={18} /></button>}
     <Feedback text={a.feedback} />
-    {full && <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label="Наша фотография"><button aria-label="Закрыть фотографию" onClick={() => setFull(false)}><X size={26} /></button><img src={url} alt="Наш личный киновечер" /><a href={url} download={"our-moment-" + media.id + ".jpg"}>Сохранить фотографию</a></div>}
+    {full && <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label="Наша фотография"><button aria-label="Закрыть фотографию" onClick={() => setFull(false)}><X size={26} /></button>{fullURL ? <><img src={fullURL} alt="Наш личный киновечер" /><a href={fullURL} download={"our-moment-" + media.id + ".jpg"}>Сохранить фотографию</a></> : <p role="status">Загружаем полноразмерное фото…</p>}</div>}
   </div>;
 }

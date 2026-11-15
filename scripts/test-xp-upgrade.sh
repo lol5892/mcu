@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-xp_db=marvel_xp_upgrade
+xp_db=kino_legacy_xp_upgrade
 xp_migration=$(printf '%s\n' supabase/migrations/*_fair_xp.sql)
-xp_psql=(docker --host=unix:///var/run/docker.sock exec -i our-marvel-sql-test psql -v ON_ERROR_STOP=1 -U postgres -d "$xp_db")
+xp_psql=(docker --host=unix:///var/run/docker.sock exec -i kino-beta-sql psql -v ON_ERROR_STOP=1 -U postgres -d "$xp_db")
 node scripts/catalog-sql.mjs | "${xp_psql[@]}" >/dev/null
 "${xp_psql[@]}" < supabase/tests/xp253-before.sql
 # Guard an already claimed message: no partial update may occur.

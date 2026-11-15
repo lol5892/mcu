@@ -1,3 +1,6 @@
+import {InvitePartner,SupportProject,StorageUsage,PublicDataControls,NameForm} from "../public-beta/Tools";
+import {HelpPage} from "../public-beta/Help";
+import {slotName,pairName,memberName} from "../public-beta/names";
 import {trophyNotificationTitle} from "../legend/xp";
 import {Legend} from "../legend/Legend";
 import { useEffect, useState } from "react";
@@ -30,7 +33,7 @@ import { Calendar, NextEvening } from "./Calendar";
 import { Notifications } from "./Notifications";
 import { Sessions } from "./Sessions";
 import { WelcomeLetter, Onboarding } from "./Welcome";
-import { FamilyBackupPanel } from "./Backup";
+
 import { PhotoUpload, PrivatePhoto } from "./media";
 import { useAction, Feedback, Person, displayDate } from "./ui";
 import { SyncDifference, actionName } from "./SyncDifference";
@@ -59,12 +62,12 @@ export function FamilyHomeCards() {
     <section className="family-home-cards">
       <div className="family-together">
         <div>
-          <span className="avatar anton">А</span>
+          <span className="avatar anton">{slotName(f.snapshot,"anton")[0]}</span>
           <Heart size={14} />
-          <span className="avatar tanya">Т</span>
+          <span className="avatar tanya">{slotName(f.snapshot,"tanya")[0]}</span>
         </div>
         <span>
-          Антон и Таня<small>Наша маленькая вселенная</small>
+          {pairName(f.snapshot)}<small>{f.snapshot.family?.name || "Ваша киновселенная"}</small>
         </span>
         <button
           onClick={() => (location.hash = "/universe")}
@@ -93,8 +96,6 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
     a = useAction();
   const route = useFamilyRoute();
   const [replay, setReplay] = useState<"letter" | "tour" | null>(null),
-    [inviteEmail, setInviteEmail] = useState(""),
-    [inviteLink, setInviteLink] = useState(""),
     [newPassword, setNewPassword] = useState(""),
     [repeatPassword, setRepeatPassword] = useState("");
   if (!cloudConfigured || f.localMode)
@@ -104,8 +105,8 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
         <h1>Наша маленькая вселенная</h1>
         <p>
           {cloudConfigured
-            ? "Сейчас открыт локальный архив первой версии. Облачные данные доступны только после подтверждённого входа."
-            : "Семейное пространство подключается к приватному Supabase. Старый дневник и ваши локальные записи продолжают работать."}
+            ? "Сейчас открыт локальный предпросмотр. Облачные данные доступны только после подтверждённого входа."
+            : "Семейное пространство подключается к приватному Supabase. Здесь нет данных исходной семьи."}
         </p>
         {cloudConfigured ? (
           <button className="primary" onClick={() => f.setLocalMode(false)}>
@@ -184,7 +185,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
     return (
       <>
         {back}
-        <FamilyBackupPanel />
+        <PublicDataControls />
       </>
     );
   if (route.page === "sync")
@@ -262,13 +263,14 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
         </section>
       </>
     );
+  if (route.page === "help") return <>{back}<HelpPage/></>;
   if (route.page === "preferences")
     return (
       <>
         {back}
         <section className="panel family-form">
           <h1>Только наше</h1>
-          <div className="account-email">{f.user?.email}</div>
+          <div className="account-email">{f.user?.email}</div><NameForm/>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -335,12 +337,6 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
             ))}
           <PhotoUpload kind="avatar" target={null} />
   
-          {f.role === "tanya" && (
-            <button className="wide-button" onClick={() => setReplay("letter")}>
-              <Heart size={17} />
-              Посмотреть письмо от Антона ❤️
-            </button>
-          )}
           <button className="wide-button" onClick={() => setReplay("tour")}>
             Знакомство с приложением
           </button>
@@ -358,69 +354,8 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
             <ShieldCheck size={17} />
             Копии, перенос и удаление данных
           </button>
-          {f.role === "anton" && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                void a.run(async () => {
-                  const token = await f.rpc<string>("mv_invite", {
-                    p_email: inviteEmail,
-                  });
-                  setInviteLink(
-                    appURL() + "#invite=" + encodeURIComponent(token),
-                  );
-                });
-              }}
-            >
-              <h2>Пригласить Таню</h2>
-              <p>
-                Одноразовая ссылка действует 7 дней и только для указанного
-                подтверждённого email. Создание новой ссылки отменяет старую.
-              </p>
-              <label>
-                Email Тани
-                <input
-                  type="email"
-                  required
-                  value={inviteEmail}
-                  onChange={(e) => setInviteEmail(e.target.value)}
-                />
-              </label>
-              <button
-                className="primary"
-                disabled={
-                  a.busy || f.offline || f.snapshot.members.length === 2
-                }
-              >
-                Создать приглашение
-              </button>
-              {inviteLink && (
-                <div className="invitation-result">
-                  <p>
-                    Передайте эту ссылку Тане лично. Само приложение её никому
-                    не отправляет.
-                  </p>
-                  <textarea
-                    aria-label="Одноразовая ссылка приглашения"
-                    readOnly
-                    value={inviteLink}
-                  />
-                  <button
-                    type="button"
-                    className="wide-button"
-                    onClick={() =>
-                      void a.run(async () => {
-                        await navigator.clipboard.writeText(inviteLink);
-                        a.setFeedback("Ссылка скопирована");
-                      })
-                    }
-                  >
-                    Скопировать приглашение
-                  </button>
-                </div>
-              )}
-            </form>
-          )}
+          <InvitePartner/><StorageUsage/><SupportProject/>
+          <button className="wide-button" onClick={()=>location.hash="/help"}>Помощь и установка</button>
           <button className="text-button" onClick={() => void a.run(f.signOut)}>
             <LogOut size={16} />
             Выйти на этом устройстве
@@ -556,7 +491,7 @@ export function Universe({ onProject }: { onProject: (id: string) => void }) {
                 {rows
                   .map(
                     (r) =>
-                      `${f.snapshot.members.find((m) => m.user_id === r.user_id)?.role === "tanya" ? "Таня" : "Антон"}: ${r.score}`,
+                      `${memberName(f.snapshot,r.user_id)}: ${r.score}`,
                   )
                   .join(" · ")}
               </small>

@@ -3,7 +3,8 @@ import { cors, json } from "../_shared/http.ts";
 const url = Deno.env.get("SUPABASE_URL")!,
   serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-import { sanitizeJPEG, readLimited } from "../_shared/image.ts";
+import { readLimited } from "../_shared/image.ts";
+import { publicJPEG } from "../_shared/public-image.ts";
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response(null, { headers: cors(req) });
@@ -20,7 +21,7 @@ Deno.serve(async (req) => {
     data: { user },
     error: authError,
   } = await userClient.auth.getUser();
-  if (authError || !user) return json(req, { error: "UNAUTHORIZED" }, 401);
+  if (authError || !user || !user.email_confirmed_at) return json(req, { error: "UNAUTHORIZED" }, 401);
   const admin = createClient(url, serviceKey, {
     auth: { persistSession: false },
   });
@@ -40,7 +41,7 @@ Deno.serve(async (req) => {
       for (const row of rows || []) {
         const { error: remove } = await admin.storage
           .from("marvel-private")
-          .remove([row.object_path]);
+          .remove([row.object_path,...(row.thumbnail_path ? [row.thumbnail_path] : [])]);
         if (remove) throw remove;
         const { error: deletion } = await admin
           .from("mv_media")
@@ -52,20 +53,20 @@ Deno.serve(async (req) => {
       return json(req, { ok: true });
     }
     const length = Number(req.headers.get("content-length") || 0);
-    if (length > 3300000) return json(req, { error: "TOO_LARGE" }, 413);
+    if (length > 600000) return json(req, { error: "TOO_LARGE" }, 413);
     const { data: member } = await userClient
       .from("mv_members")
       .select("user_id")
       .eq("user_id", user.id)
       .maybeSingle();
     if (!member) return json(req, { error: "FORBIDDEN" }, 403);
-    const raw = await readLimited(req, 3300000);
+    const raw = await readLimited(req, 600000);
     const form = await new Response(raw, {
         headers: { "Content-Type": req.headers.get("content-type") || "" },
       }).formData(),
       id = String(form.get("id") || ""),
       file = form.get("photo");
-    if (!(file instanceof File) || file.size > 3145728 || file.size < 32)
+    if (!(file instanceof File) || file.size > 524288 || file.size < 32)
       return json(req, { error: "INVALID_FILE" }, 400);
     const { data: media, error } = await userClient
       .from("mv_media")
@@ -86,7 +87,7 @@ Deno.serve(async (req) => {
       (!media.ready && media.byte_size !== file.size)
     )
       return json(req, { error: "INVALID_IMAGE" }, 400);
-    const clean = sanitizeJPEG(bytes);
+    const {photo:clean,thumbnail} = publicJPEG(bytes);
     const hash = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)))
       .map((n) => n.toString(16).padStart(2, "0")).join("");
     if (media.ready) {
@@ -117,6 +118,11 @@ Deno.serve(async (req) => {
       const cleanHash = await crypto.subtle.digest("SHA-256", await clean.arrayBuffer());
       if (new Uint8Array(storedHash).some((b, i) => b !== new Uint8Array(cleanHash)[i])) throw upload;
     }
+    const thumbnailPath=media.object_path.replace(/\.jpg$/,".thumb.jpg");
+    const {error:thumbUpload}=await admin.storage.from("marvel-private").upload(thumbnailPath,thumbnail,{contentType:"image/jpeg",upsert:false,cacheControl:"0"});
+    if(thumbUpload && !["409","400"].includes(String(thumbUpload.statusCode)))throw thumbUpload;
+    if(thumbUpload){const {data:stored,error:readError}=await admin.storage.from("marvel-private").download(thumbnailPath);if(readError||!stored||stored.size!==thumbnail.size)throw thumbUpload;}
+    const {error:thumbRecord}=await admin.rpc("kv_media_thumbnail",{p_id:id,p_size:thumbnail.size});if(thumbRecord)throw thumbRecord;
     const { error: finalize } = await admin.rpc("mv_finalize_media", {
       p_id: id,
       p_size: clean.size,

@@ -7,9 +7,7 @@ import { useAction, Feedback } from "./ui";
 import type { WatchRequest } from "./types";
 
 function actor(f: ReturnType<typeof useFamily>, id: string) {
-  return f.snapshot.members.find((m) => m.user_id === id)?.role === "anton"
-    ? "Антон"
-    : "Таня";
+  return f.snapshot.members.find((m) => m.user_id === id)?.display_name || "Участник";
 }
 export function WatchControls({
   project,

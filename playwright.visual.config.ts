@@ -9,6 +9,7 @@ export default defineConfig({
         "trophies.spec.ts",
         "system252.spec.ts",
         "xp253.spec.ts",
+        "public-beta.spec.ts",
       ],
   workers: 1,
   timeout: 90000,
@@ -62,7 +63,7 @@ export default defineConfig({
   ],
   webServer: {
     command:
-      "VITE_SUPABASE_URL=http://127.0.0.1:54321 VITE_SUPABASE_PUBLISHABLE_KEY=test-public-key npm run dev -- --port 4189",
+      "VITE_BETA_AUTH_READY=true VITE_SUPABASE_URL=http://127.0.0.1:54321 VITE_SUPABASE_PUBLISHABLE_KEY=test-public-key npm run dev -- --port 4189",
     url: "http://127.0.0.1:4189",
     reuseExistingServer: false,
   },

@@ -6,12 +6,12 @@ async function login(page: Page, email: string) {
   await page.getByLabel("Email для входа").fill(email);
   await page.getByRole("button", { name: "Получить письмо для входа" }).click();
   await page.getByLabel("Код подтверждения").fill("123456");
-  await page.getByRole("button", { name: "Войти в нашу вселенную" }).click();
+  await page.getByRole("button", { name: "Подтвердить email" }).click();
   await expect(
     page.locator(".family-stats,.welcome-scene,.universe-page"),
   ).toBeVisible();
 }
-test("Tanya greeting uses server text, manual controls, saved once and replay from settings", async ({
+test.skip("Tanya greeting uses server text, manual controls, saved once and replay from settings [private 2.5.3 onboarding retired in public beta; replaced by explicit QR flow]", async ({
   browser,
 }) => {
   const backend = fixture();
@@ -122,9 +122,9 @@ test.skip("authenticated catalogue locks partner rating, season rating and chat 
   await page
     .getByRole("button", { name: "Открыть: Железный человек", exact: true })
     .click();
-  await expect(page.getByLabel("Оценка Тани", { exact: true })).toBeDisabled();
-  await expect(page.getByLabel("Оценка Антона", { exact: true })).toBeEnabled();
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await expect(page.getByLabel("Оценка · Оля", { exact: true })).toBeDisabled();
+  await expect(page.getByLabel("Оценка · Максим", { exact: true })).toBeEnabled();
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("10");
   await expect(
     page.getByText("Изменение сохранено · статус в синхронизации", {
       exact: true,
@@ -225,7 +225,7 @@ test("a concurrent rating change is shown as a conflict instead of overwriting p
     .click();
   backend.tables.mv_ratings[0].score = 6;
   backend.tables.mv_ratings[0].version = 2;
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("10");
   await expect(page.locator(".error-banner")).toBeVisible();
   expect(backend.tables.mv_ratings[0].score).toBe(6);
   expect(backend.tables.mv_ratings[1].score).toBe(9);
@@ -294,9 +294,9 @@ test("own old score can be cleared after partner unmarks the film", async ({
   await page
     .getByRole("button", { name: "Открыть: Железный человек", exact: true })
     .click();
-  await expect(page.getByLabel("Оценка Антона", { exact: true })).toBeEnabled();
-  await expect(page.getByLabel("Оценка Тани", { exact: true })).toBeDisabled();
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("");
+  await expect(page.getByLabel("Оценка · Максим", { exact: true })).toBeEnabled();
+  await expect(page.getByLabel("Оценка · Оля", { exact: true })).toBeDisabled();
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("");
   await expect.poll(() => backend.tables.mv_ratings[0].score).toBeNull();
   expect(backend.tables.mv_ratings[1].score).toBe(9);
 });
@@ -351,7 +351,7 @@ test("password entry for installed app persists session and never saves plaintex
   await context.close();
 });
 
-test("email confirmation in a new tab retains the email-bound family invitation", async ({
+test.skip("email confirmation in a new tab retains the email-bound family invitation [private 2.5.3 onboarding retired in public beta; replaced by explicit QR flow]", async ({
   browser,
 }) => {
   const backend = fixture(true);
@@ -371,7 +371,7 @@ test("email confirmation in a new tab retains the email-bound family invitation"
     .click();
   await confirmation.getByLabel("Код подтверждения").fill("123456");
   await confirmation
-    .getByRole("button", { name: "Войти в нашу вселенную", exact: true })
+    .getByRole("button", { name: "Подтвердить email", exact: true })
     .click();
   await expect(
     confirmation.getByRole("heading", {
@@ -382,7 +382,7 @@ test("email confirmation in a new tab retains the email-bound family invitation"
   await context.close();
 });
 
-test("confirmed invited email can recover invitation in a completely separate browser", async ({
+test.skip("confirmed invited email can recover invitation in a completely separate browser [private 2.5.3 onboarding retired in public beta; replaced by explicit QR flow]", async ({
   browser,
 }) => {
   const backend = fixture(true);
@@ -399,7 +399,7 @@ test("confirmed invited email can recover invitation in a completely separate br
     .click();
   await page.getByLabel("Код подтверждения").fill("123456");
   await page
-    .getByRole("button", { name: "Войти в нашу вселенную", exact: true })
+    .getByRole("button", { name: "Подтвердить email", exact: true })
     .click();
   await expect(
     page.getByRole("button", { name: "Создать нашу вселенную", exact: true }),
@@ -423,14 +423,14 @@ test("a delayed snapshot cannot roll back an acknowledged own rating and cause a
   await page
     .getByRole("button", { name: "Открыть: Железный человек", exact: true })
     .click();
-  await expect(page.getByLabel("Оценка Антона", { exact: true })).toHaveValue(
+  await expect(page.getByLabel("Оценка · Максим", { exact: true })).toHaveValue(
     "8",
   );
   const stale = backend.pauseNextRead("mv_ratings");
   const fresh = backend.pauseNextRead("mv_ratings");
   // Foreground polling starts a snapshot independently of the write queue.
   await stale.started;
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("9");
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("9");
   await expect.poll(() => backend.tables.mv_ratings[0].score).toBe(9);
   await expect
     .poll(() =>
@@ -454,13 +454,13 @@ test("a delayed snapshot cannot roll back an acknowledged own rating and cause a
   await fresh.started;
   try {
     // Hold the catch-up read: the stale response must not flash the old score.
-    await expect(page.getByLabel("Оценка Антона", { exact: true })).toHaveValue(
+    await expect(page.getByLabel("Оценка · Максим", { exact: true })).toHaveValue(
       "9",
     );
   } finally {
     fresh.release();
   }
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("10");
   await expect.poll(() => backend.tables.mv_ratings[0].score).toBe(10);
   await expect(page.locator(".error-banner")).toHaveCount(0);
 });
@@ -477,7 +477,7 @@ test("the same already-saved rating clears a duplicate conflict without overwrit
     .click();
   backend.tables.mv_ratings[0].score = 10;
   backend.tables.mv_ratings[0].version = 2;
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("10");
   await page.getByRole("button", { name: "Закрыть", exact: true }).click();
   await page.goto("/#/sync");
   await expect(
@@ -499,12 +499,12 @@ test("conflict comparison uses saved server data rather than a later queued loca
     .getByRole("button", { name: "Открыть: Железный человек", exact: true })
     .click();
   await context.setOffline(true);
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
-  await expect(page.getByLabel("Оценка Антона", { exact: true })).toHaveValue(
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("10");
+  await expect(page.getByLabel("Оценка · Максим", { exact: true })).toHaveValue(
     "10",
   );
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("9");
-  await expect(page.getByLabel("Оценка Антона", { exact: true })).toHaveValue(
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("9");
+  await expect(page.getByLabel("Оценка · Максим", { exact: true })).toHaveValue(
     "9",
   );
   backend.tables.mv_ratings[0].score = 6;
@@ -718,7 +718,7 @@ test("one conflicted rating does not block saving another movie", async ({
     .click();
   backend.tables.mv_ratings[0].score = 6;
   backend.tables.mv_ratings[0].version = 2;
-  await page.getByLabel("Оценка Антона", { exact: true }).selectOption("10");
+  await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("10");
   await expect(page.locator(".error-banner")).toBeVisible();
   await page.getByRole("button", { name: "Закрыть", exact: true }).click();
   await page
@@ -740,11 +740,11 @@ test("one conflicted rating does not block saving another movie", async ({
 test('independent personal score survives pending and rejected watching',async({page,context})=>{
  const backend=fixture(false,true);await backend.connect(context);await login(page,'anton@example.test');
  await page.getByRole('button',{name:'Открыть: Железный человек 2',exact:true}).click();
- await page.getByLabel('Оценка Антона',{exact:true}).selectOption('9');
+ await page.getByLabel('Оценка · Максим',{exact:true}).selectOption('9');
  await expect.poll(()=>backend.tables.mv_ratings.find(r=>r.project_id==='iron-man-2'&&r.user_id===backend.anton)?.score).toBe(9);
- await expect(page.getByLabel('Оценка Тани',{exact:true})).toBeDisabled();
+ await expect(page.getByLabel('Оценка · Оля',{exact:true})).toBeDisabled();
  await page.locator('.detail').getByRole('button',{name:'Посмотрели',exact:true}).click();
- await expect(page.getByLabel('Оценка Антона',{exact:true})).toHaveValue('9');
- await page.getByLabel('Оценка Антона',{exact:true}).selectOption('8');
+ await expect(page.getByLabel('Оценка · Максим',{exact:true})).toHaveValue('9');
+ await page.getByLabel('Оценка · Максим',{exact:true}).selectOption('8');
  await expect.poll(()=>backend.tables.mv_ratings.find(r=>r.project_id==='iron-man-2'&&r.user_id===backend.anton)?.score).toBe(8);
 });

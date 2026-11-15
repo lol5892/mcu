@@ -32,8 +32,8 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
     mv_families: [{ id: family, watch_confirmation: watchConfirmation }],
     mv_watch_requests: [],
     mv_members: [
-      { family_id: family, user_id: anton, role: "anton", joined_at: now },
-      { family_id: family, user_id: tanya, role: "tanya", joined_at: now },
+      { family_id: family, user_id: anton, role: "anton", display_name:"Максим", joined_at: now },
+      { family_id: family, user_id: tanya, role: "tanya", display_name:"Оля", joined_at: now },
     ],
     mv_entries: [
       {
@@ -164,7 +164,28 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
     readGates.push({ table, entered, wait });
     return { started, release };
   }
-  async function connect(context: BrowserContext) {
+  let pairInvite:any=null;
+  const sockets=new Set<{socket:any;topic:string;ref:string;bindings:any[]}>();
+  function changes(before:Record<string,string>) {
+    const changed=Object.keys(tables).filter(k=>JSON.stringify(tables[k])!==before[k]);
+    if(JSON.stringify(legend)!==before.__legend)changed.push("mv_achievements");
+    for(const s of sockets)for(const b of s.bindings)if(changed.includes(b.table)){
+      try{s.socket.send(JSON.stringify([s.ref,null,s.topic,"postgres_changes",{ids:[b.id],data:{schema:"public",table:b.table,type:"UPDATE",commit_timestamp:now,errors:null,record:{family_id:family},old_record:{}}}]));}catch{}
+    }
+  }
+  async function connect(context: BrowserContext, initialIntent=true) {
+    if(initialIntent) await context.addInitScript(()=>sessionStorage.setItem("kv-intent","create"));
+    await context.routeWebSocket(/\/realtime\/v1\/websocket/, socket=>{
+      const mine:any[]=[];
+      socket.onMessage(raw=>{const message=JSON.parse(String(raw));const [join,ref,topic,event,payload]=message;
+        if(event==="phx_join"){
+          const bindings=(payload.config?.postgres_changes || []).map((b:any,i:number)=>({...b,id:i+1}));
+          const s={socket,topic,ref:join,bindings};sockets.add(s);mine.push(s);
+          socket.send(JSON.stringify([join,ref,topic,"phx_reply",{status:"ok",response:{postgres_changes:bindings}}]));
+        } else if(event==="heartbeat" || event==="phx_leave")socket.send(JSON.stringify([join,ref,topic,"phx_reply",{status:"ok",response:{}}]));
+      });
+      socket.onClose(()=>mine.forEach(s=>sockets.delete(s)));
+    });
     await context.route("http://127.0.0.1:54321/**", async (route) => {
       const request = route.request(),
         url = new URL(request.url());
@@ -174,8 +195,11 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
         "Access-Control-Allow-Methods": "GET,POST,DELETE,OPTIONS",
         "Content-Type": "application/json",
       };
-      const send = (data: unknown, status = 200) =>
-        route.fulfill({ status, headers, body: JSON.stringify(data) });
+      const before=Object.fromEntries(Object.entries(tables).map(([k,v])=>[k,JSON.stringify(v)]));before.__legend=JSON.stringify(legend);
+      const send = async (data: unknown, status = 200) => {
+        await route.fulfill({status,headers,body:JSON.stringify(data)});
+        if(request.method()==="POST")changes(before);
+      };
       if (request.method() === "OPTIONS") return send({});
       let body: Record<string, any> = {};
       if (request.headers()["content-type"]?.includes("application/json"))
@@ -236,6 +260,20 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
       if (url.pathname.includes("/rpc/")) {
         const name = url.pathname.split("/").pop();
         if(name === "mv_impression") {const old=tables.mv_impressions.find(r=>r.user_id===id&&r.project_id===body.p_project);if((old?.version||0)!==body.p_expected)return send({code:'40001',message:'VERSION_CONFLICT'},409);if(body.p_body!==null&&(!body.p_body.trim()||Array.from(body.p_body).length>200))return send({message:'INVALID_IMPRESSION'},400);const row={id:old?.id||crypto.randomUUID(),family_id:family,user_id:id,project_id:body.p_project,body:body.p_body,version:(old?.version||0)+1};tables.mv_impressions=tables.mv_impressions.filter(r=>r!==old).concat(row);return send(row);}
+        if(name === "kv_create_pair") {
+          if(!tables.mv_members.some(m=>m.user_id===id))tables.mv_members.push({family_id:family,user_id:id,role:"anton",display_name:body.p_name,joined_at:now});
+          tables.mv_families=[{id:family,name:body.p_family_name || "Наша киновселенная",watch_confirmation:watchConfirmation}];
+          return send(family);
+        }
+        if(name === "kv_storage_usage")return send({count:tables.mv_media.length,bytes:tables.mv_media.length*300000,photo_limit:10,byte_limit:8388608});
+        if(name === "kv_invite") {pairInvite={id:"bbbbbbbb-1111-4111-8111-111111111111",token:"f".repeat(64),code:"ABCDEF123456",expires_at:new Date(Date.now()+900000).toISOString(),email:body.p_email};return send(pairInvite);}
+        if(name === "kv_revoke_invite"){pairInvite=null;return send(null);}
+        if(name === "kv_set_name"){const m=tables.mv_members.find(m=>m.user_id===id);if(m)m.display_name=body.p_name;return send(null);}
+        if(name === "kv_pair_invitation") {
+          if(!pairInvite || ![pairInvite.code,pairInvite.token].includes(body.p_secret) || id!==tanya)return send({ok:false,error:"INVITATION_INVALID"});
+          if(!body.p_accept)return send({ok:true,inviter:tables.mv_members[0]?.display_name,family_name:tables.mv_families[0]?.name});
+          tables.mv_members.push({family_id:family,user_id:id,role:"tanya",display_name:body.p_name,joined_at:now});pairInvite=null;return send({ok:true,family_id:family});
+        }
         if (name === "mv_legend") {legend.seen=[...new Set([...legend.seen,...(body.p_ack||[])])];return send(legend); }
         if (name === "mv_join_status")
           return send({

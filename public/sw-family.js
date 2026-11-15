@@ -11,8 +11,8 @@ self.addEventListener('push',event=>{
   // Stable tags collapse retries across transport failures; a durable receipt
   // also avoids showing the same server notification twice on this device.
   if(safeRoute.startsWith('/legend/') && (await self.clients.matchAll({type:'window',includeUncontrolled:true})).some(c=>c.url.startsWith(self.registration.scope)&&c.visibilityState==='visible')){await cache.put(key,new Response('foreground'));return;}
-  await self.registration.showNotification(safeRoute.startsWith('/legend/')&&typeof payload.body==='string'?'Наш Marvel — новое достижение!':typeof payload.title==='string'?payload.title.slice(0,160):'Наша маленькая вселенная',{
-   body:safeRoute.startsWith('/legend/')&&typeof payload.body==='string'?payload.body.slice(0,240):'Откройте «Наш Marvel», чтобы посмотреть.',tag:'marvel:'+payload.id,
+  await self.registration.showNotification(safeRoute.startsWith('/legend/')&&typeof payload.body==='string'?'Кино вдвоём — новое достижение!':typeof payload.title==='string'?payload.title.slice(0,160):'Наша маленькая вселенная',{
+   body:safeRoute.startsWith('/legend/')&&typeof payload.body==='string'?payload.body.slice(0,240):'Откройте «Кино вдвоём», чтобы посмотреть.',tag:'kino:'+payload.id,
    icon:new URL('icons/icon-192.png',self.registration.scope).href,
    badge:new URL('icons/icon-192.png',self.registration.scope).href,
    data:{route:safeRoute,id:payload.id},renotify:false,

@@ -57,10 +57,10 @@ test("old cached XP becomes fair offline-style XP on restart without losing owne
   );
   await expect(page.locator(".legend-summary")).toContainText("60 XP");
   await expect(page.locator(".legend-summary")).toContainText(
-    "Антон: уровень 1 · 10 XP",
+    "Максим: уровень 1 · 10 XP",
   );
   await expect(page.locator(".legend-summary")).toContainText(
-    "Таня: уровень 1 · 10 XP",
+    "Оля: уровень 1 · 10 XP",
   );
   await page.reload();
   await expect(page.locator(".legend-summary")).toContainText("60 XP");

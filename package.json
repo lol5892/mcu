@@ -1,7 +1,7 @@
 {
-  "name": "our-marvel-watchlist",
+  "name": "kino-vdvoem-beta",
   "private": true,
-  "version": "2.5.3",
+  "version": "3.0.0-beta.1",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -14,18 +14,22 @@
     "test:family": "playwright test -c playwright.family.config.ts",
     "test:edge": "deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts && deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts",
     "test:pwa": "playwright test -c playwright.pwa.config.ts",
-    "test:visual": "playwright test -c playwright.visual.config.ts"
+    "test:visual": "playwright test -c playwright.visual.config.ts",
+    "test:public-sql": "bash scripts/test-public-sql.sh",
+    "verify:beta": "node scripts/verify-beta.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.119.0",
     "idb": "^8.0.3",
     "lucide-react": "^0.468.0",
+    "qrcode": "1.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.0.0",
+    "@types/qrcode": "1.5.6",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^5.1.0",

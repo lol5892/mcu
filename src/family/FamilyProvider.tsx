@@ -1,3 +1,5 @@
+import {accountCacheKeys,clearAccountCache} from "../public-beta/local-privacy";
+import {snapshotTables,boundedHistory,affectedTables,realtimeFilter,type SnapshotKey} from "../public-beta/snapshot-plan";
 import {
   createContext,
   useCallback,
@@ -64,29 +66,7 @@ export const useFamily = () => {
   if (!value) throw Error("FamilyProvider missing");
   return value;
 };
-const tables = {
-  family: "mv_families",
-  watchRequests: "mv_watch_requests",
-  members: "mv_members",
-  profile: "mv_profiles",
-  entries: "mv_entries",
-  episodes: "mv_episodes",
-  ratings: "mv_ratings",
-  letters: "mv_letters",
-  messages: "mv_messages",
-  sessions: "mv_sessions",
-  events: "mv_events",
-  moments: "mv_moments",
-  media: "mv_media",
-  mediaLinks: "mv_media_links",
-  reactions: "mv_reactions",
-  notifications: "mv_notifications",
-  devices: "mv_devices",
-  legacy: "mv_legacy_ratings",
-  favorites: "mv_letter_favorites",
-  history: "mv_rating_history",
-  welcome: "mv_welcome",
-} as const;
+const tables = snapshotTables;
 export function FamilyProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null),
     [snapshot, setSnapshot] = useState<Snapshot>(blankSnapshot),
@@ -104,6 +84,9 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
     revision = useRef(0),
     refreshing = useRef<Promise<void> | null>(null),
     refreshQueued = useRef(false);
+  const dirty = useRef(new Set<SnapshotKey>(Object.keys(tables) as SnapshotKey[]));
+  const lastServer = useRef<Snapshot>(blankSnapshot());
+  const historyLimits=useRef<Record<string,number>>({});
   state.current = snapshot;
   const role =
     snapshot.members.find((m) => m.user_id === user?.id)?.role || null;
@@ -157,7 +140,10 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       if (!supabase) throw Error("Supabase ещё не настроен.");
       const { data, error } = await supabase.rpc(name, args);
       // RPC writes may finish while a snapshot GET is still in flight.
-      revision.current++;
+      if (name !== "kv_storage_usage") {
+        revision.current++;
+        for (const k of Object.keys(tables) as SnapshotKey[]) dirty.current.add(k);
+      }
       if (error) throw error;
       return data as T;
     },
@@ -183,37 +169,33 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         return;
       }
       const currentRevision = revision.current;
+      const keys=[...dirty.current];
+      if (!keys.length) return;
+      keys.forEach(k=>dirty.current.delete(k));
+      let appliedRead=false;
       try {
-        const values = await Promise.all(
-          Object.entries(tables).map(async ([key, table]) => {
-            let query = supabase!
-              .from(table)
-              .select(key === "devices" ? "id,name,enabled,updated_at" : "*");
-            if (key === "messages")
-              query = query
-                .order("created_at", { ascending: false })
-                .limit(1000);
-            if (key === "history")
-              query = query
-                .order("changed_at", { ascending: false })
-                .limit(500);
-            const { data, error } = await query;
-            if (error) throw error;
-            return [
-              key,
-              key === "profile" || key === "welcome" || key === "family"
-                ? data?.[0] || null
-                : data || [],
-            ] as const;
-          }),
-        );
+        const values=await Promise.all(keys.map(async key=>{
+          const table=tables[key], bounded=boundedHistory[key];
+          const historyLimit=historyLimits.current[key] || bounded?.limit || 0;
+          const readPage=async (from:number,to:number)=>{
+            let q=supabase!.from(table).select(key === "devices" ? "id,name,enabled,updated_at" : "*");
+            if(bounded)q=q.order(bounded.column,{ascending:false});
+            else if(key === "episodes")q=q.order("project_id").order("season").order("episode");
+            else if(key === "ratings")q=q.order("user_id").order("project_id").order("season");
+            else if(key === "entries")q=q.order("project_id");
+            const {data,error}=await q.range(from,to);if(error)throw error;return (data || []) as unknown as Record<string,unknown>[];
+          };
+          const rows:Record<string,unknown>[]=[];
+          if(bounded)for(let offset=0;offset<historyLimit;offset+=500){const page=await readPage(offset,Math.min(offset+499,historyLimit-1));rows.push(...page);if(page.length<Math.min(500,historyLimit-offset))break;}
+          else for(let offset=0;offset<10000;offset+=500){const page=await readPage(offset,offset+499);rows.push(...page);if(page.length<500)break;if(offset===9500)throw Error("Snapshot limit exceeded; export remains available");}
+          return [key,key === "profile" || key === "family" ? rows[0] || null : rows] as const;
+        }));
         if (
           identity.current?.id !== who.id ||
           currentRevision !== revision.current
-        )
-          return;
+        ) { keys.forEach(k=>dirty.current.add(k)); return; }
         let next = {
-          ...blankSnapshot(),
+          ...lastServer.current,
           ...Object.fromEntries(values),
           cachedAt: new Date().toISOString(),
         } as Snapshot;
@@ -241,12 +223,15 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         )
           return;
         state.current = next;
+        appliedRead=true;
+        lastServer.current = serverNext;
         setServerSnapshot(serverNext);
         setSnapshot(next);
         setOperations(pending);
         await cacheSnapshot(who.id, next);
         setError("");
       } catch (e) {
+        keys.forEach(k=>dirty.current.add(k));
         const old = await cachedSnapshot(who.id);
         if (identity.current?.id !== who.id || currentRevision !== revision.current)
           return;
@@ -256,6 +241,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         }
         setError(errorText(e));
       } finally {
+        if(!appliedRead)keys.forEach(k=>dirty.current.add(k));
         setReady(true);
       }
     };
@@ -272,6 +258,10 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       refreshing.current = null;
     }
   }, []);
+  useEffect(()=>{
+    const older=(event:Event)=>{const key=(event as CustomEvent<SnapshotKey>).detail;if(!boundedHistory[key])return;historyLimits.current[key]=(historyLimits.current[key] || boundedHistory[key]!.limit)+50;dirty.current.add(key);void refresh();};
+    window.addEventListener("kv-load-older",older);return()=>window.removeEventListener("kv-load-older",older);
+  },[refresh]);
   const flush = useCallback(async () => {
     const who = identity.current;
     if (!who || !supabase || !navigator.onLine) return;
@@ -297,6 +287,7 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
           // Invalidate reads captured before this response, even if the ACK
           // removes the operation before those reads inspect the local outbox.
           revision.current++;
+          for(const k of affectedTables(op.kind))dirty.current.add(k);
           if (error) {
             if (
               error.code === "40001" ||
@@ -352,6 +343,9 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
       setSnapshot(blankSnapshot());
       setServerSnapshot(null);
       state.current = blankSnapshot();
+      lastServer.current = blankSnapshot();
+      historyLimits.current={};
+      dirty.current = new Set(Object.keys(tables) as SnapshotKey[]);
       setReady(!next);
       if (next) setTimeout(() => void refresh().then(flush), 0);
     };
@@ -385,12 +379,14 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase || !familyId || !user) return;
     let timer: ReturnType<typeof setTimeout>;
+    let healthy=false;
     const channel = supabase.channel(`family:${familyId}:${user.id}`);
-    for (const table of Object.values(tables))
+    for (const [key,table] of Object.entries(tables))
       channel.on(
         "postgres_changes",
-        { event: "*", schema: "public", table },
+        { event: "*", schema: "public", table, filter:realtimeFilter(key as SnapshotKey,familyId,user.id) },
         () => {
+          dirty.current.add(key as SnapshotKey);
           clearTimeout(timer);
           timer = setTimeout(() => void refresh(), 180);
         },
@@ -407,18 +403,20 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
           channel.subscribe((status) => {
             // Refetch after every successful join: replication may have missed
             // changes made while a free-tier tenant was starting or reconnecting.
-            if (!cancelled && status === "SUBSCRIBED") void refresh();
+            if (!cancelled) { healthy=status === "SUBSCRIBED"; if(healthy){for(const k of Object.keys(tables) as SnapshotKey[])dirty.current.add(k);void refresh();} }
           });
       })
       .catch(() => {
         /* Foreground polling remains available during reconnect. */
       });
     const poll = setInterval(() => {
-      if (document.visibilityState === "visible" && navigator.onLine)
+      if (document.visibilityState === "visible" && navigator.onLine && !healthy) {
+        for(const k of Object.keys(tables) as SnapshotKey[])dirty.current.add(k);
         void refresh();
-    }, 5000);
+      }
+    }, 60000);
     const visible = () => {
-      if (document.visibilityState === "visible") void flush();
+      if (document.visibilityState === "visible") {for(const k of Object.keys(tables) as SnapshotKey[])dirty.current.add(k);void flush();}
     };
     document.addEventListener("visibilitychange", visible);
     return () => {
@@ -586,8 +584,11 @@ export function FamilyProvider({ children }: { children: ReactNode }) {
         "Сначала синхронизируйте или экспортируйте ожидающие действия.",
       );
     const id = user.id;
+    const drafts=accountCacheKeys(localStorage,id).filter(k=>k.includes("draft") && localStorage.getItem(k));
+    if(drafts.length && !confirm("Выйти и удалить локальные черновики с этого устройства? Сохранённые серверные данные останутся."))return;
     await supabase.auth.signOut({ scope: "local" });
     await forgetUserCache(id);
+    clearAccountCache(localStorage,id);
     setSnapshot(blankSnapshot());
     setServerSnapshot(null);
     setOperations([]);

@@ -1,3 +1,4 @@
+import {slotName,pairName,memberName} from "./public-beta/names";
 import { Impressions } from "./family/AfterCredits";
 import { Legend, LegendHomePreview } from "./legend/Legend";
 import { Trophy } from "lucide-react";
@@ -254,6 +255,7 @@ export default function App() {
         "sessions",
         "settings",
         "preferences",
+        "help",
         "backup",
         "sync",
       ].includes(familyRoute.page)
@@ -361,7 +363,7 @@ export default function App() {
     return (
       <main className="loading">
         <div className="brand">
-          НАШ <b>MARVEL</b>
+          КИНО <b>ВДВОЁМ</b>
         </div>
         <p>Открываем нашу вселенную…</p>
       </main>
@@ -390,7 +392,7 @@ export default function App() {
           }}
           className="brand"
         >
-          НАШ <b>MARVEL</b>
+          КИНО <b>ВДВОЁМ</b>
         </a>
         <p className="sidebar-caption">НАША КИНОВСЕЛЕННАЯ</p>
         <nav>
@@ -412,11 +414,11 @@ export default function App() {
         </nav>
         <div className="sidebar-bottom">
           <div className="avatars">
-            <span>А</span>
-            <span>Т</span>
+            <span>{slotName(family.snapshot,"anton")[0]}</span>
+            <span>{slotName(family.snapshot,"tanya")[0]}</span>
           </div>
           <div>
-            <strong>Антон и Таня</strong>
+            <strong>{pairName(family.snapshot)}</strong>
             <small>Одна вселенная на двоих</small>
           </div>
           <Heart size={15} />
@@ -425,7 +427,7 @@ export default function App() {
       <div className="main-shell">
         <header className="topbar">
           <div className="mobile-brand brand">
-            НАШ <b>MARVEL</b>
+            КИНО <b>ВДВОЁМ</b>
           </div>
           <div className="breadcrumb">
             НАША КОЛЛЕКЦИЯ <span>/</span> {nav.find((n) => n.id === tab)?.label}
@@ -436,8 +438,8 @@ export default function App() {
               {offline ? "Без интернета" : "Личный кинодневник"}
             </span>
             <div className="avatars">
-              <span>А</span>
-              <span>Т</span>
+              <span>{slotName(family.snapshot,"anton")[0]}</span>
+              <span>{slotName(family.snapshot,"tanya")[0]}</span>
             </div>
           </div>
         </header>
@@ -511,7 +513,7 @@ export default function App() {
                   </p>
                 </div>
                 <div className="edition">
-                  THE MARVEL JOURNEY <span>2008 — 2026</span>
+                  OUR CINEMA JOURNEY <span>2008 — 2026</span>
                 </div>
               </section>
               {cloudActive && <ActiveSessionCard />}
@@ -603,7 +605,7 @@ export default function App() {
                 <div className="stats-body">
                   <div className="stats-title">
                     <span>Наш путь по Marvel</span>
-                    <span className="tiny-tag">АНТОН + ТАНЯ</span>
+                    <span className="tiny-tag">{pairName(family.snapshot)}</span>
                   </div>
                   <div className="stat-numbers">
                     <div>
@@ -997,12 +999,12 @@ export default function App() {
                       return (
                         <div key={who}>
                           <div className={"avatar " + who}>
-                            {i === 0 ? "А" : "Т"}
+                            {slotName(family.snapshot,who)[0]}
                           </div>
                           <strong>
                             {ratings.length ? avg.toFixed(1) : "—"}
                           </strong>
-                          <span>{i === 0 ? "Антон" : "Таня"}</span>
+                          <span>{slotName(family.snapshot,i === 0 ? "anton" : "tanya")}</span>
                           <small>{ratings.length} оценок</small>
                           <Bar value={avg * 10} />
                         </div>
@@ -1047,7 +1049,7 @@ export default function App() {
           )}
           {tab === "settings" && (
             <p className="muted" aria-label="Версия приложения">
-              Наш Marvel {APP_VERSION} · обновляется автоматически, когда вы не
+              Кино вдвоём {APP_VERSION} · обновляется автоматически, когда вы не
               заняты
             </p>
           )}
@@ -1120,7 +1122,7 @@ export default function App() {
                       «Добавить».
                     </li>
                     <li>
-                      Запустите «Наш Marvel» с иконки и дождитесь готовности
+                      Запустите «Кино вдвоём» с иконки и дождитесь готовности
                       офлайн-кеша.
                     </li>
                   </ol>
@@ -1295,17 +1297,17 @@ export default function App() {
                 </section>
               </div>
               <p className="version-label">
-                НАШ MARVEL · ВЕРСИЯ 1.0 · СОЗДАНО ДЛЯ ДВОИХ
+                КИНО ВДВОЁМ · ЗАКРЫТАЯ БЕТА
               </p>
             </>
           )}
           <footer>
             <div className="brand">
-              НАШ <b>MARVEL</b>
+              КИНО <b>ВДВОЁМ</b>
             </div>
             <span>Смотрим вселенную вместе.</span>
             <span>
-              <Heart size={12} /> Антон и Таня
+              <Heart size={12} /> {pairName(family.snapshot)}
             </span>
           </footer>
         </main>
@@ -1853,10 +1855,10 @@ function Detail({
           <div className="rating-fields">
             {(["anton", "tanya"] as const).map((who, i) => (
               <label key={who}>
-                <span className={"avatar " + who}>{i === 0 ? "А" : "Т"}</span>
-                <span>Оценка {i === 0 ? "Антона" : "Тани"}</span>
+                <span className={"avatar " + who}>{slotName(family.snapshot,who)[0]}</span>
+                <span>Оценка · {slotName(family.snapshot,i === 0 ? "anton" : "tanya")}</span>
                 <select
-                  aria-label={`Оценка ${i === 0 ? "Антона" : "Тани"}`}
+                  aria-label={`Оценка · ${slotName(family.snapshot,i === 0 ? "anton" : "tanya")}`}
                   disabled={cloudActive ? who !== family.role : false}
                   value={r[who] ?? ""}
                   onChange={(e) =>
