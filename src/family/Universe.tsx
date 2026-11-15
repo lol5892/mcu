@@ -48,6 +48,7 @@ export function useFamilyRoute() {
   useEffect(() => {
     const change = () => setRoute(parseRoute());
     window.addEventListener("hashchange", change);
+    change(); // Capture a route set between initial render and effect subscription.
     return () => window.removeEventListener("hashchange", change);
   }, []);
   return route;

@@ -83,6 +83,7 @@ test("two independent identities create and explicitly confirm a QR invitation w
   await a
     .getByRole("button", { name: "Создать нашу вселенную", exact: true })
     .click();
+  await expect(a).toHaveURL(/#\/preferences$/);
   await expect(
     a.getByRole("heading", { name: "Пригласить партнёра" }),
   ).toBeVisible();

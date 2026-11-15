@@ -269,13 +269,13 @@ export default function App() {
       setTab("catalog");
       setSelected(catalog.find((p) => p.id === familyRoute.id) || null);
     }
-  }, [familyRoute.page, familyRoute.id]);
+  }, [familyRoute.page, familyRoute.id, cloudActive]);
   useEffect(() => {
     if (familyRoute.page === "legend") {
       setTab(familyRoute.id === "stats" ? "stats" : "legend");
       setSelected(null);
     }
-  }, [familyRoute.page, familyRoute.id]);
+  }, [familyRoute.page, familyRoute.id, cloudActive]);
   function go(t: Tab) {
     setTab(t);
     if (t === "legend" || t === "stats")
