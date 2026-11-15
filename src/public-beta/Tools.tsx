@@ -4,18 +4,343 @@ import { useFamily } from "../family/FamilyProvider";
 import { appURL } from "../family/client";
 import { useAction, Feedback } from "../family/ui";
 import { donationURL } from "./config";
-type Invite={id:string;token:string;code:string;expires_at:string};
+type Invite = { id: string; token: string; code: string; expires_at: string };
 export function InvitePartner() {
- const f=useFamily(),a=useAction();const [email,setEmail]=useState(""),[invite,setInvite]=useState<Invite|null>(null),[qr,setQR]=useState(""),[now,setNow]=useState(Date.now());
- const url=invite?appURL()+"#/join/"+invite.token:"",expired=invite?now>=Date.parse(invite.expires_at):false;
- useEffect(()=>{if(!url){setQR("");return;}let live=true;void QRCode.toDataURL(url,{width:280,margin:3,errorCorrectionLevel:"M",color:{dark:"#101725",light:"#ffffff"}}).then(s=>{if(live)setQR(s);});return()=>{live=false;};},[url]);
- useEffect(()=>{if(!invite)return;const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[invite]);
- if(f.snapshot.members.length===2)return <section className="panel"><h2>Ваша команда собрана</h2><p>В пространстве два участника. Третий аккаунт подключить нельзя.</p></section>;
- if(f.role!=="anton")return null;
- return <section className="panel family-form"><h2>Пригласить партнёра</h2><p>Приглашение действует 15 минут и привязано к подтверждённому email. Можно подключиться из любого города.</p><form onSubmit={e=>{e.preventDefault();void a.run(async()=>{setInvite(await f.rpc<Invite>("kv_invite",{p_email:email}));setNow(Date.now());});}}><label>Email партнёра<input aria-label="Email партнёра" type="email" autoComplete="off" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)}/></label><button className="primary" disabled={a.busy||f.offline}>Создать приглашение</button></form>{invite && <div className="invitation-result">{!expired && qr && <img className="invite-qr" src={qr} alt="QR-код одноразового приглашения партнёра" width={280} height={280}/>}<strong>{expired?"Приглашение истекло":"Код: "+invite.code.match(/.{1,4}/g)?.join("-")}</strong><p>{expired?"Создайте новое приглашение.":"Осталось "+Math.ceil((Date.parse(invite.expires_at)-now)/60000)+" мин. Сервер проверит точный срок."}</p><button className="wide-button" disabled={expired||a.busy} onClick={()=>void a.run(async()=>{if(navigator.share)await navigator.share({title:"Кино вдвоём — приглашение",text:"Присоединяйся к нашей киновселенной. Приглашение действует 15 минут.",url});else{await navigator.clipboard.writeText(url);a.setFeedback("Ссылка скопирована");}})}>Поделиться приглашением</button><button className="text-button" disabled={a.busy||f.offline} onClick={()=>void a.run(async()=>{await f.rpc("kv_revoke_invite",{p_id:invite.id});setInvite(null);a.setFeedback("Приглашение отменено");})}>Отменить приглашение</button></div>}<Feedback text={a.feedback}/></section>;
+  const f = useFamily(),
+    a = useAction();
+  const [email, setEmail] = useState(""),
+    [invite, setInvite] = useState<Invite | null>(null),
+    [qr, setQR] = useState(""),
+    [now, setNow] = useState(Date.now());
+  const url = invite ? appURL() + "#/join/" + invite.token : "",
+    expired = invite ? now >= Date.parse(invite.expires_at) : false;
+  useEffect(() => {
+    if (!url) {
+      setQR("");
+      return;
+    }
+    let live = true;
+    void QRCode.toDataURL(url, {
+      width: 280,
+      margin: 3,
+      errorCorrectionLevel: "M",
+      color: { dark: "#101725", light: "#ffffff" },
+    }).then((s) => {
+      if (live) setQR(s);
+    });
+    return () => {
+      live = false;
+    };
+  }, [url]);
+  useEffect(() => {
+    if (!invite) return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [invite]);
+  if (f.snapshot.members.length === 2)
+    return (
+      <section className="panel">
+        <h2>Ваша команда собрана</h2>
+        <p>В пространстве два участника. Третий аккаунт подключить нельзя.</p>
+      </section>
+    );
+  if (f.role !== "anton") return null;
+  return (
+    <section className="panel family-form">
+      <h2>Пригласить партнёра</h2>
+      <p>
+        Приглашение действует 15 минут и привязано к подтверждённому email.
+        Можно подключиться из любого города.
+      </p>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          void a.run(async () => {
+            setInvite(await f.rpc<Invite>("kv_invite", { p_email: email }));
+            setNow(Date.now());
+          });
+        }}
+      >
+        <label>
+          Email партнёра
+          <input
+            aria-label="Email партнёра"
+            type="email"
+            autoComplete="off"
+            required
+            maxLength={254}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <button className="primary" disabled={a.busy || f.offline}>
+          Создать приглашение
+        </button>
+      </form>
+      {invite && (
+        <div className="invitation-result">
+          {!expired && qr && (
+            <img
+              className="invite-qr"
+              src={qr}
+              alt="QR-код одноразового приглашения партнёра"
+              width={280}
+              height={280}
+            />
+          )}
+          <strong>
+            {expired
+              ? "Приглашение истекло"
+              : "Код: " + invite.code.match(/.{1,4}/g)?.join("-")}
+          </strong>
+          <p>
+            {expired
+              ? "Создайте новое приглашение."
+              : "Осталось " +
+                Math.ceil((Date.parse(invite.expires_at) - now) / 60000) +
+                " мин. Сервер проверит точный срок."}
+          </p>
+          <button
+            className="wide-button"
+            disabled={expired || a.busy}
+            onClick={() =>
+              void a.run(async () => {
+                if (navigator.share)
+                  await navigator.share({
+                    title: "Кино вдвоём — приглашение",
+                    text: "Присоединяйся к нашей киновселенной. Приглашение действует 15 минут.",
+                    url,
+                  });
+                else {
+                  await navigator.clipboard.writeText(url);
+                  a.setFeedback("Ссылка скопирована");
+                }
+              })
+            }
+          >
+            Поделиться приглашением
+          </button>
+          <button
+            className="text-button"
+            disabled={a.busy || f.offline}
+            onClick={() =>
+              void a.run(async () => {
+                await f.rpc("kv_revoke_invite", { p_id: invite.id });
+                setInvite(null);
+                a.setFeedback("Приглашение отменено");
+              })
+            }
+          >
+            Отменить приглашение
+          </button>
+        </div>
+      )}
+      <Feedback text={a.feedback} />
+    </section>
+  );
 }
-export function SupportProject() {return <section className="panel"><h2>Поддержать разработку</h2><p>Это приложение создаётся и развивается с любовью к кино. Пользоваться им можно бесплатно. Если вам нравится наша маленькая киновселенная и вы хотите помочь проекту расти, вы можете поддержать разработку любой суммой.</p>{donationURL?<a className="wide-button" href={donationURL} target="_blank" rel="noopener noreferrer">Поддержать проект</a>:<small>Добровольная поддержка пока не подключена. Все функции остаются бесплатными.</small>}</section>;}
-export function StorageUsage() {const f=useFamily();const [usage,setUsage]=useState<{count:number;bytes:number;photo_limit:number;byte_limit:number}|null>(null);useEffect(()=>{if(!f.familyId)return;void f.rpc<typeof usage>("kv_storage_usage").then(setUsage).catch(()=>setUsage(null));},[f.familyId,f.snapshot.media.length]);return <section className="panel"><h3>Место для воспоминаний</h3>{usage?<><p>{usage.count} / {usage.photo_limit} фото · {(usage.bytes/1048576).toFixed(1)} / {usage.byte_limit/1048576} МБ</p><progress max={usage.photo_limit} value={usage.count}/></>:<p>Лимит беты: 10 серверных фото на пару, включая аватары, до 8 МБ вместе с миниатюрами.</p>}<small>Снимки оптимизируются до 1600 пикселей и 512 КБ. Храните оригиналы у себя. Фотографии не удаляются автоматически; незавершённые загрузки тоже занимают место.</small></section>;}
-export function PublicDataControls() {const f=useFamily(),a=useAction();const [kind,setKind]=useState("account"),[confirmation,setConfirmation]=useState("");return <section className="panel family-form"><h1>Данные и приватность</h1><p>Каждая пара видит только своё пространство. У каждого участника личные оценки и впечатления; общие просмотры и воспоминания доступны обоим.</p><button className="wide-button" disabled={a.busy||f.offline} onClick={()=>void a.run(async()=>{const data=await f.rpc("mv_export");const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download="kino-vdvoem-export.json";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);a.setFeedback("Экспорт скачан. Фотографии сохраняются отдельно из полноэкранного просмотра.");})}>Скачать данные нашей пары</button><h2>Запрос администратору</h2><p>В закрытой бете удаление аккаунта, пространства и отключение партнёра обрабатываются вручную. Это запрос, а не мгновенное удаление. Общая история не удаляется незаметно для второго участника.</p><label>Действие<select value={kind} onChange={e=>setKind(e.target.value)}><option value="account">Удалить мой аккаунт</option><option value="disconnect">Отключить меня от пары</option><option value="family">Удалить семейное пространство</option></select></label><label>Введите «ПОДТВЕРЖДАЮ»<input aria-label="Подтверждение запроса" value={confirmation} onChange={e=>setConfirmation(e.target.value)}/></label><button className="danger-button" disabled={a.busy||f.offline||confirmation!=="ПОДТВЕРЖДАЮ"} onClick={()=>void a.run(async()=>{await f.rpc("kv_deletion_request",{p_kind:kind});setConfirmation("");a.setFeedback("Запрос сохранён и ожидает обработки администратором. Данные пока не удалены.");})}>Отправить запрос</button><p>Политика конфиденциальности — черновик. Сведения о владельце, контакте, юрисдикции и сроках обработки должны быть утверждены до допуска реальных тестировщиков.</p><Feedback text={a.feedback}/></section>;}
-export function NameForm(){const f=useFamily(),a=useAction();const [name,setName]=useState(f.snapshot.members.find(m=>m.user_id===f.user?.id)?.display_name || "");return <form onSubmit={e=>{e.preventDefault();void a.run(async()=>{await f.rpc("kv_set_name",{p_name:name});await f.refresh();a.setFeedback("Имя сохранено");});}}><label>Моё имя<input aria-label="Моё имя" value={name} required maxLength={40} onChange={e=>setName(e.target.value)}/></label><button className="wide-button" disabled={a.busy||f.offline}>Сохранить имя</button><Feedback text={a.feedback}/></form>;}
-export function LoadOlder({kind,count}:{kind:"sessions"|"moments"|"events"|"notifications";count:number}) {const initial=kind==="events"?100:50;return count>=initial?<button className="wide-button" onClick={()=>window.dispatchEvent(new CustomEvent("kv-load-older",{detail:kind}))}>Загрузить более ранние записи</button>:null;}
+export function SupportProject() {
+  return (
+    <section className="panel">
+      <h2>Поддержать разработку</h2>
+      <p>
+        Это приложение создаётся и развивается с любовью к кино. Пользоваться им
+        можно бесплатно. Если вам нравится наша маленькая киновселенная и вы
+        хотите помочь проекту расти, вы можете поддержать разработку любой
+        суммой.
+      </p>
+      {donationURL ? (
+        <a
+          className="wide-button"
+          href={donationURL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Поддержать проект
+        </a>
+      ) : (
+        <small>
+          Добровольная поддержка пока не подключена. Все функции остаются
+          бесплатными.
+        </small>
+      )}
+    </section>
+  );
+}
+export function StorageUsage() {
+  const f = useFamily();
+  const [usage, setUsage] = useState<{
+    count: number;
+    bytes: number;
+    photo_limit: number;
+    byte_limit: number;
+  } | null>(null);
+  useEffect(() => {
+    if (!f.familyId) return;
+    void f
+      .rpc<typeof usage>("kv_storage_usage")
+      .then(setUsage)
+      .catch(() => setUsage(null));
+  }, [f.familyId, f.snapshot.media.length]);
+  return (
+    <section className="panel">
+      <h3>Место для воспоминаний</h3>
+      {usage ? (
+        <>
+          <p>
+            {usage.count} / {usage.photo_limit} фото ·{" "}
+            {(usage.bytes / 1048576).toFixed(1)} / {usage.byte_limit / 1048576}{" "}
+            МБ
+          </p>
+          <progress max={usage.photo_limit} value={usage.count} />
+        </>
+      ) : (
+        <p>
+          Лимит беты: 10 серверных фото на пару, включая аватары, до 8 МБ вместе
+          с миниатюрами.
+        </p>
+      )}
+      <small>
+        Снимки оптимизируются до 1600 пикселей и 512 КБ. Храните оригиналы у
+        себя. Фотографии не удаляются автоматически; незавершённые загрузки тоже
+        занимают место.
+      </small>
+    </section>
+  );
+}
+export function PublicDataControls() {
+  const f = useFamily(),
+    a = useAction();
+  const [kind, setKind] = useState("account"),
+    [confirmation, setConfirmation] = useState("");
+  return (
+    <section className="panel family-form">
+      <h1>Данные и приватность</h1>
+      <p>
+        Каждая пара видит только своё пространство. У каждого участника личные
+        оценки и впечатления; общие просмотры и воспоминания доступны обоим.
+      </p>
+      <button
+        className="wide-button"
+        disabled={a.busy || f.offline}
+        onClick={() =>
+          void a.run(async () => {
+            const data = await f.rpc("mv_export");
+            const url = URL.createObjectURL(
+              new Blob([JSON.stringify(data, null, 2)], {
+                type: "application/json",
+              }),
+            );
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "kino-vdvoem-export.json";
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            a.setFeedback(
+              "Экспорт скачан. Фотографии сохраняются отдельно из полноэкранного просмотра.",
+            );
+          })
+        }
+      >
+        Скачать данные нашей пары
+      </button>
+      <h2>Запрос администратору</h2>
+      <p>
+        В закрытой бете удаление аккаунта, пространства и отключение партнёра
+        обрабатываются вручную. Это запрос, а не мгновенное удаление. Общая
+        история не удаляется незаметно для второго участника.
+      </p>
+      <label>
+        Действие
+        <select value={kind} onChange={(e) => setKind(e.target.value)}>
+          <option value="account">Удалить мой аккаунт</option>
+          <option value="disconnect">Отключить меня от пары</option>
+          <option value="family">Удалить семейное пространство</option>
+        </select>
+      </label>
+      <label>
+        Введите «ПОДТВЕРЖДАЮ»
+        <input
+          aria-label="Подтверждение запроса"
+          value={confirmation}
+          onChange={(e) => setConfirmation(e.target.value)}
+        />
+      </label>
+      <button
+        className="danger-button"
+        disabled={a.busy || f.offline || confirmation !== "ПОДТВЕРЖДАЮ"}
+        onClick={() =>
+          void a.run(async () => {
+            await f.rpc("kv_deletion_request", { p_kind: kind });
+            setConfirmation("");
+            a.setFeedback(
+              "Запрос сохранён и ожидает обработки администратором. Данные пока не удалены.",
+            );
+          })
+        }
+      >
+        Отправить запрос
+      </button>
+      <p>
+        Политика конфиденциальности — черновик. Сведения о владельце, контакте,
+        юрисдикции и сроках обработки должны быть утверждены до допуска реальных
+        тестировщиков.
+      </p>
+      <Feedback text={a.feedback} />
+    </section>
+  );
+}
+export function NameForm() {
+  const f = useFamily(),
+    a = useAction();
+  const [name, setName] = useState(
+    f.snapshot.members.find((m) => m.user_id === f.user?.id)?.display_name ||
+      "",
+  );
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void a.run(async () => {
+          await f.rpc("kv_set_name", { p_name: name });
+          await f.refresh();
+          a.setFeedback("Имя сохранено");
+        });
+      }}
+    >
+      <label>
+        Моё имя
+        <input
+          aria-label="Моё имя"
+          value={name}
+          required
+          maxLength={40}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </label>
+      <button className="wide-button" disabled={a.busy || f.offline}>
+        Сохранить имя
+      </button>
+      <Feedback text={a.feedback} />
+    </form>
+  );
+}
+export function LoadOlder({
+  kind,
+  count,
+}: {
+  kind: "sessions" | "moments" | "events" | "notifications";
+  count: number;
+}) {
+  const initial = kind === "events" ? 100 : 50;
+  return count >= initial ? (
+    <button
+      className="wide-button"
+      onClick={() =>
+        window.dispatchEvent(new CustomEvent("kv-load-older", { detail: kind }))
+      }
+    >
+      Загрузить более ранние записи
+    </button>
+  ) : null;
+}

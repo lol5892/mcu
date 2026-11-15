@@ -1,7 +1,7 @@
 export function cors(req: Request) {
   const origin = req.headers.get("origin") || "";
   const allowed = (
-    Deno.env.get("APP_ORIGINS") || "http://localhost:5173"
+    Deno.env.get("APP_ORIGINS") || "http://localhost:5173,https://kino-vdvoem-beta-lol5892.largereed1.chatgpt.site"
   ).split(",");
   return {
     "Access-Control-Allow-Origin": allowed.includes(origin)

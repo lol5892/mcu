@@ -38,6 +38,8 @@ jobs:
         with: { node-version: 22 }
       - run: npm run test:sql
       - run: npm run test:public-sql
+      - run: npm run test:load
+      - run: npm run test:restore
   edge:
     runs-on: ubuntu-latest
     steps:

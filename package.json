@@ -12,11 +12,14 @@
     "preview": "vite preview --host 0.0.0.0",
     "test:sql": "bash scripts/test-sql.sh",
     "test:family": "playwright test -c playwright.family.config.ts",
-    "test:edge": "deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts && deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts",
+    "test:edge": "deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts && deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts supabase/functions/_shared/public-image_test.ts",
     "test:pwa": "playwright test -c playwright.pwa.config.ts",
     "test:visual": "playwright test -c playwright.visual.config.ts",
     "test:public-sql": "bash scripts/test-public-sql.sh",
-    "verify:beta": "node scripts/verify-beta.mjs"
+    "verify:beta": "node scripts/verify-beta.mjs",
+    "build:beta": "node scripts/build-beta.mjs",
+    "test:load": "python3 scripts/load-public-beta.py",
+    "test:restore": "bash scripts/test-beta-restore.sh"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.119.0",

@@ -5,7 +5,14 @@ export function supportURL(value: string | undefined, approved: boolean) {
   if (!approved || !value) return null;
   try {
     const url = new URL(value);
-    return url.protocol === "https:" && !url.username && !url.password ? url.href : null;
-  } catch { return null; }
+    return url.protocol === "https:" && !url.username && !url.password
+      ? url.href
+      : null;
+  } catch {
+    return null;
+  }
 }
-export const donationURL = supportURL(import.meta.env.VITE_SUPPORT_URL, import.meta.env.VITE_SUPPORT_APPROVED === "true");
+export const donationURL = supportURL(
+  import.meta.env.VITE_SUPPORT_URL,
+  import.meta.env.VITE_SUPPORT_APPROVED === "true",
+);

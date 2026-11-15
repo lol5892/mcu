@@ -4,12 +4,14 @@ cd "$(dirname "$0")/.."
 export DOCKER_HOST=unix:///var/run/docker.sock
 unset DOCKER_CONTEXT DOCKER_TLS DOCKER_TLS_VERIFY DOCKER_CERT_PATH
 container=kino-beta-sql
+kv_database=${KV_SQL_DATABASE:-kino_public_test}
+case "$kv_database" in kino_public_test|kino_load_test) ;; *) echo "Isolated local test database required";exit 1;;esac
 if ! docker inspect "$container" >/dev/null 2>&1;then docker run -d --name "$container" -e POSTGRES_PASSWORD=local-public-beta-only postgres:17-alpine >/dev/null;fi
 docker start "$container" >/dev/null
 for attempt in {1..30};do docker exec "$container" pg_isready -U postgres >/dev/null && break;sleep 1;done
-docker exec "$container" dropdb -U postgres --if-exists kino_public_test
-docker exec "$container" createdb -U postgres kino_public_test
-psql=(docker exec -i "$container" psql -v ON_ERROR_STOP=1 -U postgres -d kino_public_test)
+docker exec "$container" dropdb -U postgres --if-exists "$kv_database"
+docker exec "$container" createdb -U postgres "$kv_database"
+psql=(docker exec -i "$container" psql -v ON_ERROR_STOP=1 -U postgres -d "$kv_database")
 python3 - <<'PY' | "${psql[@]}" >/dev/null
 from pathlib import Path
 import re
@@ -20,6 +22,7 @@ PY
 for f in supabase/migrations/*.sql;do "${psql[@]}" < "$f" >/dev/null;done
 node scripts/catalog-sql.mjs | "${psql[@]}" >/dev/null
 for f in supabase/public-migrations/*.sql;do "${psql[@]}" < "$f" >/dev/null;done
+if [[ "${KV_SCHEMA_ONLY:-0}" == 1 ]];then exit 0;fi
 "${psql[@]}" < supabase/tests/public-beta.sql
 # Same authenticated user sends two simultaneous accept requests; only one succeeds.
 accept_sql="set role authenticated;select set_config('request.jwt.claim.sub','10000000-0000-4000-8000-000000000012',false);select public.kv_pair_invitation((select invite->>'token' from public.beta_test_fixture where b=auth.uid()),true,'Второй');"

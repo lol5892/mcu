@@ -15,7 +15,7 @@ export function fixture(recoverInvitation = false, watchConfirmation = false) {
         id,
         avatar_path: null,
         welcome_seen_at: null,
-        onboarding_seen_at: null,
+        onboarding_seen_at: now,
         read_receipts: false,
         timezone: "Europe/Moscow",
         notification_types: {},

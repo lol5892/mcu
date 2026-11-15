@@ -1,0 +1,16 @@
+{
+  "workload": "100 synthetic pairs / 200 SQL identities; 20 concurrent database sessions; local Docker",
+  "elapsed_s": 21.37,
+  "pair_workflow_p50_s": 4.053,
+  "pair_workflow_p95_s": 5.608,
+  "counts": {
+    "pairs": 100,
+    "awards": 600,
+    "members": 200,
+    "ratings": 200,
+    "watched": 100,
+    "impressions": 200,
+    "xp_mismatches": 0
+  },
+  "limitations": "Does not measure 200 hosted Auth logins, 200 Realtime sockets, internet latency or iPhone push. No production family data used."
+}
