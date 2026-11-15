@@ -270,8 +270,8 @@ export function AuthBoundary({ children }: { children: ReactNode }) {
                       }
                       localStorage.removeItem("kv-pending-invite");
                     }
-                    await f.refresh();
                     location.hash = "/preferences";
+                    await f.refresh();
                   });
                 }}
               >
