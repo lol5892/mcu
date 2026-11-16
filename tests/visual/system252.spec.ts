@@ -14,6 +14,11 @@ test("all trophy tiers filter correctly and descriptions and conditions are avai
   await setup(page, context);
   await page.goto("/#/legend");
   await safeArea(page);
+  for (const select of await page.locator(".legend-filters select").all()) {
+    await expect(select).toHaveCSS("appearance", "none");
+    await expect(select).toHaveCSS("background-color", "rgb(17, 24, 36)");
+    await expect(select).toHaveCSS("color", "rgb(238, 238, 238)");
+  }
   for (const [tier, count] of [
     ["bronze", 18],
     ["silver", 27],

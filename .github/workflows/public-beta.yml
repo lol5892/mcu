@@ -49,6 +49,10 @@ jobs:
       - run: deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts
       - run: deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts supabase/functions/_shared/public-image_test.ts
   visual:
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [iPhone-11-Pro-Max-Chromium, iPhone-16-Pro-Chromium, iPhone-11-Pro-Max-WebKit, iPhone-16-Pro-WebKit]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,12 +60,12 @@ jobs:
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit
-      - run: npm run test:visual
+      - run: npx playwright test -c playwright.visual.config.ts --project="${{ matrix.project }}"
         env: { PLAYWRIGHT_USE_BUNDLED: '1' }
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: beta-visual-results
+          name: beta-visual-results-${{ matrix.project }}
           path: |
             docs/public-beta/screenshots
             test-results-visual
