@@ -6,6 +6,7 @@ export default defineConfig({
     ? "baseline.spec.ts"
     : [
         "polish.spec.ts",
+        "catalog254.spec.ts",
         "trophies.spec.ts",
         "system252.spec.ts",
         "xp253.spec.ts",

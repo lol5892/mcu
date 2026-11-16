@@ -2,7 +2,7 @@ import { Impressions } from "./family/AfterCredits";
 import { Legend, LegendHomePreview } from "./legend/Legend";
 import { Trophy } from "lucide-react";
 import { APP_VERSION } from "./pwa/version";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Home,
   Clapperboard,
@@ -40,7 +40,9 @@ import {
   average,
   markAll,
   toggleEpisode,
-  selectProjects,
+  selectWatchItems,
+  itemProgress,
+  itemWatched,
   nextRecommendation,
   stats,
   sectionNames,
@@ -54,6 +56,8 @@ import {
   type Project,
   type Filters,
   type Section,
+  type Season,
+  type WatchItem,
 } from "./model";
 import {
   readRecords,
@@ -71,6 +75,12 @@ import {
   ActiveSessionCard,
 } from "./family/Sessions";
 import { Sparkles } from "lucide-react";
+import {
+  defaultFilters,
+  loadFilters,
+  saveFilters,
+  updateFilters,
+} from "./catalog-preferences";
 type Tab =
   "home" | "catalog" | "saved" | "stats" | "legend" | "settings" | "universe";
 const nav = [
@@ -143,14 +153,12 @@ export default function App() {
     [notice, setNotice] = useState("");
   const [offline, setOffline] = useState(!navigator.onLine),
     [offlineReady, setOfflineReady] = useState(false);
-  const [filters, setFilters] = useState<Filters>({
-    query: "",
-    section: "main",
-    type: "all",
-    status: "all",
-    phase: "all",
-    sort: "release",
-  });
+  const [filters, setFilters] = useState<Filters>(loadFilters);
+  const [selectedSeason, setSelectedSeason] = useState<number>();
+  useEffect(() => saveFilters(filters), [filters]);
+  function filter(patch: Partial<Filters>) {
+    setFilters((current) => updateFilters(current, patch));
+  }
   const [savedMode, setSavedMode] = useState("favorites"),
     [pendingImport, setPendingImport] = useState<Records | null>(null),
     [reset, setReset] = useState(false),
@@ -259,21 +267,25 @@ export default function App() {
       ].includes(familyRoute.page)
     ) {
       setTab("universe");
-      setSelected(null);
+      openProject(null);
     }
   }, [familyRoute.page, familyRoute.id, cloudActive]);
   useEffect(() => {
     if (familyRoute.page === "project" && familyRoute.id) {
       setTab("catalog");
-      setSelected(catalog.find((p) => p.id === familyRoute.id) || null);
+      openProject(catalog.find((p) => p.id === familyRoute.id) || null);
     }
   }, [familyRoute.page, familyRoute.id]);
   useEffect(() => {
     if (familyRoute.page === "legend") {
       setTab(familyRoute.id === "stats" ? "stats" : "legend");
-      setSelected(null);
+      openProject(null);
     }
   }, [familyRoute.page, familyRoute.id]);
+  function openProject(project: Project | null, season?: number) {
+    setSelectedSeason(season);
+    setSelected(project);
+  }
   function go(t: Tab) {
     setTab(t);
     if (t === "legend" || t === "stats")
@@ -283,18 +295,51 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   const allStats = stats(records);
-  const list = selectProjects(records, filters);
-  const recommendation = nextRecommendation(records, filters);
+  const list = useMemo(
+    () => selectWatchItems(records, filters),
+    [records, filters],
+  );
+  const recommendation = useMemo(
+    () => nextRecommendation(records, filters),
+    [records, filters],
+  );
   const next = recommendation?.project;
+  const completedSelection = useMemo(() => {
+    if (list.length || !filters.hideWatched) return false;
+    const scope = selectWatchItems(records, {
+      ...filters,
+      hideWatched: false,
+      status: filters.status === "favorite" ? "favorite" : "all",
+    });
+    return (
+      scope.length > 0 &&
+      scope.every((item) => itemWatched(item, records[item.project.id]))
+    );
+  }, [records, filters, list.length]);
   function random() {
     const candidates = list.filter(
-      (p) => !watched(p, records[p.id]) && p.section !== "future",
+      (item) =>
+        !itemWatched(item, records[item.project.id]) &&
+        item.project.section !== "future" &&
+        (item.project.type !== "series" ||
+          (item.season ? [item.season] : item.project.seasons).some((season) =>
+            Array.from({ length: season.episodes }, (_, i) => i + 1).some(
+              (e) =>
+                available(item.project, season, e) &&
+                !records[item.project.id]?.episodes.includes(
+                  episodeKey(season.number, e),
+                ),
+            ),
+          )),
     );
     if (!candidates.length) {
-      setNotice("В этом списке всё просмотрено! Измените фильтры.");
+      setNotice(
+        "В этом списке нет доступных непросмотренных историй. Измените фильтры.",
+      );
       return;
     }
-    setSelected(candidates[Math.floor(Math.random() * candidates.length)]);
+    const item = candidates[Math.floor(Math.random() * candidates.length)];
+    openProject(item.project, item.season?.number);
   }
   function exportData() {
     const blob = new Blob([JSON.stringify(backup(ref.current), null, 2)], {
@@ -456,7 +501,7 @@ export default function App() {
         <WatchInbox
           hidden={Boolean(selected)}
           onProject={(id) =>
-            setSelected(catalog.find((p) => p.id === id) || null)
+            openProject(catalog.find((p) => p.id === id) || null)
           }
           onNotice={setNotice}
         />
@@ -480,7 +525,7 @@ export default function App() {
           {tab === "legend" && (
             <Legend
               onProject={(id) =>
-                setSelected(catalog.find((p) => p.id === id) || null)
+                openProject(catalog.find((p) => p.id === id) || null)
               }
             />
           )}
@@ -488,7 +533,7 @@ export default function App() {
           {tab === "universe" && (
             <Universe
               onProject={(id) =>
-                setSelected(catalog.find((p) => p.id === id) || null)
+                openProject(catalog.find((p) => p.id === id) || null)
               }
             />
           )}
@@ -519,7 +564,7 @@ export default function App() {
                 <section
                   className="hero"
                   data-phase={next.phase || undefined}
-                  onClick={() => setSelected(next)}
+                  onClick={() => openProject(next, recommendation?.season)}
                 >
                   <div className="hero-art">
                     <Cover p={next} />
@@ -556,7 +601,7 @@ export default function App() {
                       className="primary"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelected(next);
+                        openProject(next, recommendation?.season);
                       }}
                     >
                       <Play size={16} fill="currentColor" />
@@ -577,8 +622,16 @@ export default function App() {
               ) : (
                 <div className="empty">
                   <CheckCheck />
-                  <h2>Этот список пройден!</h2>
-                  <p>Самое время выбрать другую вселенную.</p>
+                  <h2>
+                    {filters.section === "future"
+                      ? "Эти истории ещё впереди"
+                      : "Нет следующих историй в этом списке"}
+                  </h2>
+                  <p>
+                    Все доступные истории просмотрены или не подходят под
+                    выбранные фильтры. Измените состав коллекции или статус
+                    просмотра.
+                  </p>
                 </div>
               )}
               <FamilyHomeCards />
@@ -666,29 +719,48 @@ export default function App() {
           {(tab === "home" || tab === "catalog") && (
             <>
               <div className="collection-controls">
-                <div
-                  className="section-pills"
-                  role="group"
-                  aria-label="Раздел каталога"
-                >
-                  {(
-                    [
-                      "main",
-                      "defenders",
-                      "related",
-                      "animation",
-                      "all",
-                      "future",
-                    ] as const
-                  ).map((s) => (
-                    <button
-                      key={s}
-                      className={filters.section === s ? "selected" : ""}
-                      onClick={() => setFilters({ ...filters, section: s })}
+                <div className="catalog-scope">
+                  <span className="catalog-control-label">
+                    Какая вселенная?
+                  </span>
+                  <div
+                    className="section-pills"
+                    role="group"
+                    aria-label="Какая вселенная?"
+                  >
+                    {(
+                      [
+                        ["main", "Основная КВМ"],
+                        ["all", "Всё Marvel"],
+                        ["future", "Впереди"],
+                      ] as const
+                    ).map(([value, label]) => (
+                      <button
+                        key={value}
+                        aria-pressed={filters.section === value}
+                        className={filters.section === value ? "selected" : ""}
+                        onClick={() => filter({ section: value })}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <label className="catalog-composition">
+                    <span className="catalog-control-label">Что смотреть?</span>
+                    <select
+                      aria-label="Что смотреть?"
+                      value={filters.type}
+                      onChange={(e) => filter({ type: e.target.value })}
                     >
-                      {s === "all" ? "Все разделы" : sectionNames[s]}
-                    </button>
-                  ))}
+                      <option value="film">Только фильмы</option>
+                      <option value="film-series">Фильмы + сериалы</option>
+                      <option value="all">
+                        Всё: фильмы, сериалы и спецвыпуски
+                      </option>
+                      <option value="series">Только сериалы</option>
+                      <option value="special">Только спецвыпуски</option>
+                    </select>
+                  </label>
                 </div>
                 <div className="filter-row">
                   <label className="search">
@@ -697,14 +769,12 @@ export default function App() {
                       aria-label="Поиск"
                       placeholder="Найти нашу следующую историю…"
                       value={filters.query}
-                      onChange={(e) =>
-                        setFilters({ ...filters, query: e.target.value })
-                      }
+                      onChange={(e) => filter({ query: e.target.value })}
                     />
                     {filters.query && (
                       <button
                         aria-label="Очистить поиск"
-                        onClick={() => setFilters({ ...filters, query: "" })}
+                        onClick={() => filter({ query: "" })}
                       >
                         <X size={16} />
                       </button>
@@ -715,9 +785,7 @@ export default function App() {
                     <select
                       aria-label="Сортировка"
                       value={filters.sort}
-                      onChange={(e) =>
-                        setFilters({ ...filters, sort: e.target.value })
-                      }
+                      onChange={(e) => filter({ sort: e.target.value })}
                     >
                       <option value="release">По выходу</option>
                       <option value="chronology">По событиям</option>
@@ -727,67 +795,108 @@ export default function App() {
                     </select>
                   </label>
                 </div>
-                <div className="filter-subrow">
-                  <div className="type-tabs">
-                    {[
-                      ["all", "Всё"],
-                      ["film", "Фильмы"],
-                      ["series", "Сериалы"],
-                      ["special", "Спецвыпуски"],
-                    ].map(([v, t]) => (
-                      <button
-                        key={v}
-                        className={filters.type === v ? "active" : ""}
-                        onClick={() => setFilters({ ...filters, type: v })}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="dropdowns">
-                    <select
-                      aria-label="Статус просмотра"
-                      value={filters.status}
+                <div className="catalog-quick-controls">
+                  <label className="hide-watched-control">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(filters.hideWatched)}
                       onChange={(e) =>
-                        setFilters({ ...filters, status: e.target.value })
+                        filter({ hideWatched: e.target.checked })
                       }
-                    >
-                      <option value="all">Любой статус</option>
-                      <option value="unwatched">Непросмотренное</option>
-                      <option value="watched">Просмотренное</option>
-                      <option value="favorite">Избранное</option>
-                    </select>
-                    <select
-                      aria-label="Фаза"
-                      value={filters.phase}
-                      onChange={(e) =>
-                        setFilters({ ...filters, phase: e.target.value })
-                      }
-                    >
-                      <option value="all">Все фазы</option>
-                      {[1, 2, 3, 4, 5, 6].map((n) => (
-                        <option key={n} value={n}>
-                          Фаза {n}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                    />
+                    <span>Скрыть просмотренное</span>
+                  </label>
+                  <button
+                    className="catalog-reset"
+                    onClick={() => setFilters(defaultFilters())}
+                  >
+                    Сбросить
+                  </button>
                 </div>
+                <details className="catalog-more-filters">
+                  <summary>
+                    Ещё фильтры
+                    {filters.status !== "all" ||
+                    filters.phase !== "all" ||
+                    !["main", "all", "future"].includes(filters.section)
+                      ? " · есть выбранные"
+                      : ""}
+                  </summary>
+                  <div className="dropdowns">
+                    <label>
+                      Раздел
+                      <select
+                        aria-label="Раздел каталога"
+                        value={filters.section}
+                        onChange={(e) =>
+                          filter({
+                            section: e.target.value as Filters["section"],
+                          })
+                        }
+                      >
+                        <option value="main">Основная КВМ</option>
+                        <option value="all">Всё Marvel</option>
+                        <option value="defenders">Сага Защитников</option>
+                        <option value="related">Связанные сериалы</option>
+                        <option value="animation">Другие вселенные</option>
+                        <option value="future">Впереди</option>
+                      </select>
+                    </label>
+                    <label>
+                      Статус
+                      <select
+                        aria-label="Статус просмотра"
+                        value={filters.status}
+                        onChange={(e) => filter({ status: e.target.value })}
+                      >
+                        <option value="all">Любой статус</option>
+                        <option value="unwatched">Непросмотренное</option>
+                        <option value="watched">Просмотренное</option>
+                        <option value="favorite">Избранное</option>
+                      </select>
+                    </label>
+                    <label>
+                      Фаза
+                      <select
+                        aria-label="Фаза"
+                        value={filters.phase}
+                        onChange={(e) => filter({ phase: e.target.value })}
+                      >
+                        <option value="all">Все фазы</option>
+                        {[1, 2, 3, 4, 5, 6].map((n) => (
+                          <option key={n} value={n}>
+                            Фаза {n}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+                </details>
               </div>
-              {filters.section === "related" && (
+              {(filters.section === "related" || filters.section === "all") && (
                 <p className="context-note">
                   <BookOpen size={18} /> Связанные проекты Marvel Television.
                   Канонический статус неоднозначен; «Хелстром» не относится к
                   подтверждённому MCU.
                 </p>
               )}
-              {filters.section === "animation" && (
+              {(filters.section === "animation" ||
+                filters.section === "all") && (
                 <p className="context-note">
                   <BookOpen size={18} /> Альтернативные анимационные вселенные.
                   «Что, если…?» и «Зомби Marvel» связаны с мультивселенной MCU;
                   «Люди Икс ’97» — отдельная история.
                 </p>
               )}
+              {filters.sort === "release" &&
+                filters.type !== "film" &&
+                filters.type !== "special" &&
+                filters.section !== "future" && (
+                  <p className="context-note">
+                    Сезоны расположены по дате премьеры. Эпизоды и их прогресс —
+                    в существующей карточке сериала.
+                  </p>
+                )}
               {filters.sort === "chronology" && (
                 <p className="context-note">
                   Порядок основных событий — ориентир без сцен после титров.
@@ -797,7 +906,11 @@ export default function App() {
               )}
               <div className="results-label">
                 <span>
-                  {list.length} проектов <i>·</i>{" "}
+                  {list.length}{" "}
+                  {filters.sort === "release"
+                    ? "историй и сезонов"
+                    : "проектов"}{" "}
+                  <i>·</i>{" "}
                   {filters.section === "all"
                     ? "Все разделы"
                     : sectionNames[filters.section]}
@@ -805,14 +918,15 @@ export default function App() {
                 <span>КАТАЛОГ · 08.11.2026</span>
               </div>
               <div className="project-grid">
-                {(tab === "home" ? list.slice(0, 12) : list).map((p, i) => (
+                {(tab === "home" ? list.slice(0, 12) : list).map((item) => (
                   <Card
-                    key={p.id}
-                    p={p}
-                    r={records[p.id]}
-                    index={i + 1}
-                    open={() => setSelected(p)}
-                    change={(r) => change(p.id, r)}
+                    key={item.key}
+                    p={item.project}
+                    season={item.season}
+                    r={records[item.project.id]}
+                    index={item.position}
+                    open={() => openProject(item.project, item.season?.number)}
+                    change={(r) => change(item.project.id, r)}
                     chronology={filters.sort === "chronology"}
                   />
                 ))}
@@ -820,20 +934,17 @@ export default function App() {
               {!list.length && (
                 <div className="empty">
                   <Search />
-                  <h2>История пока не найдена</h2>
-                  <p>Попробуйте другое название или сбросьте фильтры.</p>
-                  <button
-                    onClick={() =>
-                      setFilters({
-                        query: "",
-                        section: "all",
-                        type: "all",
-                        status: "all",
-                        phase: "all",
-                        sort: "release",
-                      })
-                    }
-                  >
+                  <h2>
+                    {completedSelection
+                      ? "В этом списке всё просмотрено!"
+                      : "История пока не найдена"}
+                  </h2>
+                  <p>
+                    {completedSelection
+                      ? "Вы завершили выбранную коллекцию. Отключите скрытие или выберите другие истории."
+                      : "Попробуйте другое название или сбросьте фильтры."}
+                  </p>
+                  <button onClick={() => setFilters(defaultFilters())}>
                     Сбросить фильтры
                   </button>
                 </div>
@@ -897,7 +1008,7 @@ export default function App() {
                         p={p}
                         r={records[p.id]}
                         index={i + 1}
-                        open={() => setSelected(p)}
+                        open={() => openProject(p)}
                         change={(r) => change(p.id, r)}
                       />
                       {records[p.id]?.note && (
@@ -1329,9 +1440,10 @@ export default function App() {
       {selected && (
         <Detail
           p={selected}
+          targetSeason={selectedSeason}
           r={records[selected.id] || emptyEntry()}
           change={(r) => change(selected.id, r)}
-          close={() => setSelected(null)}
+          close={() => openProject(null)}
           saveStatus={saveStatus}
         />
       )}
@@ -1397,6 +1509,7 @@ export default function App() {
 }
 function Card({
   p,
+  season,
   r,
   index,
   open,
@@ -1404,6 +1517,7 @@ function Card({
   chronology = false,
 }: {
   p: Project;
+  season?: Season;
   r?: Entry;
   index: number;
   open: () => void;
@@ -1416,18 +1530,34 @@ function Card({
     !family.localMode &&
     family.snapshot.family?.watch_confirmation,
   );
-  const done = watched(p, r),
-    pr = progress(p, r),
+  const item: WatchItem = {
+    key: p.id,
+    project: p,
+    season,
+    date: season?.date || p.date,
+    position: index,
+  };
+  const pending = family.snapshot.watchRequests.some(
+    (request) =>
+      request.project_id === p.id &&
+      request.status === "pending" &&
+      (!season || request.season === season.number),
+  );
+  const done = itemWatched(item, r),
+    pr = itemProgress(item, r),
     rating = average(r);
   return (
     <article
-      data-phase={p.phase || undefined}
+      data-project-id={p.id}
+      data-season={season?.number}
+      data-position={index}
+      data-phase={season?.phase || p.phase || undefined}
       className={"project-card " + (done ? "is-watched" : "")}
     >
       <div className="poster-wrap">
         <button
           className="poster-button"
-          aria-label={`Открыть: ${p.title}`}
+          aria-label={`Открыть: ${p.title}${season ? ` — сезон ${season.number}` : ""}`}
           onClick={open}
         >
           <Cover p={p} />
@@ -1465,10 +1595,10 @@ function Card({
       </div>
       <div className="card-copy">
         <div className="card-meta">
-          {p.year}
+          {(season?.date || p.date).slice(0, 4)}
           <i />
-          {p.phase
-            ? `Фаза ${p.phase}`
+          {season?.phase || p.phase
+            ? `Фаза ${season?.phase || p.phase}`
             : p.section === "defenders"
               ? "Защитники"
               : "Вне фаз"}
@@ -1481,7 +1611,11 @@ function Card({
         </div>
         <button className="card-title" onClick={open}>
           {p.title}
+          {season && <span className="card-season">Сезон {season.number}</span>}
         </button>
+        {pending && (
+          <small className="card-pending">Ожидает подтверждения</small>
+        )}
         <p>{p.description}</p>
         {chronology && p.chronology === null && (
           <small className="muted">Вне общей хронологии</small>
@@ -1489,12 +1623,14 @@ function Card({
         {p.type === "series" && (
           <div className="episode-mini">
             <span>
-              {p.seasonCount}{" "}
-              {p.seasonCount === 1
-                ? "сезон"
-                : p.seasonCount < 5
-                  ? "сезона"
-                  : "сезонов"}
+              {season ? `Сезон ${season.number}` : p.seasonCount}{" "}
+              {season
+                ? ""
+                : p.seasonCount === 1
+                  ? "сезон"
+                  : p.seasonCount < 5
+                    ? "сезона"
+                    : "сезонов"}
             </span>
             <span>
               {pr.done}/{pr.total} серий
@@ -1611,17 +1747,33 @@ function Dialog({
 }
 function Detail({
   p,
+  targetSeason,
   r,
   change,
   close,
   saveStatus,
 }: {
   p: Project;
+  targetSeason?: number;
   r: Entry;
   change: (r: Entry) => void;
   close: () => void;
   saveStatus: string;
 }) {
+  const seasonEl = useRef<HTMLDetailsElement | null>(null);
+  useEffect(() => {
+    if (!targetSeason) return;
+    const frame = requestAnimationFrame(() => {
+      if (seasonEl.current) {
+        seasonEl.current.open = true;
+        seasonEl.current.scrollIntoView({
+          block: "start",
+          behavior: "instant",
+        });
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [p.id, targetSeason]);
   const family = useFamily();
   const cloudActive = Boolean(
     family.user && family.familyId && !family.localMode,
@@ -1708,7 +1860,15 @@ function Detail({
               return (
                 <details
                   key={s.number}
-                  open={p.seasons.length <= 2 || undefined}
+                  data-season={s.number}
+                  ref={(el) => {
+                    if (s.number === targetSeason) seasonEl.current = el;
+                  }}
+                  open={
+                    s.number === targetSeason ||
+                    p.seasons.length <= 2 ||
+                    undefined
+                  }
                 >
                   <summary>
                     <span>

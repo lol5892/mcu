@@ -8,6 +8,7 @@ import "./family/family.css";
 import "./design25.css";
 import "./legend/trophies.css";
 import "./legend/system252.css";
+import "./catalog254.css";
 import { FamilyProvider } from "./family/FamilyProvider";
 import { AuthBoundary } from "./family/AuthBoundary";
 import { WelcomeGate } from "./family/Welcome";

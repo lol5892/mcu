@@ -1,0 +1,143 @@
+.catalog-scope {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.catalog-control-label {
+  color: #aab5ca;
+  font-size: 12px;
+}
+.catalog-scope .section-pills {
+  margin: 0 0 5px;
+}
+.catalog-scope .section-pills button {
+  min-height: 44px;
+  flex-shrink: 0;
+}
+.catalog-composition {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.catalog-composition select,
+.catalog-more-filters select {
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #ffffff18;
+  border-radius: 10px;
+  color: #edf0f8;
+  background-color: #111a2c;
+  color-scheme: dark;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #adb9d0 50%),
+    linear-gradient(135deg, #adb9d0 50%, transparent 50%);
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  background-position:
+    calc(100% - 17px) 50%,
+    calc(100% - 12px) 50%;
+  padding: 10px 30px 10px 12px;
+  font-size: 16px;
+}
+.collection-controls .filter-row {
+  margin-top: 14px;
+}
+.catalog-quick-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.hide-watched-control {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.hide-watched-control input {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: #e53649;
+  color-scheme: dark;
+}
+.catalog-reset {
+  font-size: 12px;
+  color: #abb5ca;
+  min-height: 44px;
+  padding: 8px;
+}
+.catalog-more-filters {
+  border-top: 1px solid #ffffff0d;
+}
+.catalog-more-filters summary {
+  min-height: 44px;
+  align-content: center;
+  cursor: pointer;
+  color: #aab5ca;
+  font-size: 13px;
+}
+.catalog-more-filters .dropdowns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding-bottom: 12px;
+}
+.catalog-more-filters .dropdowns label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  font-size: 11px;
+  color: #aab5ca;
+}
+.card-season {
+  display: block;
+  color: #aebbd3;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 500;
+}
+.card-pending {
+  display: block;
+  color: #e5c17d;
+  margin: 8px 0;
+  font-size: 11px;
+}
+.detail details[data-season] {
+  scroll-margin-block: 16px;
+}
+@media (min-width: 700px) {
+  .catalog-scope {
+    grid-template-columns: auto minmax(250px, 1fr);
+    column-gap: 20px;
+  }
+  .catalog-scope > .catalog-control-label {
+    grid-column: 1;
+  }
+  .catalog-scope .section-pills {
+    grid-column: 1;
+  }
+  .catalog-composition {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-content: end;
+  }
+}
+@media (max-width: 375px) {
+  .catalog-scope .section-pills {
+    gap: 4px;
+  }
+  .catalog-scope .section-pills button {
+    padding-inline: 10px;
+    font-size: 11px;
+  }
+  .catalog-more-filters .dropdowns {
+    grid-template-columns: 1fr;
+  }
+}

@@ -2,7 +2,7 @@ name: Verify family universe
 on:
   pull_request:
   push:
-    branches: [feat/family-universe-2]
+    branches: [feat/family-universe-2, release/2.5.4]
 permissions:
   contents: read
 jobs:
@@ -18,16 +18,23 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npx playwright install --with-deps chromium
+        id: browsers
       - run: npm run test:e2e
+        if: always() && steps.browsers.outcome == 'success'
         env:
           CI: true
           PLAYWRIGHT_USE_BUNDLED: '1'
       - run: npm run test:pwa
+        if: always() && steps.browsers.outcome == 'success'
         env:
           PLAYWRIGHT_USE_BUNDLED: '1'
       - run: npx playwright test -c playwright.family.config.ts
+        if: always() && steps.browsers.outcome == 'success'
         env:
           PLAYWRIGHT_USE_BUNDLED: '1'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: family-254-results, path: 'test-results*' }
   sql-authorization:
     runs-on: ubuntu-latest
     steps:
@@ -48,6 +55,10 @@ jobs:
       - run: deno check --config supabase/functions/deno.json supabase/functions/media-upload/index.ts supabase/functions/push-dispatch/index.ts
       - run: deno test --config supabase/functions/deno.json supabase/functions/_shared/image_test.ts
   visual:
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [iPhone-11-Pro-Max-Chromium, iPhone-16-Pro-Chromium, iPhone-11-Pro-Max-WebKit, iPhone-16-Pro-WebKit]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,18 +68,19 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit
-      - run: npm run test:visual
+      - run: npx playwright test -c playwright.visual.config.ts --project="${{ matrix.project }}"
         env:
           PLAYWRIGHT_USE_BUNDLED: '1'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: visual-polish-screenshots
+          name: visual-polish-screenshots-${{ matrix.project }}
           path: |
             docs/v2.2/after
             docs/v2.5/after
             docs/v2.5/performance
             docs/v2.5.1/after
             docs/v2.5.2/after
+            docs/v2.5.4/after
             docs/v2.5.3/after
             test-results-visual
