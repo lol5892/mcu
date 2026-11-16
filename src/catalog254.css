@@ -1,3 +1,7 @@
+/* Match native WebKit form controls to the existing dark application. */
+:root {
+  color-scheme: dark;
+}
 .catalog-scope {
   display: grid;
   gap: 8px;

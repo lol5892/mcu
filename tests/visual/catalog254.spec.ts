@@ -6,6 +6,10 @@ test("smart catalogue filters and season navigation stay readable at all support
   context,
 }, info) => {
   await setup(page, context);
+  await expect(page.getByLabel("Сортировка", { exact: true })).toHaveCSS(
+    "color-scheme",
+    "dark",
+  );
   await safeArea(page);
   await page.getByLabel("Что смотреть?", { exact: true }).selectOption("film");
   const before = await page
