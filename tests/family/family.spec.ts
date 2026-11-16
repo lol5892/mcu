@@ -428,7 +428,8 @@ test("a delayed snapshot cannot roll back an acknowledged own rating and cause a
   );
   const stale = backend.pauseNextRead("mv_ratings");
   const fresh = backend.pauseNextRead("mv_ratings");
-  // Foreground polling starts a snapshot independently of the write queue.
+  // A partner Realtime event starts a read independently of the write queue.
+  backend.publish();
   await stale.started;
   await page.getByLabel("Оценка · Максим", { exact: true }).selectOption("9");
   await expect.poll(() => backend.tables.mv_ratings[0].score).toBe(9);
@@ -549,7 +550,7 @@ test("watch request appears automatically on partner phone and is counted only a
     .getByRole("button", { name: "Посмотрели", exact: true })
     .click();
   await expect(
-    a.locator(".detail").getByText("Ждём: Таня", { exact: true }),
+    a.locator(".detail").getByText("Ждём: Оля", { exact: true }),
   ).toBeVisible();
   expect(
     backend.tables.mv_entries.find((r) => r.project_id === "iron-man-2")
