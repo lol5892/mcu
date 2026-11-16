@@ -70,9 +70,18 @@ test("device-only filters preserve scores, impressions, trophies and pending wat
     await expect(
       card.getByText("Ожидает подтверждения", { exact: true }),
     ).toBeVisible();
+    await expect
+      .poll(() =>
+        backend.tables.mv_watch_requests.some(
+          (r) => r.project_id === "iron-man-2" && r.status === "pending",
+        ),
+      )
+      .toBe(true);
     expect(
-      backend.tables.mv_entries.find((r) => r.project_id === "iron-man-2")
-        ?.watched,
+      Boolean(
+        backend.tables.mv_entries.find((r) => r.project_id === "iron-man-2")
+          ?.watched,
+      ),
     ).toBe(false);
     await expect(
       b

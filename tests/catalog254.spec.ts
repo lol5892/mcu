@@ -1,5 +1,13 @@
 import { test, expect, type Page } from "@playwright/test";
-import { catalog, emptyEntry, markAll } from "../src/model";
+import { readFileSync } from "node:fs";
+const catalog: Array<{
+  id: string;
+  type: string;
+  section: string;
+  date: string;
+}> = JSON.parse(
+  readFileSync(new URL("../src/catalog.json", import.meta.url), "utf8"),
+);
 import { defaultFilters, FILTER_STORAGE_KEY } from "../src/catalog-preferences";
 
 const films = catalog
@@ -11,7 +19,11 @@ async function seed(page: Page) {
     films.slice(0, 8).map((p) => [
       p.id,
       {
-        ...markAll(p, emptyEntry(), true),
+        watched: true,
+        date: "2026-11-07",
+        favorite: false,
+        episodes: [],
+        updatedAt: "2026-11-07T18:00:00Z",
         anton: 9,
         tanya: 8,
         note: "Сохраняем нашу историю",
