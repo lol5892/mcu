@@ -304,6 +304,10 @@ export default function App() {
     [records, filters],
   );
   const next = recommendation?.project;
+  const recommendedSeason = next?.seasons.find(
+    (season) => season.number === recommendation?.season,
+  );
+  const recommendedPhase = recommendedSeason?.phase ?? next?.phase;
   const completedSelection = useMemo(() => {
     if (list.length || !filters.hideWatched) return false;
     const scope = selectWatchItems(records, {
@@ -563,7 +567,7 @@ export default function App() {
               {next ? (
                 <section
                   className="hero"
-                  data-phase={next.phase || undefined}
+                  data-phase={recommendedPhase || undefined}
                   onClick={() => openProject(next, recommendation?.season)}
                 >
                   <div className="hero-art">
@@ -586,11 +590,13 @@ export default function App() {
                       </span>
                     )}
                     <div className="meta">
-                      <span>{next.year}</span>
+                      <span>
+                        {recommendedSeason?.date.slice(0, 4) || next.year}
+                      </span>
                       <i />
-                      {next.phase && (
+                      {recommendedPhase && (
                         <>
-                          <span>Фаза {next.phase}</span>
+                          <span>Фаза {recommendedPhase}</span>
                           <i />
                         </>
                       )}
@@ -754,9 +760,7 @@ export default function App() {
                     >
                       <option value="film">Только фильмы</option>
                       <option value="film-series">Фильмы + сериалы</option>
-                      <option value="all">
-                        Всё: со спецвыпусками
-                      </option>
+                      <option value="all">Всё: со спецвыпусками</option>
                       <option value="series">Только сериалы</option>
                       <option value="special">Только спецвыпуски</option>
                     </select>
@@ -906,8 +910,7 @@ export default function App() {
               )}
               <div className="results-label">
                 <span>
-                  Найдено: {list.length}{" "}
-                  <i>·</i>{" "}
+                  Найдено: {list.length} <i>·</i>{" "}
                   {filters.section === "all"
                     ? "Все разделы"
                     : sectionNames[filters.section]}

@@ -151,6 +151,19 @@ test("released seasons interleave with films and open the corresponding existing
   await expect(
     target.getByRole("button", { name: "Сезон 2, серия 1", exact: true }),
   ).toBeInViewport();
+  await page
+    .locator('.detail details[data-season="1"]')
+    .getByRole("button", { name: "Весь сезон", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Закрыть", exact: true }).click();
+  await page
+    .getByRole("navigation", { name: "Главная навигация" })
+    .getByRole("button", { name: "Главная", exact: true })
+    .click();
+  await expect(page.locator(".hero-season")).toHaveText("СЕЗОН 2");
+  await expect(page.locator(".hero .meta")).toContainText("2023");
+  await expect(page.locator(".hero .meta")).toContainText("Фаза 5");
+  await expect(page.locator(".hero")).toHaveAttribute("data-phase", "5");
 });
 test("composition, search, status conflicts, extra sections and reset stay coherent", async ({
   page,
