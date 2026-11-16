@@ -755,7 +755,7 @@ export default function App() {
                       <option value="film">Только фильмы</option>
                       <option value="film-series">Фильмы + сериалы</option>
                       <option value="all">
-                        Всё: фильмы, сериалы и спецвыпуски
+                        Всё: со спецвыпусками
                       </option>
                       <option value="series">Только сериалы</option>
                       <option value="special">Только спецвыпуски</option>
@@ -906,10 +906,7 @@ export default function App() {
               )}
               <div className="results-label">
                 <span>
-                  {list.length}{" "}
-                  {filters.sort === "release"
-                    ? "историй и сезонов"
-                    : "проектов"}{" "}
+                  Найдено: {list.length}{" "}
                   <i>·</i>{" "}
                   {filters.section === "all"
                     ? "Все разделы"
