@@ -11,6 +11,9 @@ test("smart catalogue filters and season navigation stay readable at all support
     "dark",
   );
   await safeArea(page);
+  await expect(
+    page.getByLabel("Оставлять без оценки", { exact: true }),
+  ).toBeDisabled();
   await page.getByLabel("Что смотреть?", { exact: true }).selectOption("film");
   const before = await page
     .locator(".project-card")
@@ -22,6 +25,16 @@ test("smart catalogue filters and season navigation stay readable at all support
     "data-position",
     "2",
   );
+  await page.getByLabel("Оставлять без оценки", { exact: true }).check();
+  const checkboxStyles = await page
+    .locator(".hide-watched-control input")
+    .evaluateAll((inputs) =>
+      inputs.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { width: r.width, height: r.height };
+      }),
+    );
+  expect(checkboxStyles[0]).toEqual(checkboxStyles[1]);
   const viewport = page.viewportSize()!;
   for (const width of [320, 375, 390, 393, 402, 414, 428, 430, 440]) {
     await page.setViewportSize({ width, height: viewport.height });
@@ -29,7 +42,10 @@ test("smart catalogue filters and season navigation stay readable at all support
     await expect(
       page.getByLabel("Скрыть просмотренное", { exact: true }),
     ).toBeVisible();
-    const checkbox = await page.locator(".hide-watched-control").boundingBox();
+    const checkbox = await page
+      .locator(".hide-watched-control")
+      .first()
+      .boundingBox();
     expect(checkbox!.height).toBeGreaterThanOrEqual(44);
   }
   await page.setViewportSize(viewport);

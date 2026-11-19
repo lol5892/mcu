@@ -2,7 +2,7 @@ name: Verify family universe
 on:
   pull_request:
   push:
-    branches: [feat/family-universe-2, release/2.5.4]
+    branches: [feat/family-universe-2, release/2.5.4, release/2.5.5]
 permissions:
   contents: read
 jobs:

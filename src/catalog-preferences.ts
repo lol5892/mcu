@@ -9,6 +9,7 @@ export const defaultFilters = (): Filters => ({
   phase: "all",
   sort: "release",
   hideWatched: false,
+  keepWatchedUnrated: false,
 });
 const choices = {
   section: ["main", "all", "defenders", "related", "animation", "future"],
@@ -29,6 +30,7 @@ export function normalizeFilters(value: unknown): Filters {
   }
   if (typeof input.query === "string") result.query = input.query.slice(0, 200);
   result.hideWatched = input.hideWatched === true;
+  result.keepWatchedUnrated = input.keepWatchedUnrated === true;
   if (result.status === "watched") result.hideWatched = false;
   if (result.status === "unwatched") result.hideWatched = true;
   return result;

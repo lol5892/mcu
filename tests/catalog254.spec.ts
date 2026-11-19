@@ -243,3 +243,64 @@ test("unavailable localStorage keeps filters usable in memory", async ({
   ).toBeChecked();
   await expect(page.locator(".project-card").first()).toBeVisible();
 });
+
+test("keep unrated watched cards, react to score edits and retain both preferences offline", async ({
+  page,
+  context,
+}) => {
+  await seed(page);
+  const hide = page.getByLabel("Скрыть просмотренное", { exact: true }),
+    keep = page.getByLabel("Оставлять без оценки", { exact: true });
+  await expect(keep).toBeDisabled();
+  await expect(keep).not.toBeChecked();
+  await hide.check();
+  await keep.check();
+  await expect(
+    page.locator('.project-card[data-project-id="iron-man"]'),
+  ).toHaveCount(0);
+  await hide.uncheck();
+  await expect(keep).toBeDisabled();
+  await expect(keep).toBeChecked();
+  await page
+    .getByRole("button", { name: "Открыть: Железный человек", exact: true })
+    .click();
+  await page.getByLabel("Оценка Тани").selectOption("");
+  await page.getByRole("button", { name: "Закрыть", exact: true }).click();
+  await hide.check();
+  const card = page.locator('.project-card[data-project-id="iron-man"]');
+  await expect(card.locator(".watched-badge")).toBeVisible();
+  await expect(page.locator(".hero h2")).toHaveText(
+    "Первый мститель: Другая война",
+  );
+  await card
+    .getByRole("button", { name: "Открыть: Железный человек", exact: true })
+    .click();
+  await page.getByLabel("Оценка Тани").selectOption("10");
+  await expect(card).toHaveCount(0);
+  await page.getByLabel("Оценка Антона").selectOption("");
+  await expect(card).toHaveCount(1);
+  await expect(page.getByLabel("Дата просмотра")).toHaveValue("2026-11-07");
+  await expect(page.getByLabel("Наша заметка")).toHaveValue(
+    "Сохраняем нашу историю",
+  );
+  await page.getByRole("button", { name: "Закрыть", exact: true }).click();
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+  });
+  await page.reload();
+  await expect(hide).toBeChecked();
+  await expect(keep).toBeChecked();
+  await context.setOffline(true);
+  await page.reload();
+  await expect(keep).toBeChecked();
+  await expect(card.locator(".watched-badge")).toBeVisible();
+  await expect(page.locator(".hero h2")).toHaveText(
+    "Первый мститель: Другая война",
+  );
+  await context.setOffline(false);
+  await page
+    .getByRole("navigation", { name: "Главная навигация" })
+    .getByRole("button", { name: "Каталог", exact: true })
+    .click();
+  await expect(card.locator(".watched-badge")).toBeVisible();
+});

@@ -800,16 +800,29 @@ export default function App() {
                   </label>
                 </div>
                 <div className="catalog-quick-controls">
-                  <label className="hide-watched-control">
-                    <input
-                      type="checkbox"
-                      checked={Boolean(filters.hideWatched)}
-                      onChange={(e) =>
-                        filter({ hideWatched: e.target.checked })
-                      }
-                    />
-                    <span>Скрыть просмотренное</span>
-                  </label>
+                  <div className="catalog-watch-filters">
+                    <label className="hide-watched-control">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(filters.hideWatched)}
+                        onChange={(e) =>
+                          filter({ hideWatched: e.target.checked })
+                        }
+                      />
+                      <span>Скрыть просмотренное</span>
+                    </label>
+                    <label className="hide-watched-control">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(filters.keepWatchedUnrated)}
+                        disabled={!filters.hideWatched}
+                        onChange={(e) =>
+                          filter({ keepWatchedUnrated: e.target.checked })
+                        }
+                      />
+                      <span>Оставлять без оценки</span>
+                    </label>
+                  </div>
                   <button
                     className="catalog-reset"
                     onClick={() => setFilters(defaultFilters())}

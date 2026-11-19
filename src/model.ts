@@ -119,6 +119,7 @@ export type Filters = {
   phase: string;
   sort: string;
   hideWatched?: boolean;
+  keepWatchedUnrated?: boolean;
 };
 export type WatchItem = {
   key: string;
@@ -245,7 +246,16 @@ export function selectWatchItems(
             : f.status === "unwatched"
               ? !done
               : r?.favorite)) &&
-        (!f.hideWatched || !done)
+        (!f.hideWatched ||
+          !done ||
+          (f.keepWatchedUnrated === true &&
+            ![r?.anton, r?.tanya].every(
+              (score) =>
+                typeof score === "number" &&
+                Number.isInteger(score) &&
+                score >= 1 &&
+                score <= 10,
+            )))
       );
     });
 }

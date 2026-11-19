@@ -71,6 +71,12 @@
   accent-color: #e53649;
   color-scheme: dark;
 }
+.catalog-watch-filters {
+  min-width: 0;
+}
+.hide-watched-control input:disabled + span {
+  opacity: 0.5;
+}
 .catalog-reset {
   font-size: 12px;
   color: #abb5ca;
